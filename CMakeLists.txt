@@ -3,6 +3,6 @@ project(ITPC)
 
 set(CMAKE_CXX_STANDARD 98)
 
-add_executable(ITPC main.cpp include/bitAlgorithm.h)
+add_executable(ITPC main.cpp)
 
-include_directories(include)
+# include_directories(include)

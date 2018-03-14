@@ -1,60 +1,37 @@
-// poj1988_cube_stacks.cpp
+// poj1785_Binary_Search_Heap_Construction.cpp
 #include <algorithm>
 #include <cstdio>
+#include <cstring>
+#include <string>
 
-#define MAX_N (30000)
+#define LABEL_LEN (100)
+#define NODE_NUM (100)
 
-struct Cube{
-    int father, distance;
+struct TreapNode{
+    char label[LABEL_LEN];
+    int num;
 };
-
-Cube cube[MAX_N+1];
-char buff[100];
-
-inline int get_father(int x){return cube[x].father;}
-inline int get_root(int x){
-    int f = get_father(x), gf = get_father(f);
-    if(gf == f) return f;
-    else{
-        int root = get_root(f);
-        cube[x].father = root;
-        cube[x].distance += cube[f].distance;
-        return root;
-    }
+TreapNode treapNode[NODE_NUM];
+int nodeJumpMap[NODE_NUM];
+bool comp_num(const int& index1, const int& index2){
+    return treapNode[nodeJumpMap[index1]].num < treapNode[nodeJumpMap[index2]].num;
 }
-
-void _move(int x, int y){
-    int rootx = get_root(x), rooty = get_root(y);
-    int dx = cube[rootx].distance, dy = cube[rooty].distance;
-    cube[rootx].father = rooty;
-    cube[rooty].distance += dx;
-    cube[rootx].distance = dy;
+bool comp_label(const int& index1, const int& index2){
+    return strcmp(treapNode[nodeJumpMap[index1]].label, treapNode[nodeJumpMap[index2]].label) < 0;
 }
-
-int _count(int x){
-    int root = get_root(x);
-    if(root == x) return 0;
-    else return cube[x].distance;
-}
+inline char* get_label(int index){return treapNode[nodeJumpMap[index]].label;}
+inline int get_num(int index){return treapNode[nodeJumpMap[index]].num;}
 
 int main(){
-//    if(!freopen("in.txt", "r", stdin)){ printf("fail."); return 0; }
-//    if(!freopen("out.txt", "w", stdout)){ printf("fail."); return 0; }
-    for(int i=1;i<=MAX_N;i++){cube[i].father = i; cube[i].distance=1;}
-    int p; scanf("%d", &p);
-    for(int i=0;i<p;i++){
-        scanf("%s", buff);
-        if(buff[0] == 'M'){
-            int x, y; scanf("%d%d", &x, &y);
-            _move(x, y);
+    if(!freopen("in.txt", "r", stdin)){ printf("fail."); return 0; }
+    if(!freopen("out.txt", "w", stdout)){ printf("fail."); return 0; }
+    int node_num;
+    while(scanf("%d", &node_num), node_num!=0) {
+        if (node_num == 0) return 0;
+        for (int i = 0; i < node_num; i++) {
+            nodeJumpMap[i] = i;
+            scanf(" %[^/]/%d", treapNode[i].label, &treapNode[i].num);
         }
-        else{
-            int x; scanf("%d", &x);
-            printf("%d\n", _count(x));
-        }
-//        for(int j=1;j<=6;j++){
-//            printf("cube: %d, father: %d, distance: %d.\n", j, cube[j].father, cube[j].distance);
-//        }
-//        printf("\n");
+//        std::sort(nodeJumpMap, nodeJumpMap+node_num, comp_label);
     }
 }
