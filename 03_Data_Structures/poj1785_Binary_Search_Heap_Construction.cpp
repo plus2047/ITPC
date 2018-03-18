@@ -1,37 +1,65 @@
 // poj1785_Binary_Search_Heap_Construction.cpp
-#include <algorithm>
 #include <cstdio>
+#include <algorithm>
 #include <cstring>
-#include <string>
+#include <climits>
+using namespace std;
 
-#define LABEL_LEN (100)
-#define NODE_NUM (100)
+#define LABEL_LEN (100+5)
+#define NODE_NUM (50000+5)
+#define NO_CHILD (-1)
 
-struct TreapNode{
-    char label[LABEL_LEN];
-    int num;
+struct Node{
+        char label[LABEL_LEN];
+        int num, l_child, r_child, father;
 };
-TreapNode treapNode[NODE_NUM];
-int nodeJumpMap[NODE_NUM];
-bool comp_num(const int& index1, const int& index2){
-    return treapNode[nodeJumpMap[index1]].num < treapNode[nodeJumpMap[index2]].num;
+Node node[NODE_NUM];
+int index_array[NODE_NUM];
+
+void dfs_print(int root_index){
+    if(root_index == NO_CHILD) return;
+    printf("(");
+    dfs_print(node[root_index].l_child);
+    printf("%s/%d", node[root_index].label, node[root_index].num);
+    dfs_print(node[root_index].r_child);
+    printf(")");
 }
-bool comp_label(const int& index1, const int& index2){
-    return strcmp(treapNode[nodeJumpMap[index1]].label, treapNode[nodeJumpMap[index2]].label) < 0;
+
+void insert(int index, int last_index){
+    while(node[last_index].num < node[index].num) last_index = node[last_index].father;
+    node[index].l_child = node[last_index].r_child;
+    node[index].r_child = NO_CHILD;
+    node[index].father = last_index;
+    node[last_index].r_child = index;
 }
-inline char* get_label(int index){return treapNode[nodeJumpMap[index]].label;}
-inline int get_num(int index){return treapNode[nodeJumpMap[index]].num;}
+
+bool comp_label(const int &index_1, const int &index_2){
+    return strcmp(node[index_1].label, node[index_2].label) < 0;
+}
 
 int main(){
-    if(!freopen("in.txt", "r", stdin)){ printf("fail."); return 0; }
-    if(!freopen("out.txt", "w", stdout)){ printf("fail."); return 0; }
     int node_num;
-    while(scanf("%d", &node_num), node_num!=0) {
-        if (node_num == 0) return 0;
-        for (int i = 0; i < node_num; i++) {
-            nodeJumpMap[i] = i;
-            scanf(" %[^/]/%d", treapNode[i].label, &treapNode[i].num);
+    while(scanf("%d", &node_num) == 1 && node_num){
+        for(int i=1;i<=node_num;i++){
+            scanf(" %[a-z]/%d", node[i].label, &node[i].num);
+            index_array[i] = i;
         }
-//        std::sort(nodeJumpMap, nodeJumpMap+node_num, comp_label);
+        sort(index_array + 1, index_array + 1 + node_num, comp_label);
+
+        // fake root
+        node[0].num = INT_MAX;
+        node[0].r_child = index_array[1];
+        node[0].l_child = NO_CHILD;
+
+        node[index_array[1]].father = 0;
+        node[index_array[1]].l_child = NO_CHILD;
+        node[index_array[1]].r_child = NO_CHILD;
+
+        for(int i=2;i<=node_num;i++){
+            insert(index_array[i], index_array[i-1]);
+        }
+
+        dfs_print(node[0].r_child);
+        printf("\n");
     }
 }
