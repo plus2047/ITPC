@@ -1,4 +1,3 @@
-// poj1785_Binary_Search_Heap_Construction.cpp
 #include <vector>
 #include <cstdio>
 #include <cstddef>
