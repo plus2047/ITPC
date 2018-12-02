@@ -1,0 +1,5 @@
+cmake-build*
+.*
+!.gitignore
+_*
+main
