@@ -1,8 +1,8 @@
 import sys
 from math import factorial as fact
 
-sys.stdin = open("_kickstart.in", "r")
-sys.stdout = open("_main_py.out", 'w')
+sys.stdin = open("_in_small.txt", "r")
+sys.stdout = open("_out_py.txt", 'w')
 
 def main():
     prime = 10 ** 9 + 7

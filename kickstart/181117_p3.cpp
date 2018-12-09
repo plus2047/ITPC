@@ -16,7 +16,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "lib/finite_field.h"
+#include "snips/finite_field.h"
 
 using namespace std;
 
@@ -30,8 +30,8 @@ lld inv_fact[2 * MAX];
 
 int main() {
     #ifdef __APPLE__
-    freopen("_kickstart.in", "r", stdin);
-    freopen("_main_cpp.out", "w", stdout);
+    freopen("_in_large.in", "r", stdin);
+    freopen("_out_cpp.txt", "w", stdout);
     #endif
 
     get_factorial_mod(fact, 2 * MAX, MOD);
