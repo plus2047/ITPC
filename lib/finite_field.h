@@ -39,7 +39,8 @@ NUM inv_mod(NUM n, NUM prime) {
 
 template <typename NUM>
 NUM combinations_mod(NUM n, NUM m, NUM prime, NUM* fact, NUM* inv_fact) {
-    // get cominations, using calculated factorials & factorials ^ -1
+    // get combinations, using calculated factorials & factorials ^ -1
+    // assume m <= n && m >= 0 && n < prime
     // complexity: O(1)
     NUM res = fact[n];
     res = (res * inv_fact[m]) % prime;
@@ -48,7 +49,9 @@ NUM combinations_mod(NUM n, NUM m, NUM prime, NUM* fact, NUM* inv_fact) {
 }
 
 template <typename NUM>
-NUM combinations_mod(NUM n, NUM m, NUM prime) {
+NUM _combinations_mod(NUM n, NUM m, NUM prime) {
+    // get combinations, without cached factorials & inv.
+    // warning: this function maybe slow. (not recommand.)
     assert(n < prime && m <= n);
     NUM res = 1;
     for (NUM i = n; i > n - m; --i) {
@@ -65,6 +68,7 @@ NUM combinations_mod(NUM n, NUM m, NUM prime) {
 // read this for understand the next tow functions:
 // https://stackoverflow.com/questions/10118137/fast-base-choose-exp-mod-prime-for-large-base
 // those functions is just used for get nCr % p for n > p.
+// warning: those two function is slow & complex. (not recommand.)
 template <typename NUM>
 NUM _rate_in_fact(NUM n, NUM prime) {
     // returns the rate with which prime is in n!
@@ -81,7 +85,7 @@ NUM _rate_in_fact(NUM n, NUM prime) {
 }
 
 template <typename NUM>
-NUM _combinations_mod(NUM n, NUM m, NUM prime) {
+NUM _combinations_mod_checked(NUM n, NUM m, NUM prime) {
     // handle n > prime
     // return comb(n, m) % prime
     NUM num_degree = _rate_in_fact(n, prime) - _rate_in_fact(n - m, prime);
