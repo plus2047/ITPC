@@ -16,7 +16,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "snips/finite_field.h"
+#include "lib/mod_p_field.h"
 
 using namespace std;
 
@@ -36,7 +36,7 @@ int main() {
 
     get_factorial_mod(fact, 2 * MAX, MOD);
     for(int i = 0; i < 2 * MAX; i ++){
-        inv_fact[i] = inv_mod(fact[i], MOD);
+        inv_fact[i] = inv_mod_fermat(fact[i], MOD);
     }
 
     int T; scanf("%d", &T);
