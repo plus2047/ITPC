@@ -1,7 +1,7 @@
 // poj2084_Game_of_Connections.cpp
 // I feel boring...
 //# ans = [1, 1, 2]
-//# print('const char ans[][] = {\n"1",\n"1",\n"2",')
+//# print('const char *ans[] = {\n"1",\n"1",\n"2",')
 //# for num in range(3, 50+1):
 //#     ans.append(0)
 //#     for left in range(num):

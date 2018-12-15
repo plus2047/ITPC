@@ -28,7 +28,6 @@ int multiplicative_inverse(int n, int a){
         na_times = na_times_new;
         nn_times = nn_times_new;
     }
-    printf("%d %d %d %d\n", aa_times, an_times, na_times, nn_times);
     if(n == 1){
         return na_times;
     }

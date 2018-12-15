@@ -11,7 +11,7 @@ int jump[100];
 int N, M;
 
 // get "unsorted number" with O(n^2) speed.
-int get_n_n2(const char *s){
+int get_unsorted_number_n2(const char *s){
     int c = 0;
     for(int i=0; i<N; i++){
         for(int j=i+1; j<N; j++){
@@ -23,12 +23,12 @@ int get_n_n2(const char *s){
 
 // get "unsorted number" with O(n log n) speed.
 // based on merge-sort.
-int get_n_nlogn(char *left, char *right){
+int get_unsorted_number_nlogn(char *left, char *right){
     int count = 0, size = int(right - left);
     if(size < 2) return count;
 
     char *center = left + size / 2;
-    count += get_n_nlogn(left, center) + get_n_nlogn(center, right);
+    count += get_unsorted_number_nlogn(left, center) + get_unsorted_number_nlogn(center, right);
 
     char swap[size];
     int index_1 = 0, index_2 = 0, index_merge=0, size_1 = int(center-left), size_2 = int(right-center);
@@ -50,10 +50,10 @@ int get_n_nlogn(char *left, char *right){
     return count;
 }
 
-int get_n_nlogn(const char* s){
+int get_unsorted_number_nlogn(const char* s){
     char swap[N];
     copy(s, s+N, swap);
-    return get_n_nlogn(swap, swap+N);
+    return get_unsorted_number_nlogn(swap, swap+N);
 }
 
 int compare(const int& jump_a, const int& jump_b){
@@ -65,7 +65,7 @@ int main(){
     scanf("%d%d", &N, &M);
     for(int i=0; i<M; i++){
         scanf("%s", dna[i]);
-        n_sort[i] = get_n_nlogn(dna[i]);
+        n_sort[i] = get_unsorted_number_nlogn(dna[i]);
         jump[i] = i;
     }
     sort(jump, jump+M, compare);
