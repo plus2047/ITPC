@@ -15,6 +15,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
+#include "lib/show.h"
 
 using namespace std;
 
@@ -27,11 +28,10 @@ int main() {
     // freopen("_debug.in", "r", stdin);
     freopen("_main_cpp.out", "w", stdout);
 #endif
-    int T;
-    scanf("%d", &T);
-    for (int t = 1; t <= T; t++) {
-        lld count = 0;
-        printf("Case #%d: %lld\n", t, count);
-        fprintf(stderr, "Case #%d: %lld\n", t, count);
+    int x[10];
+    for(int i = 0; i < 10; i ++){
+        x[i] = i;
     }
+    show("x: ", x, x + 10);
+    show("x: \n", x, x + 10, 5);
 }
