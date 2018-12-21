@@ -12,15 +12,17 @@
 #include <ctime>
 
 using namespace std;
+const long _begin = 10000, _end = 1000000;
+
+long _array[_end + 100];
 
 int main(){
     long t0, t1;
-    long begin = 10000, end = 1000000;
     set<long> tree_set;
     unordered_set<long> hash_set;
-    vector<long> vec((unsigned long)end, 0);
+    vector<long> vec((unsigned long)_end, 0);
 
-    for(long count = begin; count <= end; count *= 10) {
+    for(long count = _begin; count <= _end; count *= 10) {
         printf("\n");
         tree_set.clear();
         t0 = clock();
@@ -65,6 +67,13 @@ int main(){
             vec[i] = random();
         }
         t1 = clock();
-        printf("vector   insert: %d, using: %lfs.\n", (int) hash_set.size(), (t1 - t0) / double(CLOCKS_PER_SEC));
+        printf("vector using: %lfs.\n", (t1 - t0) / double(CLOCKS_PER_SEC));
+
+        t0 = clock();
+        for (int i = 0; i < count; i++) {
+            _array[i] = random();
+        }
+        t1 = clock();
+        printf("array using: %lfs.\n", (t1 - t0) / double(CLOCKS_PER_SEC));
     }
 }

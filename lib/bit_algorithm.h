@@ -12,18 +12,18 @@ inline bool isPowerOfTwo(int x) { return x != 0 && (x & -x) == x; }
 
 inline int lowestBit(int x) { return x & (-x); }
 
-#include <cstdio>
-void testBitAlgorithm() {
-    for (int x = 0; x <= 8; x++) {
-        printf("int %d is power of two: %d\n", x, isPowerOfTwo(x));
-    }
-    for (unsigned x = 0; x <= 8; x++) {
-        printf("unsigned %u is power of two: %d\n", x, isPowerOfTwo(x));
-    }
-    for (int x = 0; x <= 8; x++) {
-        printf("lowBit of %d is : %d\n", x, lowestBit(x));
-    }
-}
+// #include <cstdio>
+// void testBitAlgorithm() {
+//     for (int x = 0; x <= 8; x++) {
+//         printf("int %d is power of two: %d\n", x, isPowerOfTwo(x));
+//     }
+//     for (unsigned x = 0; x <= 8; x++) {
+//         printf("unsigned %u is power of two: %d\n", x, isPowerOfTwo(x));
+//     }
+//     for (int x = 0; x <= 8; x++) {
+//         printf("lowBit of %d is : %d\n", x, lowestBit(x));
+//     }
+// }
 
 #endif  // ITPC_BIT_ALGORITHM_H
 

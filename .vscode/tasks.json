@@ -1,0 +1,61 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build & run (debug)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                // Ask msbuild to generate full paths for file names.
+                "--std=c++14",
+                "-g",
+                "${relativeFile}",
+                "-o",
+                "./main",
+                "&&",
+                "./main",
+                "&&",
+                "echo",
+                "building & running finished."
+            ],
+            "group": "build",
+            // "presentation": {
+            //     // Reveal the output only if unrecognized errors occur.
+            //     "reveal": "silent"
+            // },
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "build & run (release, O3)",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                // "cpp": "cd $dir && g++ -O3 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
+                // Ask msbuild to generate full paths for file names.
+                "--std=c++14",
+                "-O3",
+                "${relativeFile}",
+                "-o",
+                "./main",
+                "&&",
+                "./main",
+                "&&",
+                "echo",
+                "building & running finished."
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            // "presentation": {
+            //     // Reveal the output only if unrecognized errors occur.
+            //     "reveal": "silent"
+            // },
+            // Use the standard MS compiler pattern to detect errors, warnings and infos
+            "problemMatcher": "$msCompile",
+        }
+    ]
+}

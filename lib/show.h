@@ -1,6 +1,9 @@
 #ifndef __SHOW_H__
 #define __SHOW_H__
 
+// this is a debug library.
+// so donot care about performance.
+
 #include <iostream>
 template<typename ITER>
 void show(const char* note, ITER begin, ITER end){
