@@ -29,14 +29,14 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build & run (release, O3)",
+            "label": "build & run (release, O2)",
             "type": "shell",
             "command": "g++",
             "args": [
                 // "cpp": "cd $dir && g++ -O3 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
                 // Ask msbuild to generate full paths for file names.
                 "--std=c++14",
-                "-O3",
+                "-O2",
                 "${relativeFile}",
                 "-o",
                 "./main",

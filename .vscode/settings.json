@@ -14,6 +14,12 @@
         "typeinfo": "cpp",
         "algorithm": "cpp",
         "iosfwd": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "__split_buffer": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "string": "cpp",
+        "tuple": "cpp",
+        "unordered_set": "cpp"
     }
 }

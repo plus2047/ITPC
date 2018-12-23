@@ -1,7 +1,8 @@
 // get_prime_algorithm.
 #include <vector>
 
-std::vector<int> get_prime_list_division(int less_than) {
+// not recommand because it's slower.
+std::vector<int> _get_prime_list_division(int less_than) {
     std::vector<int> prime(1, 2);
     for (int num = 3; num < less_than; num++) {
         bool is_prime = true;
@@ -18,6 +19,7 @@ std::vector<int> get_prime_list_division(int less_than) {
     return prime;
 }
 
+// recommand.
 std::vector<int> get_prime_list_flag(int less_than) {
     std::vector<bool> flag((size_t)less_than, true);
     std::vector<int> prime;
@@ -38,7 +40,7 @@ std::vector<int> get_prime_list_flag(int less_than) {
 // int speed_test(int lim) {
 //     cout << "LIM: " << lim << endl;
 //     auto t0 = clock();
-//     auto prime_division = get_prime_list_division(lim);
+//     auto prime_division = _get_prime_list_division(lim);
 //     auto t1 = clock();
 //     auto prime_flag = get_prime_list_flag(lim);
 //     auto t2 = clock();

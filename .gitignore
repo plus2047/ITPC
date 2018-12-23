@@ -3,7 +3,6 @@ cmake-build*
 !.vscode
 !.gitignore
 _*
-main.py
-main.cpp
+main.*
 main
 

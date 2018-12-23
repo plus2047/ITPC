@@ -74,6 +74,6 @@ int main(){
             _array[i] = random();
         }
         t1 = clock();
-        printf("array using: %lfs.\n", (t1 - t0) / double(CLOCKS_PER_SEC));
+        printf("array  using: %lfs.\n", (t1 - t0) / double(CLOCKS_PER_SEC));
     }
 }
