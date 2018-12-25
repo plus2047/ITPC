@@ -2,8 +2,9 @@
 #define __ITPC_MATH_H__
 
 // for get define of size_t
-#include<cstdio>
+#include <cstdio>
 
+namespace contest {
 template <typename num_t>
 inline num_t sum_range_power1(num_t n) {
     // \sum_{k = 1}^{n} n^1
@@ -45,4 +46,5 @@ num_t gcd(num_t a, num_t b) {
     }
     return a;
 }
+}  // namespace contest
 #endif  // define __ITPC_MATH_H__

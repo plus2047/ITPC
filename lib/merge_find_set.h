@@ -2,6 +2,7 @@
 #define __MERGE_FIND_SET_H__
 #include <vector>
 
+namespace contest {
 template <typename index_t = int>
 struct MergeFindSet {
     std::vector<index_t> p;
@@ -12,5 +13,5 @@ struct MergeFindSet {
     index_t find(index_t x) { return p[x] == x ? x : p[x] = find(p[x]); }
     void merge(index_t x, index_t y) { p[find(y)] = find(x); }
 };
-
+}  // namespace contest
 #endif  // define __MERGE_FIND_SET_H__

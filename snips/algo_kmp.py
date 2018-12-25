@@ -10,7 +10,8 @@ def get_lps(s):
     while i < s_len:
         if s[i] == s[pre]:
             lps[i] = pre + 1
-            i += 1; pre += 1
+            i += 1
+            pre += 1
         else:
             if pre == 0:
                 lps[i] = 0
@@ -28,7 +29,8 @@ def search(s, pattern):
     i = j = 0
     while i < s_len:
         if s[i] == pattern[j]:
-            i += 1; j += 1
+            i += 1
+            j += 1
             if j == p_len:
                 return i - j
         else:
@@ -44,4 +46,3 @@ if __name__ == "__main__":
     s = "ABCABAABCABAC"
     p = "CAB"
     print("find %s in %s at: %s." % (s, p, search(s, p)))
-

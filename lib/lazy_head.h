@@ -15,6 +15,3 @@
 #include <unordered_set>
 #include <vector>
 #include <functional>
-
-typedef long long int lld;
-typedef long long unsigned llu;

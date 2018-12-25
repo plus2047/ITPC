@@ -1,6 +1,7 @@
 // get_prime_algorithm.
 #include <vector>
 
+namespace contest {
 // not recommand because it's slower.
 std::vector<int> _get_prime_list_division(int less_than) {
     std::vector<int> prime(1, 2);
@@ -33,6 +34,7 @@ std::vector<int> get_prime_list_flag(int less_than) {
     }
     return prime;
 }
+}  // namespace contest
 
 // #include <iostream>
 // using namespace std;

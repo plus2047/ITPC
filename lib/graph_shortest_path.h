@@ -7,6 +7,7 @@
 #include <vector>
 #include "named_tuple.h"
 
+namespace contest {
 template <typename index_t, typename weight_t>
 struct ShortestPath {
     // implement graph using 2D-vector. (not dense matrix.)
@@ -34,36 +35,34 @@ struct ShortestPath {
     }
 
     inline void init(index_t start) {
-        using namespace std;
-
         path_weight.resize(graph.size());
-        fill(path_weight.begin(), path_weight.end(), INF);
+        std::fill(path_weight.begin(), path_weight.end(), INF);
         path_weight[start] = 0;
 
         arrived.resize(graph.size());
-        fill(arrived.begin(), arrived.end(), false);
+        std::fill(arrived.begin(), arrived.end(), false);
 
         path_from.resize(graph.size());
         // warning: path_from[start] is init to 0.
 
         // count just used in bellmen_ford algorithm.
         count.resize(graph.size());
-        fill(count.begin(), count.end(), 0);
+        std::fill(count.begin(), count.end(), 0);
     }
 
     void dijkstra(index_t start) {
         // run dijstra's algorithm.
         // result is saved in weight & path_from vector.
         // there cannot be negative path in graph.
-        using namespace std;
         init(start);
 
-        typedef tuple<weight_t, index_t> HeapNode;
-        priority_queue<HeapNode> Q;
+        typedef std::tuple<weight_t, index_t> HeapNode;
+        const std::size_t heap_node_weight_ = 0, heap_node_index_ = 1;
+        std::priority_queue<HeapNode> Q;
         Q.push({0, start});
 
         while (!Q.empty()) {
-            auto node = get<1>(Q.top());
+            auto node = std::get<heap_node_index_>(Q.top());
             Q.pop();
 
             if (arrived[node]) {
@@ -73,8 +72,8 @@ struct ShortestPath {
             }
 
             for (auto& e : graph[node]) {
-                auto _to = get<edge_to_>(e);
-                auto _weight = get<edge_weight_>(e);
+                auto _to = std::get<edge_to_>(e);
+                auto _weight = std::get<edge_weight_>(e);
                 // path_weight[node] must not be INF
                 // so path_weight[node] + _weight is safe.
                 if (path_weight[_to] > path_weight[node] + _weight) {
@@ -91,10 +90,9 @@ struct ShortestPath {
         // there can be negative path in graph.
         // if negative-circle exist, return false.
         // else result is saved in weight & path_from vector.
-        using namespace std;
         init(start);
 
-        queue<index_t> Q;
+        std::queue<index_t> Q;
         Q.push(start);
 
         // use `arrived` vector to mark if a node is in queue.
@@ -108,8 +106,8 @@ struct ShortestPath {
             arrived[node] = false;
 
             for (auto& e : graph[node]) {
-                auto _to = get<edge_to_>(e);
-                auto _weight = get<edge_weight_>(e);
+                auto _to = std::get<edge_to_>(e);
+                auto _weight = std::get<edge_weight_>(e);
                 if (path_weight[node] != INF &&
                     path_weight[_to] > path_weight[node] + _weight) {
                     path_weight[_to] = path_weight[node] + _weight;
@@ -157,5 +155,5 @@ struct Floyd {
         }
     }
 };
-
+}  // namespace contest
 #endif  // define __SHEOTEST_PATH_H__

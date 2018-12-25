@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+namespace contest {
 template <typename NUM>
 std::vector<NUM> get_vector() {
     std::string line;
@@ -26,5 +27,5 @@ NUM get_num() {
     std::cin >> _n;
     return _n;
 }
-
+}  // namespace contest
 #endif  // define __LEETCODE_H__

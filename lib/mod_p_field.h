@@ -3,6 +3,7 @@
 
 #include "linear_algebra.h"
 
+namespace contest {
 template <typename NUM>
 void get_factorial_mod(NUM* factorial, int size, NUM mod) {
     // complexity: O(len(factorial))
@@ -156,4 +157,5 @@ void _test_inv() {
         printf("n: %d; p: %d; inv_e(n): %d; chk: %d\n", n, p, re, re * n % p);
     }
 }
+}  // namespace contest
 #endif

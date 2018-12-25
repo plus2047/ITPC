@@ -3,6 +3,7 @@
 
 #include <algorithm>
 
+namespace contest {
 template <typename num_t>
 inline void dot(num_t* m1, num_t* m2, num_t* res, int d1, int d2, int d3) {
     std::fill(res, res + d1 * d3, 0);
@@ -22,9 +23,9 @@ inline void matrix_power(num_t* base, num_t* res, num_t* tmp, int dim, int n) {
     // res = base ^ n
     // this function need a tmp matrix.
     // because it's not a good idea to manage memory here.
-    for(int i = 0; i < dim; i ++){
+    for (int i = 0; i < dim; i++) {
         int idim = i * dim;
-        for(int j = 0; j < dim; j ++){
+        for (int j = 0; j < dim; j++) {
             res[idim + j] = i == j ? 1 : 0;
         }
     }
@@ -42,7 +43,7 @@ inline void matrix_power(num_t* base, num_t* res, num_t* tmp, int dim, int n) {
         n /= 2;
     }
 }
-
+}  // namespace contest
 // void test_linear(){
 //     printf("test: dot\n");
 //     int m1[6] = {1, 2, 3, 4, 5, 6};

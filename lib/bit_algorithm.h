@@ -5,6 +5,8 @@
 #ifndef ITPC_BIT_ALGORITHM_H
 #define ITPC_BIT_ALGORITHM_H
 
+namespace contest {
+
 // warning: (x & (x - 1)) == 0 cannot be write as x & (x - 1) == 0
 // unsigned algorithm can be used to int
 inline bool isPowerOfTwo(unsigned x) { return x != 0 && (x & (x - 1)) == 0; }
@@ -25,6 +27,7 @@ inline int lowestBit(int x) { return x & (-x); }
 //     }
 // }
 
+}  // namespace contest
 #endif  // ITPC_BIT_ALGORITHM_H
 
 // Note: bit operator & hex
@@ -33,14 +36,14 @@ inline int lowestBit(int x) { return x & (-x); }
 //
 // bool operator: and, or, xor, not
 // bit operator: &, |, ^, ~
-// 
+//
 // get i-th bit of x: x & (1 << i)
 // set i-th bit of x: x |= (1 << i)
 // add mask: (x & 0x0000FF00)
-// 
+//
 // printf x as hex (width:8): printf("0x%08x", x)
 
 // Note: negative number
-// 
+//
 // 0x0000 - 1 == -1 == 0xFFFF
 // - i == 0x0000 - i

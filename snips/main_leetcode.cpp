@@ -1,9 +1,11 @@
 // for programing contest
 #include "lib/lazy_head.h"
 #include "lib/leetcode_io.h"
-#include "lib/show.h"
 #include "lib/named_tuple.h"
+#include "lib/show.h"
 using namespace std;
+
+#define __DEBUG__
 
 class Solution {
    public:

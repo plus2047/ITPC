@@ -22,7 +22,7 @@ so if we meet a hard question with complex status & transitions,
 or it's a question about grid, think about GRAPH.
 */
 
-#include "kruskal.h"
+#include "graph_spaning_tree.h"
 
 // =====
 // shortest path_from problem
@@ -45,7 +45,10 @@ or it's a question about grid, think about GRAPH.
 // flody's result for shortest_path(i, j) will be meaningless.
 // but flody can still get currect result for other node pair.
 
-#include "shortest_path.h"
+#include "graph_shortest_path.h"
 
 // strong connect compon
-#include "scc.h"
+#include "graph_strongly_connected.h"
+
+// max flow
+#include "graph_flow.h"
