@@ -3,6 +3,5 @@ cmake-build*
 !.vscode
 !.gitignore
 _*
-main.*
+main.dSYM
 main
-
