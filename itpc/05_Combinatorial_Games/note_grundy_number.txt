@@ -1,0 +1,26 @@
+关于 Grundy Number
+
+Grundy Number 代表 N 阶必胜状态。
+N 阶必胜状态能任意选择一步之内跳转到 N - 1 阶必胜状态，0 阶必胜状态即必败状态。
+可以容易的检查这个定义符合 Grundy Number 的生成步骤。
+显然，对于双人单个游戏，> 1 阶必胜状态也即通常所说的必胜状态
+（因为正阶必胜状态都可以跳入必败状态，将必败状态留给对方玩家）。
+
+对于多个游戏，若所有游戏必胜阶数 XOR 为 0，无论如何操作（降低某个游戏必胜阶数），
+对方玩家都可以进行模仿操作，通过降低某个游戏阶数将全 XOR 维持到 0。
+对于非循环游戏，经过有限的步骤将会导致进入全 0 状态，所以第一个玩家必败。
+否则，第一个玩家将全 XOR 调整成 0 传递给第二个玩家，于是第二个玩家必败。
+
+这需要证明：
+
+if (n1 xor n2 xor n3 ... != 0)
+we can REDUCE one of {n1, n2, n3 ...}
+to make (n1 xor n2 xor n3 ... == 0)
+
+let x = n1 xor n2 xor n3 ...
+let highest bit of x is a-th bit (count from zero)
+than len({n & (1 << a) for n in {n1, n2 ...}}) % 2 == 1
+than len({n & (1 << a) for n in {n1, n2 ...}}) != 0
+than we can pick up ni from this set.
+so ni & x < ni.
+so reduce ni into (ni & x) we get the way. 

@@ -1,10 +1,10 @@
-#include <vector>
-#include <cstdio>
-#include <cstddef>
 #include <algorithm>
-#include <cmath>
-#include <iostream>
 #include <cassert>
+#include <cmath>
+#include <cstddef>
+#include <cstdio>
+#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -12,20 +12,15 @@ struct MinSegmentTree {
     vector<int> tree;
     size_t data_size;
 
-    int _init(
-            vector<int> &data,
-            size_t node_index,
-            size_t data_begin,
-            size_t data_end
-    ) {
+    int _init(vector<int> &data, size_t node_index, size_t data_begin,
+              size_t data_end) {
         if (data_end - data_begin == 1) {
             tree[node_index] = data[data_begin];
         } else {
             size_t middle = data_begin + (data_end - data_begin) / 2;
-            tree[node_index] = min(
-                    _init(data, node_index * 2 + 1, data_begin, middle),
-                    _init(data, node_index * 2 + 2, middle, data_end)
-            );
+            tree[node_index] =
+                min(_init(data, node_index * 2 + 1, data_begin, middle),
+                    _init(data, node_index * 2 + 2, middle, data_end));
         }
         return tree[node_index];
     }
@@ -37,27 +32,22 @@ struct MinSegmentTree {
         _init(data, 0, 0, data.size());
     }
 
-    int _RMQ(
-            size_t search_node,
-            size_t search_begin,
-            size_t search_end,
-            size_t query_begin,
-            size_t query_end
-    ) {
-        if(query_begin >= search_end || query_end <= search_begin) return INT_MAX;
-        if(query_begin <= search_begin && query_end >= search_end) return tree[search_node];
+    int _RMQ(size_t search_node, size_t search_begin, size_t search_end,
+             size_t query_begin, size_t query_end) {
+        if (query_begin >= search_end || query_end <= search_begin)
+            return INT_MAX;
+        if (query_begin <= search_begin && query_end >= search_end)
+            return tree[search_node];
         size_t middle = search_begin + (search_end - search_begin) / 2;
-        return min(
-                _RMQ(search_node * 2 + 1, search_begin, middle, query_begin, query_end),
-                _RMQ(search_node * 2 + 2, middle, search_end, query_begin, query_end)
-        );
+        return min(_RMQ(search_node * 2 + 1, search_begin, middle, query_begin,
+                        query_end),
+                   _RMQ(search_node * 2 + 2, middle, search_end, query_begin,
+                        query_end));
     }
-
 
     int RMQ(size_t begin, size_t end) {
         return _RMQ(0, 0, data_size, begin, end);
     }
-
 
     void print() {
         for (size_t i = 0; i < tree.size(); i++) {

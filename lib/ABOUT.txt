@@ -1,0 +1,10 @@
+== index type ==
+index type of std is usually unsigned int.
+but:
+1. sometimes negative index is possible.
+2. it's hard to be used in reverse travel.
+3. unsigned can hold bigger number, but int is big enough for container size.
+so ALWAYS USE INT for container size & index.
+
+== number ==
+be careful to use int for calculate. it's easy to overflow.
