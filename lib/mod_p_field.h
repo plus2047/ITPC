@@ -147,15 +147,15 @@ NUM _combinations_mod_checked(NUM n, NUM m, NUM prime) {
     return res;
 }
 
-void _test_inv() {
-    int n, p = 2179;
-    for (int i = 0; i < 10; i++) {
-        n = rand() % p;
-        int rf = inv_mod_fermat(n, p);
-        int re = _inv_mod_euclidean(n, p);
-        printf("n: %d; p: %d; inv_f(n): %d; chk: %d\n", n, p, rf, rf * n % p);
-        printf("n: %d; p: %d; inv_e(n): %d; chk: %d\n", n, p, re, re * n % p);
-    }
-}
+// void _test_inv() {
+//     int n, p = 2179;
+//     for (int i = 0; i < 10; i++) {
+//         n = rand() % p;
+//         int rf = inv_mod_fermat(n, p);
+//         int re = _inv_mod_euclidean(n, p);
+//         printf("n: %d; p: %d; inv_f(n): %d; chk: %d\n", n, p, rf, rf * n % p);
+//         printf("n: %d; p: %d; inv_e(n): %d; chk: %d\n", n, p, re, re * n % p);
+//     }
+// }
 }  // namespace contest
 #endif

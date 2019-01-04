@@ -14,6 +14,10 @@ struct ShortestPath {
     // implement dijkstra & bellmen-ford algorithm in this struct because
     // they are very similar & both of them can run on 2D-vector.
 
+    // to check if a node is reachable, check if path_weight[i] == INF
+    // donot use arrived vector
+    // because bellmen_ford algorithm could clear it after run.
+
     typedef std::tuple<index_t, weight_t> Edge;
     static const std::size_t edge_to_ = 0, edge_weight_ = 1;
 
@@ -34,7 +38,7 @@ struct ShortestPath {
         graph[from].push_back({to, d});
     }
 
-    inline void init(index_t start) {
+    inline void _init(index_t start) {
         path_weight.resize(graph.size());
         std::fill(path_weight.begin(), path_weight.end(), INF);
         path_weight[start] = 0;
@@ -51,14 +55,15 @@ struct ShortestPath {
     }
 
     void dijkstra(index_t start) {
+        // (directed positive-weighted graph shortest path)
         // run dijstra's algorithm.
         // result is saved in weight & path_from vector.
         // there cannot be negative path in graph.
-        init(start);
+        _init(start);
 
-        typedef std::tuple<weight_t, index_t> HeapNode;
+        typedef std::tuple<weight_t, index_t> HNode;
         const std::size_t heap_node_weight_ = 0, heap_node_index_ = 1;
-        std::priority_queue<HeapNode> Q;
+        std::priority_queue<HNode, std::vector<HNode>, std::greater<HNode>> Q;
         Q.push({0, start});
 
         while (!Q.empty()) {
@@ -90,7 +95,7 @@ struct ShortestPath {
         // there can be negative path in graph.
         // if negative-circle exist, return false.
         // else result is saved in weight & path_from vector.
-        init(start);
+        _init(start);
 
         std::queue<index_t> Q;
         Q.push(start);
@@ -122,6 +127,8 @@ struct ShortestPath {
                 }
             }
         }
+
+        return true;
     }
 };
 

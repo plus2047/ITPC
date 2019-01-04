@@ -4,11 +4,11 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build & run (debug)",
+            "label": "build & run current file (debug)",
             "type": "shell",
             "command": "g++",
             "args": [
-                // Ask msbuild to generate full paths for file names.
+                "-D__LOCAL__",
                 "--std=c++14",
                 "-g",
                 "${relativeFile}",
@@ -21,23 +21,17 @@
                 "building & running finished."
             ],
             "group": "build",
-            // "presentation": {
-            //     // Reveal the output only if unrecognized errors occur.
-            //     "reveal": "silent"
-            // },
-            // Use the standard MS compiler pattern to detect errors, warnings and infos
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build & run (release, O2)",
+            "label": "build & run main.cpp (release, O2)",
             "type": "shell",
             "command": "g++",
             "args": [
-                // "cpp": "cd $dir && g++ -O3 $fileName -o $fileNameWithoutExt && $dir$fileNameWithoutExt"
-                // Ask msbuild to generate full paths for file names.
+                "-D__LOCAL__",
                 "--std=c++14",
                 "-O2",
-                "${relativeFile}",
+                "./main.cpp",
                 "-o",
                 "./main",
                 "&&",
@@ -50,12 +44,22 @@
                 "kind": "build",
                 "isDefault": true
             },
-            // "presentation": {
-            //     // Reveal the output only if unrecognized errors occur.
-            //     "reveal": "silent"
-            // },
-            // Use the standard MS compiler pattern to detect errors, warnings and infos
-            "problemMatcher": "$msCompile",
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Package",
+            "type": "shell",
+            "command": "gtar",
+            "args": [
+                "-caf",
+                "code.tar.gz",
+                "./main_kickstart.cpp",
+                "./lib/*",
+                "&&",
+                "echo",
+                "package code finished."
+            ],
+            "problemMatcher": []
         }
     ]
 }

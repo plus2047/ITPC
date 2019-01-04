@@ -26,6 +26,7 @@
 #endif  // __DEBUG__
 
 using namespace std;
+using namespace contest;
 
 typedef long long int lld;
 typedef long long unsigned llu;

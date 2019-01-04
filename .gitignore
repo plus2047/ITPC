@@ -5,3 +5,5 @@ cmake-build*
 _*
 main.dSYM
 main
+*.tar.gz
+

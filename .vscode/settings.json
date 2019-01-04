@@ -22,6 +22,7 @@
         "tuple": "cpp",
         "unordered_set": "cpp",
         "queue": "cpp",
-        "ostream": "cpp"
+        "ostream": "cpp",
+        "limits": "cpp"
     }
 }

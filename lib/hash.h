@@ -3,7 +3,7 @@
 #include <vector>
 
 namespace contest {
-struct UInt32HashTable {
+struct UInt32HashSet {
     // a simple UInt32 Hash table.
     // usually faster than stl.
     typedef std::uint32_t NUM;
@@ -12,12 +12,12 @@ struct UInt32HashTable {
     NUM *tab;
     NUM curr_size;
 
-    UInt32HashTable(NUM tab_size, NUM void_val)
+    UInt32HashSet(NUM tab_size, NUM void_val)
         : TAB_SIZE(tab_size), VOID(void_val), curr_size(0) {
         tab = new NUM[tab_size];
         std::fill(tab, tab + tab_size, VOID);
     }
-    ~UInt32HashTable() { delete[] tab; }
+    ~UInt32HashSet() { delete[] tab; }
 
     inline NUM hash_u32(NUM x) { return x * 2654435761 % TAB_SIZE; }
 
@@ -41,7 +41,7 @@ struct UInt32HashTable {
         return true;
     }
 
-    inline bool check(int x, bool remove_x) {
+    inline bool check(NUM x, bool remove_x) {
         NUM index = hash_u32(x);
         NUM begin = index;
         while (tab[index] != VOID) {
