@@ -3,6 +3,7 @@
 
 // this is a debug library.
 // so donot care about performance.
+#include <cstdarg>
 #include <iostream>
 
 namespace contest {
@@ -26,9 +27,7 @@ void show(const char* note, ITER begin, ITER end, int group) {
     if (i % group != 1) std::cout << std::endl;
 }
 
-void printsp(int v) { printf("%d ", v); }
-void println(int v) { printf("%d\n", v); }
-void new_line() { printf("\n"); }
+#define echo(args...) (fprintf(stderr, args), printf(args))
 
 }  // namespace contest
 #endif  // define __SHOW_H__

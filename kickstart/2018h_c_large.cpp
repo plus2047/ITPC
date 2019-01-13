@@ -19,6 +19,7 @@
 #include "lib/mod_p_field.h"
 
 using namespace std;
+using namespace contest;
 
 typedef long long int lld;
 typedef long long unsigned llu;

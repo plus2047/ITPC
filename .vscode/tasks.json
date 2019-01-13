@@ -35,10 +35,12 @@
                 "-o",
                 "./main",
                 "&&",
+                "date",
+                "&&",
+                "time",
                 "./main",
                 "&&",
-                "echo",
-                "building & running finished."
+                "date",
             ],
             "group": {
                 "kind": "build",

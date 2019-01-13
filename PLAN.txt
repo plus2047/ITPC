@@ -1,8 +1,0 @@
-===== Exercise Plan for Google Interview =====
-
-**19010X**
-
-- [ ] Kick Start Round G, problem C.
-- [ ] ITPC 03 (<= 7).
-- [ ] *ITPC 01 02 Review.
-- [ ] *LeetCode Hard * 5.
