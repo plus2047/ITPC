@@ -1,10 +1,7 @@
-#ifndef __ITPC_MATH_H__
-#define __ITPC_MATH_H__
-
+#pragma once
 #include <algorithm>
 #include <vector>
-#include "merge_find_set.h"
-#include "named_tuple.h"
+#include "structure.h"
 
 namespace contest {
 // Minimal Spanning Tree (MST) algorithm: Kruskal algotithm
@@ -41,4 +38,3 @@ struct MinSpaningTree {
 // Note: Prim's algorithm is also used for un-directional ded MST
 // but it's more complex to implement.
 }  // namespace contest
-#endif  // define __ITPC_MATH_H__

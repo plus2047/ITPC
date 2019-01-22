@@ -1,7 +1,5 @@
-#ifndef __FINITE_FIELD_H__
-#define __FINITE_FIELD_H__
-
-#include "linear_algebra.h"
+#pragma once
+#include "math_algebra.h"
 
 namespace contest {
 template <typename NUM>
@@ -31,13 +29,24 @@ NUM power_mod(NUM base, NUM n, NUM mod) {
 }
 
 template <typename NUM>
-NUM inv_mod_fermat(NUM n, NUM prime) {
-    // inv_mod_fermat(n) * n % prime == 1
+NUM inv_mod(NUM n, NUM prime) {
+    // inv_mod(n) * n % prime == 1
     // based on Fermat's little theorem.
     // complexity: O(log(prime))
     // assert(n < prime && prime * prime < MAX(NUM))
     assert(n < prime);
     return power_mod(n, prime - 2, prime);
+}
+
+template <typename NUM>
+NUM combinations_mod(NUM n, NUM m, NUM prime, NUM* fact, NUM* inv_fact) {
+    // get combinations, using calculated factorials & factorials ^ -1
+    // assume m <= n && m >= 0 && n < prime
+    // complexity: O(1)
+    NUM res = fact[n];
+    res = (res * inv_fact[m]) % prime;
+    res = (res * inv_fact[n - m]) % prime;
+    return res;
 }
 
 template <typename num_t>
@@ -49,7 +58,7 @@ num_t _inv_mod_euclidean(num_t n, num_t p) {
 
     // this impliment is a little complex
     // because I try to use it to check matrix dot algorithm.
-    // so use inv_mod_fermat instead.
+    // so use inv_mod instead.
     assert(n < p);
     int _p = p;
 
@@ -74,17 +83,6 @@ num_t _inv_mod_euclidean(num_t n, num_t p) {
 }
 
 template <typename NUM>
-NUM combinations_mod(NUM n, NUM m, NUM prime, NUM* fact, NUM* inv_fact) {
-    // get combinations, using calculated factorials & factorials ^ -1
-    // assume m <= n && m >= 0 && n < prime
-    // complexity: O(1)
-    NUM res = fact[n];
-    res = (res * inv_fact[m]) % prime;
-    res = (res * inv_fact[n - m]) % prime;
-    return res;
-}
-
-template <typename NUM>
 NUM _combinations_mod(NUM n, NUM m, NUM prime) {
     // get combinations, without cached factorials & inv.
     // warning: this function maybe slow. (not recommand.)
@@ -97,7 +95,7 @@ NUM _combinations_mod(NUM n, NUM m, NUM prime) {
     for (NUM i = 1; i <= m; ++i) {
         demon = (demon * i) % prime;
     }
-    return (res * inv_mod_fermat(demon, prime)) % prime;
+    return (res * inv_mod(demon, prime)) % prime;
 }
 
 // read this for understand the next tow functions:
@@ -146,16 +144,4 @@ NUM _combinations_mod_checked(NUM n, NUM m, NUM prime) {
     }
     return res;
 }
-
-// void _test_inv() {
-//     int n, p = 2179;
-//     for (int i = 0; i < 10; i++) {
-//         n = rand() % p;
-//         int rf = inv_mod_fermat(n, p);
-//         int re = _inv_mod_euclidean(n, p);
-//         printf("n: %d; p: %d; inv_f(n): %d; chk: %d\n", n, p, rf, rf * n % p);
-//         printf("n: %d; p: %d; inv_e(n): %d; chk: %d\n", n, p, re, re * n % p);
-//     }
-// }
 }  // namespace contest
-#endif

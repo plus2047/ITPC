@@ -24,11 +24,10 @@
 
 // ===== include persional toolbox ======
 #ifdef __TOOLBOX__
-#include "lib/bit_algorithm.h"
 #include "lib/graph.h"
-#include "lib/hash.h"
-#include "lib/show.h"
-#include "lib/string.h"
+#include "lib/iotools.h"
+#include "lib/math.h"
+#include "lib/structure.h"
 using namespace contest;
 #endif  // __TOOLBOX__
 
@@ -54,22 +53,66 @@ typedef long double LD;
 // =============== CONTEST BEGIN ===============
 
 // const ===
+const int N_MAX = 5E5, M_MAX = 1E6;
 
-// var =====
+// turn var =====
+LL M, N, A, B, C, D, E, F, cnt;
 
-// data ====
+// turn data ====
+typedef tuple<LL, LL> Point;
+vector<Point> points(N_MAX);
 
-void init_turn() {}
+// init turn data & var:
+void init_turn() { cnt = 0; }
 
+// algorithm functions =====
+bool valid(int i, int j, int k) {
+    LL x[3][2], idx[3];
+    tie(idx[0], idx[1], idx[2]) = tie(i, j, k);
+    rep(n, 3) tie(x[n][0], x[n][1]) = points[idx[n]];
+
+    LL min_[2], max_[2];
+    rep(n, 2) {
+        min_[n] = min({x[0][n], x[1][n], x[2][n]});
+        max_[n] = max({x[0][n], x[1][n], x[2][n]});
+    }
+
+    // if any points not in any line.
+    rep(n, 3) {
+        bool on_line = false;
+        rep(m, 2) {
+            if (x[n][m] == min_[m] or x[n][m] == max_[m]) on_line = true;
+        }
+        if (!on_line) return false;
+    }
+    return true;
+}
+
+// kickstart turn template =====
 void solve(int _turn) {
     init_turn();
-    string res;
-    echo("Case #%d: %s\n", _turn, res.c_str());
+
+    // read & generate data:
+    scanf("%lld%lld%lld", &N, &G(points[0], 0), &G(points[0], 1));
+    scanf("%lld%lld%lld%lld%lld%lld%lld", &A, &B, &C, &D, &E, &F, &M);
+    range(i, 1, N) {
+        int x, y;
+        tie(x, y) = points[i - 1];
+        points[i] = {(A * x + B * y + C) % M, (D * x + E * y + F) % M};
+    }
+    // rep(i, N) echo("point: %d, %d\n", G(points[i], 0), G(points[i], 1));
+
+    // solve question:
+    rep(i, N) range(j, i + 1, N) range(k, j + 1, N) {
+        if (valid(i, j, k)) cnt++;
+    }
+    echo("Case #%d: %lld\n", _turn, cnt);
 }
 
 int main() {
 #ifdef __LOCAL__  // define in build command.
     freopen("_kickstart.in", "r", stdin);
+    // freopen("_debug.in", "r", stdin);
     freopen("_main_cpp.out", "w", stdout);
 #endif
     int T;

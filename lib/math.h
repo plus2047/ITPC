@@ -1,5 +1,8 @@
-#ifndef __ITPC_MATH_H__
-#define __ITPC_MATH_H__
+#pragma once
+#include "math_algebra.h"
+#include "math_bit.h"
+#include "math_mod_p.h"
+#include "math_perime_num.h"
 
 // for get define of size_t
 #include <cstdio>
@@ -47,4 +50,3 @@ num_t gcd(num_t a, num_t b) {
     return a;
 }
 }  // namespace contest
-#endif  // define __ITPC_MATH_H__

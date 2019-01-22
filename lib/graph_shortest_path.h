@@ -1,11 +1,9 @@
-#ifndef __SHEOTEST_PATH_H__
-#define __SHEOTEST_PATH_H__
-
+#pragma once
 #include <algorithm>
 #include <limits>
 #include <queue>
 #include <vector>
-#include "named_tuple.h"
+#include "structure.h"
 
 namespace contest {
 template <typename index_t, typename weight_t>
@@ -163,4 +161,3 @@ struct Floyd {
     }
 };
 }  // namespace contest
-#endif  // define __SHEOTEST_PATH_H__

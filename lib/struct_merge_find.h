@@ -1,5 +1,4 @@
-#ifndef __MERGE_FIND_SET_H__
-#define __MERGE_FIND_SET_H__
+#pragma once
 #include <vector>
 
 namespace contest {
@@ -14,4 +13,3 @@ struct MergeFindSet {
     void merge(index_t x, index_t y) { p[find(y)] = find(x); }
 };
 }  // namespace contest
-#endif  // define __MERGE_FIND_SET_H__

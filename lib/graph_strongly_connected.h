@@ -1,6 +1,4 @@
-#ifndef __SCC_H__
-#define __SCC_H__
-
+#pragma once
 //  Strongly Connected Components
 #include <vector>
 
@@ -47,4 +45,3 @@ std::vector<index_t> kosaraju(std::vector<std::vector<index_t>>& graph) {
     return marks;
 }
 }  // namespace contest
-#endif  // define __SCC_H__

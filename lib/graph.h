@@ -1,3 +1,5 @@
+#pragma once
+
 /*
 GRAPH is used to describe nodes with relationship with each other.
 

@@ -1,5 +1,4 @@
 #pragma once
-
 #include <algorithm>
 #include <cstdio>
 
@@ -36,15 +35,6 @@ void get_kmp_next(STR_P pattern_p, NEXT_P next_p, int pattern_len) {
         next_p[i] = (j += pattern_p[j] == pattern_p[j]);
     }
 }
-// void test_kmp(){
-//     string pattern = "ABAB", str = "ABCABABA";
-//     int p_len = pattern.size(), s_len = str.size();
-//     vector<int> next_(p_len);
-//     get_kmp_next(pattern.begin(), next_.begin(), p_len);
-//     show("next_: ", next_.begin(), next_.end());
-//     cout << kmp_match(pattern.begin(), str.begin(), next_.begin(), p_len,
-//     s_len) << endl;
-// }
 
 // ===== string tree =====
 template <int symbol_num>
@@ -74,14 +64,17 @@ struct StringTree {
 
     // a function pointer to convert a char into it's index.
     // e.g. [](char c){return c - 'a';}
-    int (*char_index)(CHAR);
-
-    StringTree(int (*_char_index)(const CHAR)) {
+    int (*get_index)(CHAR);
+    StringTree(int (*_get_index)(const CHAR)) {
         nodes.push_back(Node());
-        char_index = _char_index;
+        get_index = _get_index;
         // root is always nodes[0].
         // after init, this is a empty tree.
         // even "" is not in this tree.
+    }
+    StringTree() {
+        nodes.push_back(Node());
+        get_index = [](CHAR c) { return c - 'a'; };
     }
 
     bool run(CHAR* begin, CHAR* end, int& index, bool is_insert) {
@@ -91,7 +84,7 @@ struct StringTree {
         for (; begin != end; ++begin) {
             // dangerous: reference to variable saved in std container.
             // this reference should be safe before any change to the container.
-            int& child = nodes[root_index].child[char_index(*begin)];
+            int& child = nodes[root_index].child[get_index(*begin)];
             if (child == -1) {
                 if (is_insert) {
                     // donot change this order.
