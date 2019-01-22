@@ -24,7 +24,6 @@
 
 // ===== include persional toolbox ======
 #ifdef __TOOLBOX__
-#include "lib/bit_algorithm.h"
 #include "lib/graph.h"
 #include "lib/hash.h"
 #include "lib/show.h"
@@ -39,32 +38,48 @@ using namespace std;
 
 typedef long long int LL;
 typedef long long unsigned LLU;
-typedef long double LD;
 #define G(_tuple, num) (get<num>(_tuple))
-#define popcount(x) __builtin_popcount(x)
-#define popcountll(x) __builtin_popcountll(x)
-#define len(c) int((c).size())
-#define allof(container) container.begin(), container.end()
-#define iallof(container) container.rbegin(), container.rend()
-#define rep(i, N) for (int i = 0; i < int(N); i++)
-#define range(i, begin, end) for (int i = int(begin); i < int(end); i++)
-#define irep(i, N) for (int i = int(N) - 1; i >= 0; i--)
-#define irange(i, begin, end) for (int i = int(end) - 1; i >= int(begin); i--)
+#define rep(i, N) for (int i = 0, _len_ = int(N); i < _len_; i++)
+#define aord(a) ((a) - 'a')
+#define achr(a) ((a) + 'a')
+#define fillc(c, v) (fill((c).begin(), (c).end(), v))
 
 // =============== CONTEST BEGIN ===============
 
-// const ===
+int T;
 
-// var =====
+const int LEN = 20;
+LLU exp9[LEN];
+void init(){
+    exp9[0] = 1;
+    for(int i = 1; i < LEN; i ++){
+        exp9[i] = exp9[i - 1] * 9;
+    }
+}
 
-// data ====
+bool valid(LLU num) {
+    bool _valid = num % 9 != 0;
+    while (_valid and num > 0) {
+        if (num % 10 == 9) {
+            _valid = false;
+        }
+        num /= 10;
+    }
+    return _valid;
+}
 
-void init_turn() {}
-
-void solve(int _turn) {
-    init_turn();
-    string res;
-    echo("Case #%d: %s\n", _turn, res.c_str());
+LLU get_cnt(LLU right) {
+    LLU cnt = 0;
+    for(LLU n = right - right % 10; n <= right; n ++){
+        if(valid(n)){
+            cnt ++;
+        }
+    }
+    for(int idx = 1; right > 0; idx ++){
+        right /= 10;
+        cnt += exp9[idx] * (right % 10) / 9 * 8;
+    }
+    return cnt;
 }
 
 int main() {
@@ -72,7 +87,12 @@ int main() {
     freopen("_kickstart.in", "r", stdin);
     freopen("_main_cpp.out", "w", stdout);
 #endif
-    int T;
+    init();
     scanf("%d", &T);
-    rep(t, T) { solve(t + 1); }
+    for (int t = 1; t <= T; t++) {
+        LLU F, L;
+        scanf("%llu%llu", &F, &L);
+        LLU res = get_cnt(L) - get_cnt(F) + 1;
+        echo("Case #%d: %llu\n", t, res);
+    }
 }

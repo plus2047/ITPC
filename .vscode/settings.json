@@ -23,6 +23,14 @@
         "unordered_set": "cpp",
         "queue": "cpp",
         "ostream": "cpp",
-        "limits": "cpp"
+        "limits": "cpp",
+        "__bit_reference": "cpp",
+        "__debug": "cpp",
+        "memory": "cpp",
+        "random": "cpp",
+        "set": "cpp",
+        "sstream": "cpp",
+        "unordered_map": "cpp",
+        "utility": "cpp"
     }
 }

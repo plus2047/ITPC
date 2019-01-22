@@ -52,18 +52,66 @@ typedef long double LD;
 #define irange(i, begin, end) for (int i = int(end) - 1; i >= int(begin); i--)
 
 // =============== CONTEST BEGIN ===============
+int N, K;
+LD P;
+const int N_MAX = 100, K_MAX = 100;
+const int PRE_L = 15;
+const int PRE_N = 1 << (PRE_L + 1);
 
-// const ===
+LD cnt[N_MAX + 1][PRE_N];
 
-// var =====
+typedef tuple<int, int> Con;  // Constraint
+const int _left = 0, _num = 1;
 
-// data ====
+vector<vector<Con>> cons(N_MAX + 1);
 
-void init_turn() {}
+void init_turn() {
+    rep(i, N_MAX + 1) {
+        fill(cnt[i], cnt[i] + PRE_N, -1);
+        cons[i].clear();
+    }
+}
+
+LD get_cnt(int n, int pre) {
+    if (cnt[n][pre] != -1) return cnt[n][pre];
+    for (Con c : cons[n]) {
+        int left, num1;
+        tie(left, num1) = c;
+        int clen = n - left;
+        if (popcount(pre >> (PRE_L - clen)) != num1) {
+            return cnt[n][pre] = 0;
+        }
+    }
+    if (n == N) {
+        return cnt[n][pre] = 1;
+    } else {
+        int _pre0 = pre >> 1, _pre1 = (pre >> 1) + (1 << PRE_L);
+        return cnt[n][pre] = get_cnt(n + 1, _pre0) + get_cnt(n + 1, _pre1);
+    }
+}
 
 void solve(int _turn) {
+    scanf("%d%d%Lf", &N, &K, &P);
     init_turn();
+    rep(i, K) {
+        int A, B, C;
+        scanf("%d%d%d", &A, &B, &C);
+        cons[B].push_back({A, C});
+    }
+
     string res;
+    int pre = 0;
+    rep(i, N) {
+        LD cnti = get_cnt(i + 1, pre >> 1);
+        if (cnti >= P) {
+            res += '0';
+            pre >>= 1;
+        } else {
+            res += '1';
+            pre = (pre >> 1) + (1 << PRE_L);
+            P -= cnti;
+        }
+    }
     echo("Case #%d: %s\n", _turn, res.c_str());
 }
 

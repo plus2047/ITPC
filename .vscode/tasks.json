@@ -15,6 +15,7 @@
                 "-o",
                 "./main",
                 "&&",
+                "time",
                 "./main",
                 "&&",
                 "echo",
@@ -24,13 +25,13 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "build & run main.cpp (release, O2)",
+            "label": "build & run main.cpp (release, O3)",
             "type": "shell",
             "command": "g++",
             "args": [
                 "-D__LOCAL__",
                 "--std=c++14",
-                "-O2",
+                "-O3",
                 "./main.cpp",
                 "-o",
                 "./main",

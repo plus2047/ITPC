@@ -5,6 +5,13 @@
 #ifndef ITPC_BIT_ALGORITHM_H
 #define ITPC_BIT_ALGORITHM_H
 
+// GCC / clang built in function to count 1 in binary.
+// return type: int
+// for unsigned int:
+#define popcount(x) __builtin_popcount(x)
+// for unsigned long long int:
+#define popcountll(x) __builtin_popcountll(x)
+
 namespace contest {
 
 // warning: (x & (x - 1)) == 0 cannot be write as x & (x - 1) == 0
@@ -30,9 +37,7 @@ inline int lowestBit(int x) { return x & (-x); }
 }  // namespace contest
 #endif  // ITPC_BIT_ALGORITHM_H
 
-// Note: bit operator & hex
-// suggest: just use bit operator on unsigned number.
-// suggest: donot assume what would be added after bit-shift.
+// bit operator
 //
 // bool operator: and, or, xor, not
 // bit operator: &, |, ^, ~

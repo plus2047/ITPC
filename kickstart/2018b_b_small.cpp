@@ -24,7 +24,6 @@
 
 // ===== include persional toolbox ======
 #ifdef __TOOLBOX__
-#include "lib/bit_algorithm.h"
 #include "lib/graph.h"
 #include "lib/hash.h"
 #include "lib/show.h"
@@ -39,40 +38,39 @@ using namespace std;
 
 typedef long long int LL;
 typedef long long unsigned LLU;
-typedef long double LD;
 #define G(_tuple, num) (get<num>(_tuple))
-#define popcount(x) __builtin_popcount(x)
-#define popcountll(x) __builtin_popcountll(x)
-#define len(c) int((c).size())
-#define allof(container) container.begin(), container.end()
-#define iallof(container) container.rbegin(), container.rend()
-#define rep(i, N) for (int i = 0; i < int(N); i++)
-#define range(i, begin, end) for (int i = int(begin); i < int(end); i++)
-#define irep(i, N) for (int i = int(N) - 1; i >= 0; i--)
-#define irange(i, begin, end) for (int i = int(end) - 1; i >= int(begin); i--)
+#define rep(i, N) for (int i = 0, _len_ = int(N); i < _len_; i++)
+#define aord(a) ((a) - 'a')
+#define achr(a) ((a) + 'a')
+#define fillc(c, v) (fill((c).begin(), (c).end(), v))
 
 // =============== CONTEST BEGIN ===============
 
-// const ===
-
-// var =====
-
-// data ====
-
-void init_turn() {}
-
-void solve(int _turn) {
-    init_turn();
-    string res;
-    echo("Case #%d: %s\n", _turn, res.c_str());
-}
+int T;
 
 int main() {
 #ifdef __LOCAL__  // define in build command.
     freopen("_kickstart.in", "r", stdin);
     freopen("_main_cpp.out", "w", stdout);
 #endif
-    int T;
     scanf("%d", &T);
-    rep(t, T) { solve(t + 1); }
+    for (int t = 1; t <= T; t++) {
+        LLU N, K, P;
+        scanf("%llu%llu%llu", &N, &K, &P);
+        string str(N, '-');
+        rep(i, K) {
+            int A, B, C;
+            scanf("%d%d%d", &A, &B, &C);
+            str[A - 1] = (C == 1 ? '1' : '0');
+        }
+        P--;
+        int idx = N - 1;
+        for(int idx = N - 1; idx >= 0; idx --){
+            if(str[idx] == '-'){
+                str[idx] = P % 2 ? '1' : '0';
+                P >>= 1;
+            }
+        }
+        printf("Case #%d: %s\n", t, str.c_str());
+    }
 }
