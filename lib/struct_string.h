@@ -38,70 +38,59 @@ void get_kmp_next(STR_P pattern_p, NEXT_P next_p, int pattern_len) {
 
 // ===== string tree =====
 template <int symbol_num>
-struct StringTreeNode {
+struct TrieNode {
     int child[symbol_num];
     int index;  // if multi match is needed, change this into a vector.
-    StringTreeNode() : index(-1) { std::fill(child, child + symbol_num, -1); }
+    TrieNode() : index(-1) { std::fill(child, child + symbol_num, -1); }
 };
 template <typename CHAR = char, int symbol_num = 26>
-struct StringTree {
-    // usage:
-    // insert some string into this string tree:
-    //   string_tree.run(str_begin, str_end, str_index, true);
-    // and than find if string exist in the string tree:
-    //   int str_index;
-    //   string_tree.run(str_begin, str_end, str_index, false);
-    // because insert & find algorithm is very similiar, merge them
-    // into one function.
-    // function run will return false if it's neither a match or a prefix.
-    // return true if it's a string inserted or a prefix of one of inserted
-    // string.
-    //   for the first case, it will save string id into the last param.
-    //   for the second case, it will save -1 into the last param.
-    // this struct can be used as suffix trie to quick search any pattern.
-    typedef StringTreeNode<symbol_num> Node;
+struct Trie {
+    typedef TrieNode<symbol_num> Node;
     std::vector<Node> nodes;
 
     // a function pointer to convert a char into it's index.
     // e.g. [](char c){return c - 'a';}
-    int (*get_index)(CHAR);
-    StringTree(int (*_get_index)(const CHAR)) {
+    typedef int (*IDX_FUNC)(CHAR);
+    IDX_FUNC get_index;
+
+    Trie(IDX_FUNC _get_index) : get_index(_get_index) {
         nodes.push_back(Node());
-        get_index = _get_index;
         // root is always nodes[0].
         // after init, this is a empty tree.
         // even "" is not in this tree.
     }
-    StringTree() {
-        nodes.push_back(Node());
-        get_index = [](CHAR c) { return c - 'a'; };
-    }
 
-    bool run(CHAR* begin, CHAR* end, int& index, bool is_insert) {
-        // root index is alway 0.
-        // this function suggest nodes[root_index] exists.
+    bool insert(CHAR* begin, CHAR* end, int index) {
+        // insert string with index into trie.
+        // if string already exist, update the index and return false.
+        assert(index >= 0);
         int root_index = 0;
         for (; begin != end; ++begin) {
             // dangerous: reference to variable saved in std container.
             // this reference should be safe before any change to the container.
             int& child = nodes[root_index].child[get_index(*begin)];
             if (child == -1) {
-                if (is_insert) {
-                    // donot change this order.
-                    // if push_back at first, the reference can be invalid.
-                    child = nodes.size();
-                    nodes.push_back(Node());
-                } else {
-                    return false;
-                }
+                child = nodes.size();
+                nodes.push_back(Node());
             }
             root_index = child;
         }
-        if (is_insert) {
-            nodes[root_index].index = index;
-        } else {
-            index = nodes[root_index].index;
+        bool unseen = nodes[root_index].index == -1;
+        nodes[root_index].index = index;
+        return unseen;
+    }
+
+    bool check(CHAR* begin, CHAR* end, int& idx) {
+        // check if string in trie.
+        // return true if it is a prefix.
+        // and if it's a full match, save the string index into idx.
+        int root_index = 0;
+        for (; begin != end; ++begin) {
+            int child = nodes[root_index].child[get_index(*begin)];
+            if (child == -1) return false;
+            root_index = child;
         }
+        idx = nodes[root_index].index;
         return true;
     }
 

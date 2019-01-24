@@ -112,10 +112,25 @@ void solve(int _turn) {
 int main() {
 #ifdef __LOCAL__  // define in build command.
     freopen("_kickstart.in", "r", stdin);
-    // freopen("_debug.in", "r", stdin);
+    freopen("_debug.in", "r", stdin);
     freopen("_main_cpp.out", "w", stdout);
 #endif
-    int T;
-    scanf("%d", &T);
-    rep(t, T) { solve(t + 1); }
+    // int T;
+    // scanf("%d", &T);
+    // rep(t, T) { solve(t + 1); }
+    UnnamedSegmentTree ust;
+    ust.insert(0, 4, 1);
+    ust.insert(1, 7, 1);
+    ust.insert(2, 6, 1);
+    ust.insert(8, 10, 1);
+    ust.print();
+    printf("\n");
+
+    range(i, -1, 12) range(j, i + 1, 12) {
+        printf(
+            "begin: %d, end: %d, min: %d, max:"
+            "%d, len: %d, dep: %d\n",
+            i, j, ust.min_depth(i, j), ust.max_depth(i, j),
+            ust.total_length(i, j), ust.total_depth(i, j));
+    }
 }

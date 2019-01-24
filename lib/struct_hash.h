@@ -30,48 +30,97 @@ struct HashMap {
     unsigned curr_size;
     unsigned MAX_ELEMET_NUM = SIZE / 4 * 3;
 
-    HashMap() {
+    void clear() {
         curr_size = 0;
         std::fill(used, used + SIZE, false);
         std::fill(removed, removed + SIZE, false);
     }
+    HashMap() { clear(); }
 
-    inline unsigned get_index(KEY key) {
-        // if key in tab, return index of key
-        // else return a void index for key
+    inline bool update(KEY key, VAL val) {
+        if (curr_size >= MAX_ELEMET_NUM) return false;
+
         KEY index = hash_u32(unsigned(key), SIZE);
-        KEY begin = index;
-        while (used[index]) {
-            if (!removed[index] and keys[index] == key) return index;
+        while (used[index] and !removed[index] and keys[index] != key) {
             if (++index >= SIZE) index = 0;
         }
-        return index;
-    }
-
-    inline bool insert(KEY key, VAL val) {
-        if (curr_size >= MAX_ELEMET_NUM) return false;
-        curr_size++;
-
-        KEY index = get_index(key);
-        if (used[index]) return false;
 
         keys[index] = key;
         vals[index] = val;
+        if (!used[index]) {
+            curr_size++;
+            used[index] = true;
+        } else {
+            removed[index] = false;
+        }
         return true;
     }
 
     inline bool get(KEY key, VAL& val) {
-        unsigned idx = get_index(key);
-        if (idx == SIZE) return false;
-        val = vals[idx];
-        return true;
+        KEY index = hash_u32(unsigned(key), SIZE);
+        while (used[index]) {
+            if (keys[index] == key and !removed[index]) {
+                val = vals[index];
+                return true;
+            }
+            if (++index >= SIZE) index = 0;
+        }
+        return false;
     }
 
     inline bool erase(KEY key) {
-        unsigned idx = get_index(key);
-        if (idx == SIZE) return false;
-        removed[idx] = true;
-        return true;
+        KEY index = hash_u32(unsigned(key), SIZE);
+        while (used[index]) {
+            if (keys[index] == key and !removed[index]) {
+                removed[index] = true;
+                return true;
+            }
+            if (++index >= SIZE) index = 0;
+        }
+        return false;
     }
 };
 }  // namespace contest
+
+namespace std {
+// those tools is extended to std::tuple.
+// so define them in namespace std.
+template <typename TUPLE, size_t FIELD>
+bool upper(const TUPLE& a, const TUPLE& b) {
+    return std::get<FIELD>(a) > std::get<FIELD>(b);
+}
+template <typename TUPLE, size_t FIELD>
+bool lower(const TUPLE& a, const TUPLE& b) {
+    return std::get<FIELD>(a) < std::get<FIELD>(b);
+}
+
+// modern magic: hash implement for tuple.
+template <class t>
+inline void hash_combine(std::size_t& seed, t const& v) {
+    seed ^= hash<t>()(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+}
+
+template <class TUPLE, size_t index = std::tuple_size<TUPLE>::value - 1>
+struct hash_value_impl {
+    static void apply(size_t& seed, TUPLE const& tuple) {
+        hash_value_impl<TUPLE, index - 1>::apply(seed, tuple);
+        hash_combine(seed, get<index>(tuple));
+    }
+};
+
+template <class TUPLE>
+struct hash_value_impl<TUPLE, 0> {
+    static void apply(size_t& seed, TUPLE const& tuple) {
+        hash_combine(seed, get<0>(tuple));
+    }
+};
+
+template <typename... TT>
+struct hash<std::tuple<TT...>> {
+    size_t operator()(std::tuple<TT...> const& tt) const {
+        size_t seed = 0;
+        hash_value_impl<std::tuple<TT...>>::apply(seed, tt);
+        return seed;
+    }
+};
+}  // namespace std
