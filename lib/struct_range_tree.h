@@ -1,4 +1,5 @@
 #pragma once
+#include <cassert>
 #include <vector>
 
 namespace contest {
@@ -65,18 +66,18 @@ struct RangeTree {
 
 template <typename NUM>
 struct FenwickTree {
-    vector<NUM> tree;
+    std::vector<NUM> tree;
     const int SIZE;
     // user index range: [0, SIZE]
     // tree index range: [1, SIZE + 1]
     FenwickTree(int size) : SIZE(size + 1), tree(size + 2, 0) {}
 
-    void add(int idx, NUM val) {
+    inline void add(int idx, NUM val) {
         assert(idx >= 0 and idx <= SIZE);
         for (int k = idx + 1; k <= SIZE; k += (k & -k)) tree[k] += val;
     }
 
-    NUM prefix_sum(int idx) {
+    inline NUM prefix_sum(int idx) {
         if (idx < 0) return 0;
         if (idx > SIZE) idx = SIZE;
         NUM res = 0;
@@ -87,15 +88,16 @@ struct FenwickTree {
 
 template <typename NUM>
 struct FenwickTree2D {
-    vector<vector<NUM>> tree;
+    std::vector<std::vector<NUM>> tree;
     int SIZE0, SIZE1;
     FenwickTree2D(int size0, int size1)
         : SIZE0(size0 + 1),
           SIZE1(size1 + 1),
-          tree(size0 + 2, vector<NUM>(size1 + 2)) {}
+          tree(size0 + 2, std::vector<NUM>(size1 + 2)) {}
 
-    void add(int idx0, int idx1, NUM val) {
-        assert(idx0 >= 0 and idx0 <= SIZE0 and idx1 >= 0 and idx1 <= SIZE1);
+    inline void add(int idx0, int idx1, NUM val) {
+        assert(idx0 >= 0 and idx0 <= SIZE0);
+        assert(idx1 >= 0 and idx1 <= SIZE1);
         for (int i = idx0 + 1; i <= SIZE0; i += (i & -i)) {
             for (int j = idx1 + 1; j <= SIZE1; j += (j & -j)) {
                 tree[i][j] += val;
@@ -103,7 +105,7 @@ struct FenwickTree2D {
         }
     }
 
-    NUM prefix_sum(int idx0, int idx1) {
+    inline NUM prefix_sum(int idx0, int idx1) {
         if (idx0 < 0 or idx1 < 0) return 0;
         if (idx0 > SIZE0) idx0 = SIZE0;
         if (idx1 > SIZE1) idx1 = SIZE1;
