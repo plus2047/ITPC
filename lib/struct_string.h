@@ -36,68 +36,91 @@ void get_kmp_next(STR_P pattern_p, NEXT_P next_p, int pattern_len) {
     }
 }
 
-// ===== string tree =====
-template <int symbol_num>
-struct TrieNode {
-    int child[symbol_num];
-    int index;  // if multi match is needed, change this into a vector.
-    TrieNode() : index(-1) { std::fill(child, child + symbol_num, -1); }
-};
-template <typename CHAR = char, int symbol_num = 26>
+// ===== Trie =====
+// Trie use pointer index to store the info about string.
+// the leaf point has no child pointer, so it use extra field
+// to store info about whole string.
+// be careful to use Trie. map<string> is usually enough.
+
+const int TRIE_VOID_IDX = -1;  // void val for node index.
+const int TRIE_VOID_VAL = -1;  // void val for node val field.
+template <typename ITER, int sym_n>
 struct Trie {
-    typedef TrieNode<symbol_num> Node;
-    std::vector<Node> nodes;
+    // how to get child index from a iter.
+    inline int get_idx(ITER c) { return *c - 'a'; }
+    // how to update val for 'insert' func.
+    inline void update_val(int& old, int val) { old = val; }
 
-    // a function pointer to convert a char into it's index.
-    // e.g. [](char c){return c - 'a';}
-    typedef int (*IDX_FUNC)(CHAR);
-    IDX_FUNC get_index;
+    struct Node {
+        int child[sym_n], val;
+        Node() : val(TRIE_VOID_VAL) {
+            std::fill(child, child + sym_n, TRIE_VOID_IDX);
+        }
+    };
 
-    Trie(IDX_FUNC _get_index) : get_index(_get_index) {
-        nodes.push_back(Node());
-        // root is always nodes[0].
-        // after init, this is a empty tree.
-        // even "" is not in this tree.
-    }
+    std::vector<Node> nodes = {Node()};
 
-    bool insert(CHAR* begin, CHAR* end, int index) {
-        // insert string with index into trie.
-        // if string already exist, update the index and return false.
-        assert(index >= 0);
+    bool insert(ITER begin, ITER end, int val) {
         int root_index = 0;
         for (; begin != end; ++begin) {
             // dangerous: reference to variable saved in std container.
-            // this reference should be safe before any change to the container.
-            int& child = nodes[root_index].child[get_index(*begin)];
-            if (child == -1) {
-                child = nodes.size();
+            int& child = nodes[root_index].child[get_idx(begin)];
+            if (child == TRIE_VOID_IDX) {
+                root_index = child = nodes.size();
                 nodes.push_back(Node());
+            } else {
+                root_index = child;
             }
-            root_index = child;
         }
-        bool unseen = nodes[root_index].index == -1;
-        nodes[root_index].index = index;
+        bool unseen = nodes[root_index].val == TRIE_VOID_VAL;
+        update_val(nodes[root_index].val, val);
         return unseen;
     }
 
-    bool check(CHAR* begin, CHAR* end, int& idx) {
-        // check if string in trie.
-        // return true if it is a prefix.
-        // and if it's a full match, save the string index into idx.
+    // return true if it is a prefix.
+    // and if it's a full match, save the string index into idx.
+    bool check(ITER begin, ITER end, int& val) {
         int root_index = 0;
         for (; begin != end; ++begin) {
-            int child = nodes[root_index].child[get_index(*begin)];
-            if (child == -1) return false;
+            int child = nodes[root_index].child[get_idx(begin)];
+            if (child == TRIE_VOID_IDX) return false;
             root_index = child;
         }
-        idx = nodes[root_index].index;
+        val = nodes[root_index].val;
         return true;
+    }
+
+    // use '.' to fuzzy match any char.
+    // return true if full match any.
+    bool dot_fuzzy(int root_index, ITER begin, ITER end) {
+        while (begin != end) {
+            if (*begin != '.') {
+                int child = nodes[root_index].child[get_idx(begin)];
+                if (child == TRIE_VOID_IDX) return false;
+                root_index = child;
+                begin++;
+            } else {
+                bool finded = false;
+                begin++;
+                for(int i = 0; i < sym_n; i ++) {
+                    int child = nodes[root_index].child[i];
+                    if (child != TRIE_VOID_IDX) {
+                        finded = check(child, begin, end);
+                    }
+                    if (finded) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+        }
+        return nodes[root_index].val != TRIE_VOID_VAL;
     }
 
     void print() {
         for (int i = 0; i < nodes.size(); i++) {
-            std::printf("node id: %d, index: %d, child:", i, nodes[i].index);
-            for (int j = 0; j < symbol_num; j++) {
+            std::printf("node id: %d, index: %d, child:", i, nodes[i].val);
+            for (int j = 0; j < sym_n; j++) {
                 std::printf("%d ", nodes[i].child[j]);
             }
             std::printf("\n");

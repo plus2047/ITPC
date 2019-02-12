@@ -19,7 +19,14 @@
 #include <unordered_set>
 #include <vector>
 
-// for contest, it's okey to use namespace. =====
+// persional contest toolbox =====
+#include "lib/graph.h"
+#include "lib/iotools.h"
+#include "lib/math.h"
+#include "lib/structure.h"
+#include "lib/thread_map.h"
+using namespace contest;
+
 using namespace std;
 
 // ============= CONTEST ENV BEGIN =============
@@ -38,10 +45,7 @@ typedef long double LD;
 
 // =============== CONTEST BEGIN ===============
 
-void solve(int _turn) {
-    LL N, L, res;
-    printf("%lld\n", res);
-}
+void solve(int _turn) {}
 
 // kickstart turn template =====
 int main() {
@@ -51,6 +55,6 @@ int main() {
     freopen("_main_cpp.out", "w", stdout);
 #endif
     int T = 1;
-    scanf("%d", &T);
+    // scanf("%d", &T);
     rep(t, T) { solve(t + 1); }
 }

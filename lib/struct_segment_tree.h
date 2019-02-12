@@ -1,151 +1,121 @@
 #pragma once
-#include <climits>
-#include <map>
-#include <string>
+#include <cassert>
+#include <vector>
 
 namespace contest {
-struct UnnamedSegmentTree {
-    typedef int NUM;
-    typedef int IDX;
 
-    struct Point {
-        NUM change, depth;
-    };
-    std::map<NUM, Point> points;
-    typedef std::map<IDX, Point>::iterator Iter;
-    const NUM NUM_MIN = std::numeric_limits<NUM>::min();
-    const NUM NUM_MAX = std::numeric_limits<NUM>::max();
-    const IDX IDX_MIN = std::numeric_limits<IDX>::min();
-    const IDX IDX_MAX = std::numeric_limits<IDX>::max();
+// compare Range Tree & Fenwick Tree:
+// range tree is easier to understand,
+// it can be used for range sum & min & max.
+// Fenwick tree is easier to implement,
+// and it's data structure is more clear
+// it can be extend to high dimensions.
 
-    UnnamedSegmentTree() {
-        points.insert(std::make_pair(NUM_MIN, Point({1, 0})));
-        points.insert(std::make_pair(NUM_MAX, Point({-1, -1})));
+template <typename NUM>
+struct SegmentTree {
+    // range tree can be used to get range max or min or sum.
+    // if necessary modify this function. default: sum
+    inline NUM func(NUM a, NUM b) { return a + b; }
+    // VOID is a NUM s.t. func(VOID, x) == x
+    // VOID == 0 for sum, NUM_MAX for min, NUM_MIN for max
+    const NUM VOID = 0;
+
+    // imply as a full tree.
+    // tree[0] is never used.
+    // tree begin at tree[1]
+    const int SIZE;
+    std::vector<NUM> tree;
+
+    SegmentTree(int size) : SIZE(size) {
+        assert(SIZE >= 0);
+        tree.resize(SIZE * 2);
+        std::fill(tree.begin(), tree.end(), VOID);
     }
 
-    void check(IDX begin, IDX end) {
-        assert(begin < end and begin != IDX_MIN and end != IDX_MAX);
-    }
-
-    void insert(IDX begin, IDX end, NUM change) {
-        check(begin, end);
-        Iter it = points.lower_bound(begin);
-        if (it->first == begin) {
-            it->second.depth += change;
-            it->second.change += change;
-            if (it->second.change == 0) {
-                it = points.erase(it);
-            } else {
-                it++;
-            }
-        } else {
-            Point P = {change, prev(it)->second.depth + change};
-            it = points.insert(it, std::make_pair(begin, P));
-            it++;
-        }
-        // now 'it' point to next of begin.
-        while (it->first < end) {
-            it->second.depth += change;
-            it++;
-        }
-        // now it point to the first point
-        // which great or equal to end
-        if (it->first == end) {
-            it->second.change -= change;
-            if (it->second.change == 0) {
-                points.erase(it);
-            }
-        } else {
-            Point P = {-change, prev(it)->second.depth - change};
-            points.insert(it, std::make_pair(end, P));
+    // O(n) init from a vector:
+    void init(std::vector<NUM>& data) {
+        assert(int(data.size()) <= SIZE);
+        std::fill(tree.begin(), tree.end(), VOID);
+        std::copy(data.begin(), data.end(), tree.begin() + SIZE);
+        for (int i = SIZE - 1; i > 0; i--) {
+            tree[i] = func(tree[i * 2], tree[i * 2 + 1]);
         }
     }
-    void erase(IDX begin, IDX end) {
-        check(begin, end);
-        Iter it = points.lower_bound(begin);
-        if (it->first == begin) {
-            Point& P = it->second;
-            P.change = -(P.depth - P.change);
-            P.depth = 0;
-        } else {
-            Point P = {-prev(it)->second.depth, 0};
-            it = points.insert(it, std::make_pair(begin, P));
-        }
-        if (it->second.change == 0) {
-            it = points.erase(it);
-        } else {
-            it++;
-        }
-        // now 'it' point to next of begin.
-        while (it->first < end) {
-            it = points.erase(it);
-        }
-        // now it point to the first point
-        // which great or equal to end
-        if (it->first == end) {
-            if (it->second.depth == 0) {
-                points.erase(it);
-            } else {
-                it->second.change = it->second.depth;
-            }
-        } else {
-            NUM de = it->second.depth - it->second.change;
-            if (de != 0) {
-                points.insert(it, std::make_pair(end, Point({de, de})));
-            }
+    inline NUM get(int idx) { return tree[idx + SIZE]; }
+    void update(int idx, int val) {
+        assert(idx >= 0 and idx < SIZE);
+        idx += SIZE;
+        tree[idx] = val;
+        while (idx != 0) {
+            idx /= 2;
+            tree[idx] = func(tree[2 * idx], tree[2 * idx + 1]);
         }
     }
-    NUM min_depth(IDX begin, IDX end) {
-        check(begin, end);
-        Iter it = std::prev(points.upper_bound(begin));
-        NUM res = NUM_MAX;
-        while (it->first < end) {
-            res = std::min(res, (it++)->second.depth);
+    NUM query(int left, int right) {
+        assert(left <= right and left >= 0 and right < SIZE);
+        left += SIZE, right += SIZE;
+        NUM res = VOID;
+        while (left <= right) {
+            if (left % 2 == 1) res += tree[left++];
+            if (right % 2 == 0) res += tree[right--];
+            left /= 2, right /= 2;
         }
         return res;
     }
-    NUM max_depth(IDX begin, IDX end) {
-        check(begin, end);
-        Iter it = std::prev(points.upper_bound(begin));
-        NUM res = NUM_MIN;
-        while (it->first < end) {
-            res = std::max(res, (it++)->second.depth);
-        }
-        return res;
+};
+
+template <typename NUM>
+struct FenwickTree {
+    std::vector<NUM> tree;
+    const int SIZE;
+    // user index range: [0, SIZE]
+    // tree index range: [1, SIZE + 1]
+    FenwickTree(int size) : SIZE(size + 1), tree(size + 2, 0) {}
+
+    inline void add(int idx, NUM val) {
+        assert(idx >= 0 and idx <= SIZE);
+        for (int k = idx + 1; k <= SIZE; k += (k & -k)) tree[k] += val;
     }
-    IDX total_length(IDX begin, IDX end) {
-        check(begin, end);
-        Iter it = std::prev(points.upper_bound(begin));
-        IDX res = 0;
-        while (it->first < end) {
-            Iter nit = std::next(it);
-            if (it->second.depth > 0) {
-                res += std::min(nit->first, end) - begin;
-            }
-            begin = nit->first;
-            it++;
-        }
-        return res;
-    }
-    NUM total_depth(IDX begin, IDX end) {
-        check(begin, end);
-        Iter it = std::prev(points.upper_bound(begin));
+
+    inline NUM prefix_sum(int idx) {
+        if (idx < 0) return 0;
+        if (idx > SIZE) idx = SIZE;
         NUM res = 0;
-        while (it->first < end) {
-            Iter nit = std::next(it);
-            if (it->second.depth > 0) {
-                res += (std::min(nit->first, end) - begin) * it->second.depth;
-            }
-            begin = nit->first;
-            it++;
-        }
+        for (int k = idx + 1; k > 0; k -= (k & -k)) res += tree[k];
         return res;
     }
-    void print() {
-        for (const std::pair<NUM, Point>& p : points) {
-            printf("point: %d, change: %d, depth: %d\n", p.first,
-                   p.second.change, p.second.depth);
+};
+
+template <typename NUM>
+struct FenwickTree2D {
+    std::vector<std::vector<NUM>> tree;
+    int SIZE0, SIZE1;
+    FenwickTree2D(int size0, int size1)
+        : SIZE0(size0 + 1),
+          SIZE1(size1 + 1),
+          tree(size0 + 2, std::vector<NUM>(size1 + 2)) {}
+
+    inline void add(int idx0, int idx1, NUM val) {
+        assert(idx0 >= 0 and idx0 <= SIZE0);
+        assert(idx1 >= 0 and idx1 <= SIZE1);
+        for (int i = idx0 + 1; i <= SIZE0; i += (i & -i)) {
+            for (int j = idx1 + 1; j <= SIZE1; j += (j & -j)) {
+                tree[i][j] += val;
+            }
         }
+    }
+
+    inline NUM prefix_sum(int idx0, int idx1) {
+        if (idx0 < 0 or idx1 < 0) return 0;
+        if (idx0 > SIZE0) idx0 = SIZE0;
+        if (idx1 > SIZE1) idx1 = SIZE1;
+        NUM res = 0;
+        for (int i = idx0 + 1; i > 0; i -= (i & -i)) {
+            for (int j = idx1 + 1; j > 0; j -= (j & -j)) {
+                res += tree[i][j];
+            }
+        }
+        return res;
     }
 };
 }  // namespace contest

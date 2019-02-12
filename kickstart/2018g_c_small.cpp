@@ -16,18 +16,11 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-// ===== if using persional toolbox & enable debug log =====
-#define __TOOLBOX__
-// ===== include persional toolbox =====
-#ifdef __TOOLBOX__
 #include "lib/graph.h"
-#include "lib/hash.h"
-#include "lib/show.h"
-#include "lib/string.h"
-using namespace contest;
-#endif  // __TOOLBOX__
-// for contest, it's okey to use namespace. =====
+
 using namespace std;
+using namespace contest;
+
 
 // ===== LEETCODE ENV BEGIN =====
 // ===== tools function & macro =====
