@@ -24,10 +24,7 @@
 
 // ===== include persional toolbox ======
 #ifdef __TOOLBOX__
-#include "lib/graph.h"
-#include "lib/iotools.h"
-#include "lib/math.h"
-#include "lib/structure.h"
+#include "lib/segment_tree.h"
 using namespace contest;
 #endif  // __TOOLBOX__
 
@@ -108,7 +105,7 @@ void solve(int _turn) {
     LL res = N * (N - 1) * (N - 2) / 6;
     rep(i, N) { res -= lu[i] * rd[i] + ru[i] * ld[i]; }
 
-    echo("Case #%d: %lld\n", _turn, res);
+    printf("Case #%d: %lld\n", _turn, res);
 }
 
 // kickstart turn template =====

@@ -17,7 +17,7 @@
 #include <unordered_set>
 #include <vector>
 // ===== if using persional toolbox & enable debug log =====
-#define __TOOLBOX__
+// #define __TOOLBOX__
 // ===== include persional toolbox =====
 #ifdef __TOOLBOX__
 #include "lib/graph.h"

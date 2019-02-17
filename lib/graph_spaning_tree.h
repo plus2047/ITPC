@@ -1,7 +1,8 @@
 #pragma once
 #include <algorithm>
 #include <vector>
-#include "structure.h"
+
+#include "merge_find.h"
 
 namespace contest {
 // Minimal Spanning Tree (MST) algorithm: Kruskal algotithm
@@ -14,7 +15,7 @@ struct MinSpaningTree {
 
     std::vector<Edge> edges;
     std::vector<Edge> mst;
-    MergeFindSet<index_t> mf;
+    MergeFindSet mf;
 
     MinSpaningTree(index_t n) : mf(n){};
 

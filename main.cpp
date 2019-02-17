@@ -1,5 +1,5 @@
-// ===== programing contest template =========
-// ===== using standrod: C++ 14 ==============
+// ===== programing contest template ======
+// ===== using standrod: C++ 11 =====
 
 #include <algorithm>
 #include <climits>
@@ -19,17 +19,37 @@
 #include <unordered_set>
 #include <vector>
 
-// persional contest toolbox =====
-#include "lib/graph.h"
-#include "lib/iotools.h"
-#include "lib/math.h"
-#include "lib/structure.h"
-#include "lib/thread_map.h"
-using namespace contest;
+// ===== persional contest toolbox =====
+// #include "lib/basic_math.h"
+// #include "lib/bit.h"
+// #include "lib/linear_algebra.h"
+// #include "lib/mod_p.h"
+// #include "lib/perime_num.h"
+
+// #include "lib/graph_max_flow.h"
+// #include "lib/graph_shortest_path.h"
+// #include "lib/graph_spaning_tree.h"
+// #include "lib/graph_strong_connect.h"
+
+// #include "lib/interval_tree.h"
+// #include "lib/merge_find.h"
+// #include "lib/segment_tree.h"
+// #include "lib/tree.h"
+// #include "lib/trie.h"
+
+// #include "lib/hash.h"
+// #include "lib/kmp.h"
+// #include "lib/tuple.h"
+
+// #include "lib/iotools.h"
+// #include "lib/thread_map.h"
+
+// using namespace contest;
+// persional contest toolbox finished =====
 
 using namespace std;
 
-// ============= CONTEST ENV BEGIN =============
+// ===== persional contest env =====
 
 typedef long long int LL;
 typedef long long unsigned LLU;
@@ -37,17 +57,15 @@ typedef long double LD;
 #define G(_tuple, num) (get<num>(_tuple))
 #define len(c) int((c).size())
 #define allof(container) (container).begin(), (container).end()
-#define frontof(container, N) (container).begin(), (container).begin() + (N)
 #define rep(i, N) for (int i = 0; i < int(N); i++)
 #define repr(i, begin, end) for (int i = int(begin); i < int(end); i++)
 #define irep(i, N) for (int i = int(N) - 1; i >= 0; i--)
-#define irepr(i, begin, end) for (int i = int(end) - 1; i >= int(begin); i--)
 
-// =============== CONTEST BEGIN ===============
+// ========== contest code ==========
 
-void solve(int _turn) {}
+void solve(int _turn) { printf("helloWorld!!!\n"); }
 
-// kickstart turn template =====
+// ===== kickstart template =====
 int main() {
 #ifdef __LOCAL__  // define in build command.
     freopen("_kickstart.in", "r", stdin);

@@ -1,5 +1,6 @@
 #pragma once
-#include "math_algebra.h"
+
+#include "linear_algebra.h"
 
 namespace contest {
 template <typename NUM>

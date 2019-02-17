@@ -3,7 +3,6 @@
 #include <limits>
 #include <queue>
 #include <vector>
-#include "structure.h"
 
 namespace contest {
 template <typename index_t, typename weight_t>

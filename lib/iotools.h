@@ -1,5 +1,4 @@
-#ifndef __SHOW_H__
-#define __SHOW_H__
+#pragma once
 
 // this is a debug library.
 // so donot care about performance.
@@ -53,4 +52,3 @@ NUM get_num() {
     return _n;
 }
 }  // namespace contest
-#endif  // define __SHOW_H__

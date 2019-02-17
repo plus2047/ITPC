@@ -16,7 +16,8 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-#include "lib/graph.h"
+
+#include "lib/graph_shortest_path.h"
 
 using namespace std;
 using namespace contest;

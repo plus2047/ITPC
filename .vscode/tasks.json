@@ -30,7 +30,7 @@
             "command": "g++",
             "args": [
                 "-D__LOCAL__",
-                "--std=c++14",
+                "--std=c++11",
                 "-O3",
                 "./main.cpp",
                 "-o",

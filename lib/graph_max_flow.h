@@ -4,7 +4,6 @@
 #include <vector>
 
 namespace contest {
-
 template <typename INDEX = int, typename NUM = int>
 struct MFEdge {
     INDEX from, to;
@@ -155,9 +154,6 @@ struct MinCostMaxFlow {
             ;
     }
 };
-}  // namespace contest
-
-
 // void test_graph_flow(){
 //     MaxFlow<> mf;
 //     mf.init(6);
@@ -192,3 +188,4 @@ struct MinCostMaxFlow {
 //     }
 //     printf("flow: %d, cost: %d.\n", flow, cost);
 // }
+}  // namespace contest

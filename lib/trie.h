@@ -1,41 +1,6 @@
 #pragma once
-#include <algorithm>
-#include <cstdio>
-
-// ===== string match problem =====
-// 1. if pattern length is constant, use hash map.
-// 2. if just search one time, use kmp. (so kmp is not so useful.)
-// 3. suffix tree for match any substring with any length.
 
 namespace contest {
-// ===== kmp algoithm =====
-// next_p[i] is the longest number n, s.t.
-// p[0:n] == p[i+1-n:i+1] (define next_p[0] = 0)
-// this implement is better than ITPC and GeeksForGeeks.
-// =====
-// the most important part of kmp is to understand what next array means
-// and MEMORIZE THOSE CODE!
-// if you forget those code, try to understand function `kmp_match` at first.
-// kmp next array is very useful for questions about prefix-suffix.
-template <typename STR_P, typename NEXT_P>
-int kmp_match(STR_P pattern_p, STR_P target_p, NEXT_P next_p, int pattern_len,
-              int str_len) {
-    for (int i = 0, j = 0; i < str_len; i++) {
-        while (j and pattern_p[j] != target_p[i]) j = next_p[j - 1];
-        if (pattern_p[j] == target_p[i]) ++j;
-        if (j == pattern_len) return i - j + 1;
-    }
-    return -1;
-}
-template <typename STR_P, typename NEXT_P>
-void get_kmp_next(STR_P pattern_p, NEXT_P next_p, int pattern_len) {
-    next_p[0] = 0;
-    for (int i = 1, j = 0; i < pattern_len; ++i) {
-        while (j and pattern_p[j] != pattern_p[i]) j = next_p[j - 1];
-        next_p[i] = (j += pattern_p[j] == pattern_p[j]);
-    }
-}
-
 // ===== Trie =====
 // Trie use pointer index to store the info about string.
 // the leaf point has no child pointer, so it use extra field
@@ -102,7 +67,7 @@ struct Trie {
             } else {
                 bool finded = false;
                 begin++;
-                for(int i = 0; i < sym_n; i ++) {
+                for (int i = 0; i < sym_n; i++) {
                     int child = nodes[root_index].child[i];
                     if (child != TRIE_VOID_IDX) {
                         finded = check(child, begin, end);

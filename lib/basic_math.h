@@ -1,23 +1,19 @@
 #pragma once
-#include "math_algebra.h"
-#include "math_bit.h"
-#include "math_mod_p.h"
-#include "math_perime_num.h"
-
-// for get define of size_t
-#include <cstdio>
 
 namespace contest {
+
 template <typename num_t>
 inline num_t sum_range_power1(num_t n) {
     // \sum_{k = 1}^{n} n^1
     return n * (n + 1) / 2;
 }
+
 template <typename num_t>
 inline num_t sum_range_power2(num_t n) {
     // \sum_{k = 1}^{n} n^2
     return n * (n + 1) * (2 * n + 1) / 6;
 }
+
 template <typename num_t>
 inline num_t sum_range_power3(num_t n) {
     // \sum_{k = 1}^{n} n^3

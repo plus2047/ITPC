@@ -16,7 +16,7 @@
 #include <unordered_set>
 #include <vector>
 
-#include "lib/mod_p_field.h"
+#include "lib/mod_p.h"
 
 using namespace std;
 using namespace contest;

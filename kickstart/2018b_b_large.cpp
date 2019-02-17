@@ -20,7 +20,7 @@
 #include <vector>
 
 // ===== if using persional toolbox =====
-#define __TOOLBOX__
+// #define __TOOLBOX__
 
 // ===== include persional toolbox ======
 #ifdef __TOOLBOX__
@@ -112,7 +112,7 @@ void solve(int _turn) {
             P -= cnti;
         }
     }
-    echo("Case #%d: %s\n", _turn, res.c_str());
+    printf("Case #%d: %s\n", _turn, res.c_str());
 }
 
 int main() {

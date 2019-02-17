@@ -1,6 +1,7 @@
 #pragma once
-// get_prime_algorithm.
 #include <vector>
+
+// get_prime_algorithm.
 
 namespace contest {
 std::vector<int> get_prime_list(int less_than) {

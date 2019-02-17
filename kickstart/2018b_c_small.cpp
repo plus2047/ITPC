@@ -20,7 +20,7 @@
 #include <vector>
 
 // ===== if using persional toolbox =====
-#define __TOOLBOX__
+// #define __TOOLBOX__
 
 // ===== include persional toolbox ======
 #ifdef __TOOLBOX__
@@ -121,6 +121,6 @@ int main() {
                 cnt++;
             }
         }
-        echo("Case #%d: %lld\n", t, cnt);
+        printf("Case #%d: %lld\n", t, cnt);
     }
 }

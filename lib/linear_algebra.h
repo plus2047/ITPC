@@ -1,6 +1,4 @@
-#ifndef __LINEAR_H__
-#define __LINEAR_H__
-
+#pragma once
 #include <algorithm>
 
 namespace contest {
@@ -66,4 +64,3 @@ inline void matrix_power(num_t* base, num_t* res, num_t* tmp, int dim, int n) {
 //         printf("%d %d\n", mf[0] + mf[1], mf[2] + mf[3]);
 //     }
 // }
-#endif  // define __LINEAR_H__

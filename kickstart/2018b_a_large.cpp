@@ -20,7 +20,7 @@
 #include <vector>
 
 // ===== if using persional toolbox =====
-#define __TOOLBOX__
+// #define __TOOLBOX__
 
 // ===== include persional toolbox ======
 #ifdef __TOOLBOX__
@@ -93,6 +93,6 @@ int main() {
         LLU F, L;
         scanf("%llu%llu", &F, &L);
         LLU res = get_cnt(L) - get_cnt(F) + 1;
-        echo("Case #%d: %llu\n", t, res);
+        printf("Case #%d: %llu\n", t, res);
     }
 }
