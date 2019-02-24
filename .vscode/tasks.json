@@ -9,17 +9,14 @@
             "command": "g++",
             "args": [
                 "-D__LOCAL__",
-                "--std=c++14",
+                "--std=c++11",
                 "-g",
                 "${relativeFile}",
                 "-o",
                 "./main",
                 "&&",
                 "time",
-                "./main",
-                "&&",
-                "echo",
-                "building & running finished."
+                "./main"
             ],
             "group": "build",
             "problemMatcher": "$msCompile"
@@ -32,7 +29,7 @@
                 "-D__LOCAL__",
                 "--std=c++11",
                 "-O3",
-                "./main.cpp",
+                "${relativeFile}",
                 "-o",
                 "./main",
                 "&&",
@@ -40,29 +37,12 @@
                 "&&",
                 "time",
                 "./main",
-                "&&",
-                "date",
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "Package",
-            "type": "shell",
-            "command": "gtar",
-            "args": [
-                "-caf",
-                "code.tar.gz",
-                "./main_kickstart.cpp",
-                "./lib/*",
-                "&&",
-                "echo",
-                "package code finished."
-            ],
-            "problemMatcher": []
         }
     ]
 }

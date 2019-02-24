@@ -18,18 +18,6 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
-// ===== if using persional toolbox =====
-// #define __TOOLBOX__
-// ===== include persional toolbox ======
-#ifdef __TOOLBOX__
-#include "lib/graph.h"
-#include "lib/hash.h"
-#include "lib/show.h"
-#include "lib/string.h"
-using namespace contest;
-#endif  // __TOOLBOX__
-// for contest, it's okey to use namespace. =====
-using namespace std;
 
 // =============================================
 // ============= CONTEST ENV BEGIN =============
@@ -42,21 +30,26 @@ typedef long long unsigned LLU;
 // =============================================
 // =============== CONTEST BEGIN ===============
 
-// using hash-like skill.
+// algorithm in official solution.
+// my implement is too slow for large dataset.
+// maybe because of attacking-data: words with
+// same length & front & back.
 
 int T, L, N;
 LL A, B, C, D;
 const int L_MAX = 2E4 + 8, N_MAX = 1E6 + 8;
 const int N_CHAR = 26;
-const int N_FB = N_CHAR * N_CHAR + 8, L_TOTAL_MAX = 1E5 + 8;
+const int N_FB = N_CHAR * N_CHAR + 8;
 
-unordered_set<int> word_lens;
-typedef vector<int16_t> Word;
-map<Word, int> dict;
-Word word(N_CHAR + 2);
+vector<string> words(L_MAX);
+vector<unordered_set<int>> fb2idx(N_FB);
+#define ID(f, b) (((f) - 'a') * N_CHAR + (b) - 'a')
+unordered_map<int, vector<int>> len2idx;
+vector<vector<int>> char_count(L_MAX, vector<int>(26, 0));
+vector<int> _count(26, 0);
 
-char buff[L_TOTAL_MAX], str[N_MAX];
-int x[N_MAX];
+char str[N_MAX];
+vector<LL> x(N_MAX);
 
 int main() {
 #ifdef __LOCAL__  // define in build command.
@@ -66,17 +59,18 @@ int main() {
     scanf("%d", &T);
     for (int t = 1; t <= T; t++) {
         scanf("%d", &L);
-        word_lens.clear();
-        dict.clear();
+        FOR(i, N_FB) fb2idx[i].clear();
+        len2idx.clear();
         FOR(i, L) {
-            scanf("%s", buff);
-            int word_l = strlen(buff);
-            word_lens.insert(word_l);
-            fill(word.begin(), word.end(), 0);
-            word[N_CHAR] = buff[0];
-            word[N_CHAR + 1] = buff[word_l - 1];
-            FOR(i, word_l) word[buff[i] - 'a']++;
-            dict[word]++;
+            cin >> words[i];
+
+            int id = ID(words[i].front(), words[i].back());
+            fb2idx[id].insert(i);
+
+            len2idx[(int)words[i].size()].push_back(i);
+
+            fill(char_count[i].begin(), char_count[i].end(), 0);
+            for (char c : words[i]) char_count[i][c - 'a']++;
         }
 
         scanf("%s%s", str, str + 1);
@@ -90,21 +84,26 @@ int main() {
         str[N] = 0;
 
         int res = 0;
-        for (int len : word_lens) {
-            fill(word.begin(), word.end(), 0);
+        vector<int> rm;
+        for (auto& p : len2idx) {
+            int word_len = p.first;
+            fill(_count.begin(), _count.end(), 0);
             for (int right = 0; right < N; right++) {
-                word[str[right] - 'a']++;
-                if (right >= len) {
-                    word[str[right - len] - 'a']--;
+                _count[str[right] - 'a']++;
+                if (right >= word_len) {
+                    _count[str[right - word_len] - 'a']--;
                 }
-                if (right >= len - 1) {
-                    word[N_CHAR] = str[right - len + 1];
-                    word[N_CHAR + 1] = str[right];
-                    auto f = dict.find(word);
-                    if (f != dict.end()) {
-                        res += f->second;
-                        dict.erase(f);
+                if (right >= word_len - 1) {
+                    int id = ID(str[right - word_len + 1], str[right]);
+                    rm.clear();
+                    for (int word_idx : p.second) {
+                        if (fb2idx[id].find(word_idx) != fb2idx[id].end() and
+                            _count == char_count[word_idx]) {
+                            res++;
+                            rm.push_back(word_idx);
+                        }
                     }
+                    for (int i : rm) fb2idx[id].erase(i);
                 }
             }
         }

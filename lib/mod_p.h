@@ -1,54 +1,64 @@
 #pragma once
 
+#include <initializer_list>
 #include "linear_algebra.h"
 
 namespace contest {
-template <typename NUM>
-void get_factorial_mod(NUM* factorial, int size, NUM mod) {
-    // complexity: O(len(factorial))
-    factorial[0] = factorial[1] = 1;
-    for (int i = 2; i < size; i++) {
-        factorial[i] = factorial[i - 1] * i % mod;
-    }
-}
 
 template <typename NUM>
-NUM power_mod(NUM base, NUM n, NUM mod) {
-    // return base ** n % mod
-    // complexity: O(log(n))
-    NUM res = 1;
-    NUM cur = base;
+struct ModPCalculator {
+    const NUM MAX_NUM, PRIME;
+    std::vector<NUM> fact, inv_fact;  // factorial & it's inverse
 
-    while (n) {
-        if (n % 2) {
-            res = (res * cur) % mod;
+    inline NUM multiply(std::initializer_list<NUM> nums) {
+        NUM res = 1;
+        for (auto p = nums.begin(); p != nums.end(); p++) {
+            res = res * p % PRIME;
         }
-        n /= 2;
-        cur = (cur * cur) % mod;
+        return res;
     }
-    return res;
-}
 
-template <typename NUM>
-NUM inv_mod(NUM n, NUM prime) {
-    // inv_mod(n) * n % prime == 1
-    // based on Fermat's little theorem.
-    // complexity: O(log(prime))
-    // assert(n < prime && prime * prime < MAX(NUM))
-    assert(n < prime);
-    return power_mod(n, prime - 2, prime);
-}
+    inline NUM power(NUM base, NUM n) {  // base ** n % PRIME
+        NUM res = 1, cur = base;
+        while (n) {
+            if (n % 2) res = (res * cur) % PRIME;
+            cur = (cur * cur) % PRIME;
+            n /= 2;
+        }
+        return res;
+    }
 
-template <typename NUM>
-NUM combinations_mod(NUM n, NUM m, NUM prime, NUM* fact, NUM* inv_fact) {
-    // get combinations, using calculated factorials & factorials ^ -1
-    // assume m <= n && m >= 0 && n < prime
-    // complexity: O(1)
-    NUM res = fact[n];
-    res = (res * inv_fact[m]) % prime;
-    res = (res * inv_fact[n - m]) % prime;
-    return res;
-}
+    inline NUM inv(NUM num) {  // inv(n) * n % prime == 1
+        // based on Fermat's little theorem.
+        assert(num < PRIME);
+        return power(num, PRIME - 2);
+    }
+
+    inline NUM comb(NUM N, NUM k) {
+        // N chooce k mod PRIME
+        assert(k <= N and k >= 0 and N < PRIME);
+        NUM res = fact[N];
+        res = (res * inv_fact[k]) % PRIME;
+        res = (res * inv_fact[N - k]) % PRIME;
+        return res;
+    }
+
+    ModPCalculator(NUM max_num, NUM prime)
+        : MAX_NUM(max_num),
+          PRIME(prime),
+          fact(max_num + 1),
+          inv_fact(max_num + 1) {
+        // init the calculator's pre-calculated factorial & inv
+        // if donot need to use fact & comb, just set max_num = 0.
+        assert(1.0 * PRIME * PRIME < 1.0 * std::numeric_limits<NUM>::max());
+        fact[0] = fact[1] = 1;
+        inv_fact[0] = inv_fact[1] = 1;
+        for (int i = 2; i <= MAX_NUM; i++) {
+            fact[i] = fact[i - 1] * i % PRIME;
+            inv_fact[i] = inv(fact[i]);
+        }
+    }
+};
 
 template <typename num_t>
 num_t _inv_mod_euclidean(num_t n, num_t p) {
@@ -58,8 +68,8 @@ num_t _inv_mod_euclidean(num_t n, num_t p) {
     // so x == inv(n)
 
     // this impliment is a little complex
-    // because I try to use it to check matrix dot algorithm.
     // so use inv_mod instead.
+
     assert(n < p);
     int _p = p;
 
