@@ -36,31 +36,34 @@ typedef long double LD;
 
 // ========== contest code ==========
 void solve(int _turn) {
-    int A, B, N;
-    cin >> A >> B >> N;
-    string res;
-    while (true) {
-        int mid = B - (B - A) / 2;
-        cout << mid << endl;
-        cin >> res;
-        if (res == "CORRECT") {
-            return;
-        } else if (res == "TOO_SMALL") {
-            A = mid;
-        } else if (res == "TOO_BIG") {
-            B = mid - 1;
-        }
+    int N;
+    cin >> N;
+    string wall;
+    cin >> wall;
+    int keep = (N + 1) / 2;
+    int total = 0;
+    for (int i = 0; i < keep; i++) {
+        total += wall[i] - '0';
     }
+    int max_total = total;
+    for (int i = keep; i < N; i++) {
+        total += wall[i] - '0';
+        total -= wall[i - keep] - '0';
+        max_total = max(max_total, total);
+    }
+    cout << "Case #" << _turn << ": " << max_total << endl;
 }
 
 // ===== kickstart template =====
 int main() {
 #ifdef __LOCAL__  // define in build command.
-    // freopen("_kickstart.in", "r", stdin);
-    // freopen("_debug.in", "r", stdin);
-    // freopen("_main_cpp.out", "w", stdout);
+    freopen("_kickstart.in", "r", stdin);
+    freopen("_debug.in", "r", stdin);
+    freopen("_main_cpp.out", "w", stdout);
 #endif
+    // // ONLY IF NECESSARY!!!
+    // ios::sync_with_stdio(false);
     int T = 1;
-    scanf("%d", &T);
+    cin >> T;
     rep(t, T) { solve(t + 1); }
 }

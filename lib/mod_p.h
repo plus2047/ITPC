@@ -13,7 +13,7 @@ struct ModPCalculator {
     inline NUM multiply(std::initializer_list<NUM> nums) {
         NUM res = 1;
         for (auto p = nums.begin(); p != nums.end(); p++) {
-            res = res * p % PRIME;
+            res = res * (*p) % PRIME;
         }
         return res;
     }
@@ -51,6 +51,7 @@ struct ModPCalculator {
         // init the calculator's pre-calculated factorial & inv
         // if donot need to use fact & comb, just set max_num = 0.
         assert(1.0 * PRIME * PRIME < 1.0 * std::numeric_limits<NUM>::max());
+        if (max_num < 1) return;
         fact[0] = fact[1] = 1;
         inv_fact[0] = inv_fact[1] = 1;
         for (int i = 2; i <= MAX_NUM; i++) {
