@@ -51,13 +51,59 @@ void show(const char* note, ITER begin, ITER end) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
-void solve(int _turn) {}
+void solve(int _turn) {
+    LL N, Odd, D;
+    scanf("%lld%lld%lld", &N, &Odd, &D);
+    LL X1, X2, A, B, C, M, L;
+    scanf("%lld%lld%lld%lld%lld%lld%lld", &X1, &X2, &A, &B, &C, &M, &L);
+    vector<LL> S(N), prefix_sum(N);
+    S[0] = X1 + L, S[1] = X2 + L;
+    prefix_sum[0] = S[0], prefix_sum[1] = S[0] + S[1];
+    repr(i, 2, N) {
+        LL Xi = (A * X2 + B * X1 + C) % M;
+        S[i] = Xi + L;
+        X1 = X2, X2 = Xi;
+        prefix_sum[i] = prefix_sum[i - 1] + S[i];
+    }
+    // show("S:\n", allof(S));
+    // show("prefix_sum:\n", allof(prefix_sum));
+
+    const LL MIN_S = numeric_limits<LL>::min();
+    LL max_s = MIN_S;
+
+    int begin = 0, end = 0, odd_cnt = 0;
+    multiset<LL> sums;
+    LL bias = 0;
+    while (begin < N) {
+        while (!(odd_cnt == Odd and S[end] % 2) and end < N) {
+            sums.insert(prefix_sum[end]);
+            if (S[end] % 2) odd_cnt++;
+            end++;
+        }
+        if (begin < end) {
+            auto f = sums.upper_bound(D + bias);
+            if (f != sums.begin()) max_s = max(max_s, *prev(f) - bias);
+            sums.erase(sums.find(prefix_sum[begin]));
+            if (S[begin] % 2) odd_cnt--;
+        }
+
+        bias = prefix_sum[begin];
+        if (begin == end) end++;
+        begin++;
+    }
+
+    if (max_s == MIN_S) {
+        printf("Case #%d: IMPOSSIBLE\n", _turn);
+    } else {
+        printf("Case #%d: %lld\n", _turn, max_s);
+    }
+}
 
 // ===== kickstart template =====
 int main() {
 #ifdef __LOCAL__  // define in build command.
     freopen("_kickstart.in", "r", stdin);
-    // freopen("_debug.in", "r", stdin);
+    freopen("_debug.in", "r", stdin);
     freopen("_main_cpp.out", "w", stdout);
 #endif
     int T = 1;
