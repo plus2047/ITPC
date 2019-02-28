@@ -8,17 +8,9 @@
 #include <vector>
 
 namespace contest {
-template <typename ITER>
+template <int group = 16, typename ITER>
 void show(const char* note, ITER begin, ITER end) {
-    printf("%s", note);
-    while (begin != end) {
-        std::cout << *(begin++) << ' ';
-    }
-    std::cout << std::endl;
-}
-
-template <typename ITER>
-void show(const char* note, ITER begin, ITER end, int group) {
+#ifdef __LOCAL__
     printf("%s", note);
     int i = 1;
     for (; begin != end; i++) {
@@ -26,6 +18,7 @@ void show(const char* note, ITER begin, ITER end, int group) {
         if (i % group == 0) std::cout << std::endl;
     }
     if (i % group != 1) std::cout << std::endl;
+#endif
 }
 
 #define echo(args...) (fprintf(stderr, args), printf(args))

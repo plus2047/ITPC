@@ -35,7 +35,7 @@ Dijkstra's algorithm (single-source shortest path_from)
 if NEGATIVE-WEIGHTED edge exist:
 Bellman-Ford algorithm.
 
-if need to get shortest path len between each node:
+if need to get shortest path len between EACH NODE:
 Floyd's algorithm.
 
 floyd's algorithm can run on graph with negative edge.

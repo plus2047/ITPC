@@ -22,10 +22,10 @@ inline num_t sum_range_power3(num_t n) {
 }
 
 template <typename num_t>
-inline num_t fast_power(num_t base, int n) {
+num_t quick_pow(num_t base, int n) {
     num_t res = 1;
     while (n) {
-        if (n % 2 == 1) res *= base;
+        if (n % 2) res *= base;
         base *= base;
         n /= 2;
     }

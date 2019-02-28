@@ -67,11 +67,8 @@ struct ShortestPath {
             auto node = std::get<heap_node_index_>(Q.top());
             Q.pop();
 
-            if (arrived[node]) {
-                continue;
-            } else {
-                arrived[node] = true;
-            }
+            if (arrived[node]) continue;
+            arrived[node] = true;
 
             for (auto& e : graph[node]) {
                 auto _to = std::get<edge_to_>(e);
@@ -99,7 +96,7 @@ struct ShortestPath {
 
         // use `arrived` vector to mark if a node is in queue.
         // (it's differenet from the using in dijkstra algorithm.)
-        // a node can be add to queue many times.
+        // a node can be add to queue at most N (number of nodes) times.
         arrived[start] = true;
 
         while (!Q.empty()) {

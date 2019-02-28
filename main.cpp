@@ -61,6 +61,6 @@ int main() {
     freopen("_main_cpp.out", "w", stdout);
 #endif
     int T = 1;
-    scanf("%d", &T);
+    // scanf("%d", &T);
     rep(t, T) { solve(t + 1); }
 }

@@ -61,6 +61,7 @@ struct ModPCalculator {
     }
 };
 
+// those are some not-recommended functions. =====
 template <typename num_t>
 num_t _inv_mod_euclidean(num_t n, num_t p) {
     // euclidean algorithm.

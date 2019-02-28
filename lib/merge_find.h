@@ -19,11 +19,13 @@ struct CountMergeFindSet {
     }
     int find(int x) { return p[x] == x ? x : p[x] = find(p[x]); }
     int count(int x) { return cnt[find(x)]; }
-    void merge(int root, int child) {
+    bool merge(int root, int child) {
         int rr = find(root), rc = find(child);
+        if (rr == rc) return false;
         p[rc] = rr;
         cnt[rr] += cnt[rc];
         cnt[rc] = 0;
+        return true;
     }
 };
 }  // namespace contest
