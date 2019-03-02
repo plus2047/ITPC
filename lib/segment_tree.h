@@ -41,7 +41,9 @@ struct SegmentTree {
             tree[i] = func(tree[i * 2], tree[i * 2 + 1]);
         }
     }
+
     inline NUM get(int idx) { return tree[idx + SIZE]; }
+    
     void update(int idx, int val) {
         assert(idx >= 0 and idx < SIZE);
         idx += SIZE;
@@ -51,6 +53,7 @@ struct SegmentTree {
             tree[idx] = func(tree[2 * idx], tree[2 * idx + 1]);
         }
     }
+    
     NUM query(int left, int right) {
         assert(left <= right and left >= 0 and right < SIZE);
         left += SIZE, right += SIZE;

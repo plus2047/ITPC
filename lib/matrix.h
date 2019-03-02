@@ -13,7 +13,6 @@ struct Matrix {
     inline NUM& operator()(int m, int n) { return data[m * dim2 + n]; }
 
     void resize(int m, int n) { dim1 = m, dim2 = n, data.resize(m * n); }
-    void as_zero() { std::fill(data.begin(), data.end(), 0); }
     void as_eye() {
         as_zero();
         assert(dim1 == dim2);
@@ -21,13 +20,20 @@ struct Matrix {
     }
 };
 
+template <typename NUM>
+void swap(Matrix<NUM>& a, Matrix<NUM>& b) {  // complexity: O(1)
+    std::swap(a.dim1, b.dim1);
+    std::swap(a.dim2, b.dim2);
+    std::swap(a.data, b.data);
+}
+
 template <typename NUM = int>
 struct MatrixCalculator {
     typedef Matrix<NUM> Mat;
 
     static void dot(Mat& A, Mat& B, Mat& result) {
-        result.resize(A.dim1, B.dim2);
         assert(A.dim2 == B.dim1);
+        result.resize(A.dim1, B.dim2);
         for (int i = 0; i < A.dim1; i++) {
             for (int j = 0; j < B.dim2; j++) {
                 NUM& res = result(i, j);
@@ -51,10 +57,10 @@ struct MatrixCalculator {
         while (n) {
             if (n % 2) {
                 dot(result, _base, _res);
-                result = _res;
+                swap(result, _res);
             }
             dot(_base, _base, _res);
-            _base = _res;
+            swap(_base, _res);
             n /= 2;
         }
     }

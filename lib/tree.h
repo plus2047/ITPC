@@ -8,6 +8,7 @@ struct TNode {
     Val val = 0;
     TNode(Val _val) : val(_val) {}
 };
+
 TNode* insert(TNode* root, Val val) {
     while (true) {
         if (root->val == val) return NULL;
