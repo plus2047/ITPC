@@ -15,7 +15,6 @@
 #include <sstream>
 #include <stdexcept>
 
-#include <array>
 #include <map>
 #include <queue>
 #include <set>
@@ -36,36 +35,62 @@ typedef long long int LL;
 #define repr(i, begin, end) for (int i = int(begin); i < int(end); i++)
 #define repi(i, N) for (int i = int(N) - 1; i >= 0; i++)
 
-#ifdef __LOCAL__
-#define printf(args...) (fprintf(stderr, args), printf(args))
-std::clock_t _t0 = 0;
-void timer_begin() { _t0 = clock(); }
-void timer_end(const char* note) {
-    double delta = double(clock() - _t0) / CLOCKS_PER_SEC;
-    printf("%s cost: %lf sec.\n", note, delta);
-}
-#else
-#define timer_begin() (void(0))
-#define timer_end(note) (void(0))
-#endif  // __LOCAL__
-
-template <int group = 20, typename ITER>
+template <int group = 16, typename ITER>
 void show(const char* note, ITER begin, ITER end) {
 #ifdef __LOCAL__
-    cout << note;
-    for (int i = 1; begin != end; i++) {
+    printf("%s", note);
+    int i = 1;
+    for (; begin != end; i++) {
         std::cout << *(begin++) << ' ';
-        if (i % group == 0 or begin == end) std::cout << std::endl;
+        if (i % group == 0) std::cout << std::endl;
     }
+    if (i % group != 1) std::cout << std::endl;
 #endif  // __LOCAL__
 }
 
 // ===== personal contest template =====
 
 // ========== contest code ==========
+inline void get_sum(vector<int>& num, vector<int>& group, vector<int>& total) {
+    for (int i = 0; i < int(num.size()); i++) {
+        total[group[i]] += num[i];
+    }
+}
+
 void solve(int _turn) {
+    int N, N3;
+    scanf("%d", &N);
+    N3 = N * 3;
+    vector<int> A(N3), B(N3);
+    rep(i, N3) scanf("%d", &A[i]);
+    rep(i, N3) scanf("%d", &B[i]);
+
+    vector<int> groupA(N3);
+    rep(i, 3) fill(groupA.begin() + i * N, groupA.begin() + i * N + N, i);
+    vector<int> groupB = groupA;
+
     double best = 0;
+    vector<int> sumA(3), sumB(3);
+    do {
+        int win = 0, lose = 0;
+        fill(allof(sumA), 0);
+        get_sum(A, groupA, sumA);
+        do {
+            fill(allof(sumB), 0);
+            get_sum(B, groupB, sumB);
+            int win_cnt = 0;
+            rep(i, 3) if (sumA[i] > sumB[i]) win_cnt++;
+            if (win_cnt >= 2) {
+                win++;
+            } else {
+                lose++;
+            }
+        } while (next_permutation(allof(groupB)));
+        best = max(best, double(win) / (win + lose));
+    } while (next_permutation(allof(groupA)));
+
     printf("Case #%d: %lf\n", _turn, best);
+    fprintf(stderr, "Case #%d: %lf\n", _turn, best);
 }
 
 // ===== kickstart template =====
@@ -76,6 +101,6 @@ int main() {
     freopen("_main_cpp.out", "w", stdout);
 #endif
     int T = 1;
-    // scanf("%d", &T);
+    scanf("%d", &T);
     rep(t, T) { solve(t + 1); }
 }

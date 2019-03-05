@@ -13,10 +13,10 @@
                 "-g",
                 "${relativeFile}",
                 "-o",
-                "./main",
+                "./bin",
                 "&&",
                 "time",
-                "./main"
+                "./bin"
             ],
             "group": "build",
             "problemMatcher": "$msCompile"
@@ -31,12 +31,12 @@
                 "-O3",
                 "${relativeFile}",
                 "-o",
-                "./main",
+                "./bin",
                 "&&",
                 "date",
                 "&&",
                 "time",
-                "./main",
+                "./bin",
             ],
             "group": {
                 "kind": "build",

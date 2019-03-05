@@ -15,7 +15,6 @@
 #include <sstream>
 #include <stdexcept>
 
-#include <array>
 #include <map>
 #include <queue>
 #include <set>
@@ -36,46 +35,44 @@ typedef long long int LL;
 #define repr(i, begin, end) for (int i = int(begin); i < int(end); i++)
 #define repi(i, N) for (int i = int(N) - 1; i >= 0; i++)
 
-#ifdef __LOCAL__
-#define printf(args...) (fprintf(stderr, args), printf(args))
-std::clock_t _t0 = 0;
-void timer_begin() { _t0 = clock(); }
-void timer_end(const char* note) {
-    double delta = double(clock() - _t0) / CLOCKS_PER_SEC;
-    printf("%s cost: %lf sec.\n", note, delta);
-}
-#else
-#define timer_begin() (void(0))
-#define timer_end(note) (void(0))
-#endif  // __LOCAL__
-
-template <int group = 20, typename ITER>
+template <int group = 16, typename ITER>
 void show(const char* note, ITER begin, ITER end) {
 #ifdef __LOCAL__
-    cout << note;
-    for (int i = 1; begin != end; i++) {
+    printf("%s", note);
+    int i = 1;
+    for (; begin != end; i++) {
         std::cout << *(begin++) << ' ';
-        if (i % group == 0 or begin == end) std::cout << std::endl;
+        if (i % group == 0) std::cout << std::endl;
     }
-#endif  // __LOCAL__
+    if (i % group != 1) std::cout << std::endl;
+#endif
 }
 
 // ===== personal contest template =====
 
 // ========== contest code ==========
 void solve(int _turn) {
-    double best = 0;
-    printf("Case #%d: %lf\n", _turn, best);
+    int N, K;
+    scanf("%d%d", &N, &K);
+    vector<int> A(N);
+    rep(i, N) scanf("%d", &A[i]);
+
+    int total = 0;
+    sort(allof(A));
+    rep(i, N) {
+        if (A[i] >= total / K + 1) total++;
+    }
+    printf("Case #%d: %d\n", _turn, total);
 }
 
 // ===== kickstart template =====
 int main() {
-#ifdef __LOCAL__  // define in building command.
+#ifdef __LOCAL__  // define in build command.
     freopen("_kickstart.in", "r", stdin);
-    // freopen("_debug.in", "r", stdin);
+    freopen("_debug.in", "r", stdin);
     freopen("_main_cpp.out", "w", stdout);
 #endif
     int T = 1;
-    // scanf("%d", &T);
+    scanf("%d", &T);
     rep(t, T) { solve(t + 1); }
 }

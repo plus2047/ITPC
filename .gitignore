@@ -6,4 +6,5 @@ _*
 main.dSYM
 main
 *.tar.gz
+bin
 

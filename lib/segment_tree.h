@@ -54,14 +54,14 @@ struct SegmentTree {
         }
     }
     
-    NUM query(int left, int right) {
-        assert(left <= right and left >= 0 and right < SIZE);
-        left += SIZE, right += SIZE;
+    NUM query(int first, int last) {
+        assert(first <= last and first >= 0 and last < SIZE);
+        first += SIZE, last += SIZE;
         NUM res = VOID;
-        while (left <= right) {
-            if (left % 2 == 1) res += tree[left++];
-            if (right % 2 == 0) res += tree[right--];
-            left /= 2, right /= 2;
+        while (first <= last) {
+            if (first % 2 == 1) res += tree[first++];
+            if (last % 2 == 0) res += tree[last--];
+            first /= 2, last /= 2;
         }
         return res;
     }
@@ -80,11 +80,11 @@ struct FenwickTree {
         for (int k = idx + 1; k <= SIZE; k += (k & -k)) tree[k] += val;
     }
 
-    inline NUM prefix_sum(int idx) {
-        if (idx < 0) return 0;
-        if (idx > SIZE) idx = SIZE;
+    inline NUM prefix_sum(int last) {
+        if (last < 0) return 0;
+        if (last > SIZE) last = SIZE;
         NUM res = 0;
-        for (int k = idx + 1; k > 0; k -= (k & -k)) res += tree[k];
+        for (int k = last + 1; k > 0; k -= (k & -k)) res += tree[k];
         return res;
     }
 };
@@ -108,13 +108,13 @@ struct FenwickTree2D {
         }
     }
 
-    inline NUM prefix_sum(int idx0, int idx1) {
-        if (idx0 < 0 or idx1 < 0) return 0;
-        if (idx0 > SIZE0) idx0 = SIZE0;
-        if (idx1 > SIZE1) idx1 = SIZE1;
+    inline NUM prefix_sum(int last0, int last1) {
+        if (last0 < 0 or last1 < 0) return 0;
+        if (last0 > SIZE0) last0 = SIZE0;
+        if (last1 > SIZE1) last1 = SIZE1;
         NUM res = 0;
-        for (int i = idx0 + 1; i > 0; i -= (i & -i)) {
-            for (int j = idx1 + 1; j > 0; j -= (j & -j)) {
+        for (int i = last0 + 1; i > 0; i -= (i & -i)) {
+            for (int j = last1 + 1; j > 0; j -= (j & -j)) {
                 res += tree[i][j];
             }
         }
