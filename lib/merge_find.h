@@ -8,7 +8,7 @@ struct MergeFindSet {
         for (int i = 0; i < n; i++) p[i] = i;
     }
     int find(int x) { return p[x] == x ? x : p[x] = find(p[x]); }
-    void merge(int x, int y) { p[find(y)] = find(x); }
+    void merge(int root, int child) { p[find(child)] = find(root); }
 };
 
 struct CountMergeFindSet {
