@@ -36,10 +36,10 @@ typedef long long int LL;
 #define rep(i, N) for (int i = 0; i < int(N); i++)
 #define repr(i, begin, end) for (int i = int(begin); i < int(end); i++)
 #define repi(i, N) for (int i = int(N) - 1; i >= 0; i--)
-#define asmax(mval, val) \
-    if (mval < val) mval = val;
-#define asmin(mval, val) \
-    if (mval > val) mval = val;
+#define asmax(m, update) \
+    if (m < update) m = update;
+#define asmin(m, update) \
+    if (m > update) m = update;
 
 template <int group = 20, typename ITER>
 void show(const char* note, ITER begin, ITER end) {
