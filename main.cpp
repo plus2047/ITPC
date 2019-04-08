@@ -30,11 +30,16 @@ using namespace std;
 
 typedef long long int LL;
 #define G(_tuple, num) (get<num>(_tuple))
-#define len(c) int((c).size())
-#define allof(container) (container).begin(), (container).end()
+#define len(container) int((container).size())
+#define allof(c) (c).begin(), (c).end()
+#define frontof(c, k) (c).begin(), (c).begin() + (k)
 #define rep(i, N) for (int i = 0; i < int(N); i++)
 #define repr(i, begin, end) for (int i = int(begin); i < int(end); i++)
-#define repi(i, N) for (int i = int(N) - 1; i >= 0; i++)
+#define repi(i, N) for (int i = int(N) - 1; i >= 0; i--)
+#define asmax(mval, val) \
+    if (mval < val) mval = val;
+#define asmin(mval, val) \
+    if (mval > val) mval = val;
 
 #ifdef __LOCAL__
 #define printf(args...) (fprintf(stderr, args), printf(args))
@@ -64,8 +69,7 @@ void show(const char* note, ITER begin, ITER end) {
 
 // ========== contest code ==========
 void solve(int _turn) {
-    double best = 0;
-    printf("Case #%d: %lf\n", _turn, best);
+    printf("HelloWorld!!!\n");
 }
 
 // ===== kickstart template =====

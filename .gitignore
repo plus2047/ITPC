@@ -1,6 +1,6 @@
 cmake-build*
 .*
-!.vscode
+!.vscode/*.json
 !.gitignore
 _*
 main.dSYM

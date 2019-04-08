@@ -33,7 +33,7 @@ typedef long long int LL;
 #define allof(container) (container).begin(), (container).end()
 #define rep(i, N) for (int i = 0; i < int(N); i++)
 #define repr(i, begin, end) for (int i = int(begin); i < int(end); i++)
-#define repi(i, N) for (int i = int(N) - 1; i >= 0; i++)
+#define repi(i, N) for (int i = int(N) - 1; i >= 0; i--)
 
 template <int group = 16, typename ITER>
 void show(const char* note, ITER begin, ITER end) {
