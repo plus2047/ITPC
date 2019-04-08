@@ -42,7 +42,6 @@ typedef long long int LL;
     if (mval > val) mval = val;
 
 #ifdef __LOCAL__
-#define printf(args...) (fprintf(stderr, args), printf(args))
 std::clock_t _t0 = 0;
 void timer_begin() { _t0 = clock(); }
 void timer_end(const char* note) {
@@ -68,18 +67,11 @@ void show(const char* note, ITER begin, ITER end) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
-void solve(int _turn) {
-    printf("HelloWorld!!!\n");
-}
+void solve(int _turn) { printf("HelloWorld C++!!!\n"); }
 
 // ===== kickstart template =====
 int main() {
-#ifdef __LOCAL__  // define in building command.
-    freopen("_kickstart.in", "r", stdin);
-    // freopen("_debug.in", "r", stdin);
-    freopen("_main_cpp.out", "w", stdout);
-#endif
     int T = 1;
-    // scanf("%d", &T);
+    scanf("%d", &T);
     rep(t, T) { solve(t + 1); }
 }
