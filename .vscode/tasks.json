@@ -4,9 +4,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build & run main.cpp (release, O3)",
+            "label": "build & run C++ / Java / Python3",
             "type": "shell",
-            "command": "${workspaceFolder}/run.py",
+            "command": "${workspaceFolder}/quickrun.py",
             "args": [
                 "-s",
                 "${relativeFile}",
