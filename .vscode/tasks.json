@@ -4,45 +4,17 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build & run current file (debug)",
-            "type": "shell",
-            "command": "g++",
-            "args": [
-                "-D__LOCAL__",
-                "--std=c++11",
-                "-g",
-                "${relativeFile}",
-                "-o",
-                "./bin",
-                "&&",
-                "time",
-                "./bin"
-            ],
-            "group": "build",
-            "problemMatcher": "$msCompile"
-        },
-        {
             "label": "build & run main.cpp (release, O3)",
             "type": "shell",
-            "command": "g++",
+            "command": "${workspaceFolder}/run.py",
             "args": [
-                "-D__LOCAL__",
-                "--std=c++11",
-                "-O3",
+                "-s",
                 "${relativeFile}",
-                "-o",
-                "./bin",
-                "&&",
-                "date",
-                "&&",
-                "time",
-                "./bin",
             ],
             "group": {
                 "kind": "build",
                 "isDefault": true
-            },
-            "problemMatcher": "$msCompile"
+            }
         }
     ]
 }

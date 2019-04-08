@@ -35,7 +35,11 @@ typedef long long int LL;
 #define frontof(c, k) (c).begin(), (c).begin() + (k)
 #define rep(i, N) for (int i = 0; i < int(N); i++)
 #define repr(i, begin, end) for (int i = int(begin); i < int(end); i++)
-#define repi(i, N) for (int i = int(N) - 1; i >= 0; i++)
+#define repi(i, N) for (int i = int(N) - 1; i >= 0; i--)
+#define asmax(mval, val) \
+    if (mval < val) mval = val;
+#define asmin(mval, val) \
+    if (mval > val) mval = val;
 
 template <int group = 20, typename ITER>
 void show(const char* note, ITER begin, ITER end) {
@@ -49,7 +53,6 @@ void show(const char* note, ITER begin, ITER end) {
 }
 
 #ifdef __LOCAL__
-#define printf(args...) (fprintf(stderr, args), printf(args))
 std::clock_t _t0 = 0;
 void timer_begin() { _t0 = clock(); }
 void timer_end(const char* note) {
@@ -64,16 +67,11 @@ void timer_end(const char* note) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
-void solve(int _turn) {}
+void solve(int _turn) { printf("HelloWorld C++!!!\n"); }
 
 // ===== kickstart template =====
 int main() {
-#ifdef __LOCAL__  // define in building command.
-    freopen("_kickstart.in", "r", stdin);
-    // freopen("_debug.in", "r", stdin);
-    freopen("_main_cpp.out", "w", stdout);
-#endif
     int T = 1;
-    // scanf("%d", &T);
+    scanf("%d", &T);
     rep(t, T) { solve(t + 1); }
 }

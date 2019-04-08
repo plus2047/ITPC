@@ -34,7 +34,7 @@ typedef long long int LL;
 #define allof(container) (container).begin(), (container).end()
 #define rep(i, N) for (int i = 0; i < int(N); i++)
 #define repr(i, begin, end) for (int i = int(begin); i < int(end); i++)
-#define repi(i, N) for (int i = int(N) - 1; i >= 0; i++)
+#define repi(i, N) for (int i = int(N) - 1; i >= 0; i--)
 
 #ifdef __LOCAL__
 #define printf(args...) (fprintf(stderr, args), printf(args))
