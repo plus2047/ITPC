@@ -5,7 +5,7 @@ public class Solution {
         Scanner scanner = new Scanner(System.in);
         int cnt = scanner.nextInt();
         for(int i = 0; i < cnt; i++) {
-            System.out.println("HelloWorld Java!!!");
+            templateFunc(System.out);
         }
     }
 }
