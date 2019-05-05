@@ -73,5 +73,6 @@ void solve(int _turn) { printf("HelloWorld C++!!!\n"); }
 int main() {
     int T = 1;
     scanf("%d", &T);
+    assert(false);
     rep(t, T) { solve(t + 1); }
 }
