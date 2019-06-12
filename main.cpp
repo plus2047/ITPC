@@ -67,12 +67,20 @@ void timer_end(const char* note) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
-void solve(int _turn) { printf("HelloWorld C++!!!\n"); }
+void solve(int _turn) {
+    map<int, int> vals;
+    vector<int> vec = {1, 2, 2, 3, 4};
+    for(int v: vec) {
+        vals[v] = vals.size();
+    }
+    for(const auto& p: vals) {
+        cout << p.first << ' ' << p.second << endl;
+    }
+}
 
 // ===== kickstart template =====
 int main() {
     int T = 1;
-    scanf("%d", &T);
-    assert(false);
+    // scanf("%d", &T);
     rep(t, T) { solve(t + 1); }
 }

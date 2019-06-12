@@ -1,3 +1,4 @@
+```java
 import java.util.*;
 
 public class Solution {
@@ -38,3 +39,4 @@ public class Solution {
         LinkedList<Integer> linkedList = new LinkedList<>();
     }
 }
+```
