@@ -14,7 +14,7 @@ if not os.path.exists(buildDir):
     os.makedirs(buildDir)
 
 parser = argparse.ArgumentParser()
-parser.add_argument('-s', '--source')
+parser.add_argument('-s', '--source', required=True)
 parser.add_argument('-b', '--bin', default=buildDir + "/Solution")
 parser.add_argument('-d', '--debug', default=False, action="store_true")
 parser.add_argument('-i', '--stdin', default=baseDir + "/_main.in")
@@ -41,9 +41,9 @@ elif fileExt == "py":
     run("python3 " + args.source)
 
 elif fileExt == "java":
-    os.system("cp %s %s/Solution.java" % (args.source, buildDir))
-    os.system("javac %s/Solution.java" % buildDir)
-    run("cd %s && java Solution" % buildDir)
+    ret = os.system("cp %s %s/Solution.java" % (args.source, buildDir))
+    if ret == 0: os.system("javac %s/Solution.java" % buildDir)
+    if ret == 0: run("cd %s && java Solution" % buildDir)
 
 else:
     print("unsupported source type.")
