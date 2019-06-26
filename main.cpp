@@ -67,11 +67,38 @@ void timer_end(const char* note) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
-void solve(int _turn) { printf("HelloWorld C++!!!\n"); }
+void solve(int _turn) {
+    string str;
+    cin >> str;
+    int N = str.size();
+    vector<string> part(1);
+    vector<int> idx(N);
+    for(int i = 0; i < N; i++) {
+        if(str[i] == '_') {
+            if(part.back().size() != 0){
+                part.push_back("");
+            }
+            idx[i] = part.size() - 1;
+        } else {
+            part.back().push_back(str[i]);
+        }
+    }
+    // show("part: ", allof(part));
+    // show("idx: ", allof(idx));
+    for(int i = 0; i < N; i++) {
+        if(str[i] == '_') {
+            int next_idx = idx[i];
+            if(next_idx != 0 and part[next_idx] == part[next_idx - 1]) {
+                str[i] = '+';
+            }
+        }
+    }
+    cout << str << endl;
+}
 
 // ===== kickstart template =====
 int main() {
-    int T = 1;
+    int T = 4;
     scanf("%d", &T);
     rep(t, T) { solve(t + 1); }
 }
