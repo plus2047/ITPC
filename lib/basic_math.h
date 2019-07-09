@@ -1,4 +1,6 @@
 #pragma once
+#include <limits>
+#include <random>
 
 namespace contest {
 
@@ -45,4 +47,18 @@ num_t gcd(num_t a, num_t b) {
     }
     return a;
 }
+
+template <typename num>
+struct RandNum {
+    std::mt19937 gen;
+    std::uniform_int_distribution<num> dist;
+
+    RandNum(num left, num right, unsigned seed = 0)
+        : gen(seed), dist(left, right) {}
+
+    num operator()() { return dist(gen); }
+};
+
+RandNum<int> randInt = RandNum<int>(0, std::numeric_limits<int>::max());
+
 }  // namespace contest
