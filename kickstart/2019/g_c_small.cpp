@@ -65,46 +65,42 @@ void timer_end(const char* note) {
 #endif  // __LOCAL__
 
 // ===== personal contest template =====
+template <typename num_t>
+num_t quick_pow(num_t base, int n) {
+    num_t res = 1;
+    while (n) {
+        if (n % 2) res *= base;
+        base *= base;
+        n /= 2;
+    }
+    return res;
+}
 
 // ========== contest code ==========
-const int N_MAX = 1E3 + 8;
-const int HIGHEST_BIT = 50;
-
-vector<LL> A(N_MAX);
-vector<LL> bit_sum(HIGHEST_BIT + 1), bit_remained(HIGHEST_BIT + 1);
-vector<LL> min_tail(HIGHEST_BIT + 1);
-LL k = 0;
+const int N_MAX = 32;
+vector<int> A(N_MAX), B(N_MAX);
 
 void solve(int _turn) {
-    LL N, M;
-    scanf("%lld%lld", &N, &M);
-    rep(i, N) scanf("%lld", &A[i]);
+    int N, H;
+    scanf("%d%d", &N, &H);
+    rep(i, N) scanf("%d", &A[i]);
+    rep(i, N) scanf("%d", &B[i]);
 
-    rep(i, HIGHEST_BIT) {
-        LL mask = 1L << i;
-        bit_sum[i] = 0;
-        rep(j, N) { bit_sum[i] += mask & A[j]; }
-        bit_remained[i] = N * mask - bit_sum[i];
-
-        min_tail[i] =
-            (i == 0 ? 0L : min_tail[i - 1]) + min(bit_sum[i], bit_remained[i]);
+    unsigned mask_lim = quick_pow(3, N);
+    LL sum_a = 0, sum_b = 0, res = 0;
+    for(LL mask = 0; mask < mask_lim; mask++) {
+        sum_a = sum_b = 0;
+        LL m = mask;
+        rep(i, N) {
+            int act = m % 3;
+            m /= 3;
+            if(not(act & 1)) sum_a += A[i];
+            if(not(act & 2)) sum_b += B[i];
+        }
+        if(sum_a >= H and sum_b >= H) res++;
     }
 
-    k = 0;
-    repi(i, HIGHEST_BIT) {
-        if (M < 0) {
-            k = -1;
-            break;
-        }
-        if (bit_remained[i] + (i == 0 ? 0L : min_tail[i - 1]) <= M) {
-            k += 1L << i;
-            M -= bit_remained[i];
-        } else {
-            M -= bit_sum[i];
-        }
-    }
-
-    printf("Case #%d: %lld\n", _turn, k);
+    printf("Case #%d: %lld\n", _turn, res);
 }
 
 // ===== kickstart template =====

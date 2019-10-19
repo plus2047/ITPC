@@ -24,7 +24,10 @@
 #include <unordered_set>
 #include <vector>
 
+#include "basic_math.h"
+
 using namespace std;
+using namespace contest;
 
 // ===== personal contest env =====
 
@@ -64,52 +67,7 @@ void timer_end(const char* note) {
 #define timer_end(note) (void(0))
 #endif  // __LOCAL__
 
-// ===== personal contest template =====
-
-// ========== contest code ==========
-const int N_MAX = 1E3 + 8;
-const int HIGHEST_BIT = 50;
-
-vector<LL> A(N_MAX);
-vector<LL> bit_sum(HIGHEST_BIT + 1), bit_remained(HIGHEST_BIT + 1);
-vector<LL> min_tail(HIGHEST_BIT + 1);
-LL k = 0;
-
-void solve(int _turn) {
-    LL N, M;
-    scanf("%lld%lld", &N, &M);
-    rep(i, N) scanf("%lld", &A[i]);
-
-    rep(i, HIGHEST_BIT) {
-        LL mask = 1L << i;
-        bit_sum[i] = 0;
-        rep(j, N) { bit_sum[i] += mask & A[j]; }
-        bit_remained[i] = N * mask - bit_sum[i];
-
-        min_tail[i] =
-            (i == 0 ? 0L : min_tail[i - 1]) + min(bit_sum[i], bit_remained[i]);
-    }
-
-    k = 0;
-    repi(i, HIGHEST_BIT) {
-        if (M < 0) {
-            k = -1;
-            break;
-        }
-        if (bit_remained[i] + (i == 0 ? 0L : min_tail[i - 1]) <= M) {
-            k += 1L << i;
-            M -= bit_remained[i];
-        } else {
-            M -= bit_sum[i];
-        }
-    }
-
-    printf("Case #%d: %lld\n", _turn, k);
-}
-
 // ===== kickstart template =====
 int main() {
-    int T = 1;
-    scanf("%d", &T);
-    rep(t, T) { solve(t + 1); }
+    
 }

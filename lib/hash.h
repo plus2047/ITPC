@@ -3,7 +3,7 @@
 #include <vector>
 
 namespace contest {
-inline unsigned str_hash(unsigned char* str) {
+inline unsigned hash_str(unsigned char* str) {
     // hash * 33 + c, ancient magic.
     unsigned hash = 5381;
     while (*str) hash = ((hash << 5) + hash) + *(str++);
@@ -37,7 +37,7 @@ struct HashMap {
     inline bool update(KEY key, VAL val) {
         if (curr_size >= MAX_ELEMET_NUM) return false;
 
-        KEY index = hash_u32(unsigned(key), SIZE);
+        unsigned index = hash_u32(unsigned(key), SIZE);
         while (used[index] and !removed[index] and keys[index] != key) {
             if (++index >= SIZE) index = 0;
         }

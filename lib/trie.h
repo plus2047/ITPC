@@ -43,7 +43,7 @@ struct Trie {
     }
 
     // return true if it is a prefix.
-    // and if it's a full match, save the string index into idx.
+    // and if it's a full match, save the val of the string into val.
     bool check(ITER begin, ITER end, int& val) {
         int root_index = 0;
         for (; begin != end; ++begin) {

@@ -4,7 +4,9 @@
 #include <vector>
 
 namespace contest {
+
 typedef int NUM;
+
 // number: 1234 is save as [4, 3, 2, 1]
 typedef std::vector<NUM> BigInt;
 

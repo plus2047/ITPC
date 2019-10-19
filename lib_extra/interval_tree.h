@@ -23,7 +23,7 @@ struct UnnamedIntervalTree {
         points.insert(std::make_pair(NUM_MAX, Point({-1, -1})));
     }
 
-    void check(IDX begin, IDX end) {
+    inline void check(IDX begin, IDX end) {
         assert(begin < end and begin != IDX_MIN and end != IDX_MAX);
     }
 

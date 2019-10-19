@@ -65,50 +65,70 @@ void timer_end(const char* note) {
 #endif  // __LOCAL__
 
 // ===== personal contest template =====
+template <typename num_t>
+num_t quick_pow(num_t base, int n) {
+    num_t res = 1;
+    while (n) {
+        if (n % 2) res *= base;
+        base *= base;
+        n /= 2;
+    }
+    return res;
+}
 
 // ========== contest code ==========
-const int N_MAX = 1E3 + 8;
-const int HIGHEST_BIT = 50;
+const int N_MAX = 32;
+vector<pair<LL, LL>> ab(N_MAX);
+vector<LL> preA(N_MAX), preB(N_MAX);
+vector<LL> pow3(N_MAX);
+LL res = 0;
+LL N, H;
 
-vector<LL> A(N_MAX);
-vector<LL> bit_sum(HIGHEST_BIT + 1), bit_remained(HIGHEST_BIT + 1);
-vector<LL> min_tail(HIGHEST_BIT + 1);
-LL k = 0;
+bool comp_sum(const pair<LL, LL>& a, const pair<LL, LL>& b) {
+    return a.first + a.second > b.first + b.second;
+}
+
+void dfs(LL idx, LL targetA, LL targetB) {
+    if (targetA <= 0 and targetB <= 0) {
+        res += pow3[N - idx];
+        return;
+    }
+    if(idx >= N) {
+        return;
+    }
+    if (targetA > preA[N - 1] - (idx == 0 ? 0 : preA[idx - 1]) or
+        targetB > preB[N - 1] - (idx == 0 ? 0 : preB[idx - 1])) {
+        return;
+    }
+    dfs(idx + 1, targetA - ab[idx].first, targetB);
+    dfs(idx + 1, targetA, targetB - ab[idx].second);
+    dfs(idx + 1, targetA - ab[idx].first, targetB - ab[idx].second);
+}
 
 void solve(int _turn) {
-    LL N, M;
-    scanf("%lld%lld", &N, &M);
-    rep(i, N) scanf("%lld", &A[i]);
+    scanf("%lld%lld", &N, &H);
+    rep(i, N) scanf("%lld", &ab[i].first);
+    rep(i, N) scanf("%lld", &ab[i].second);
+    sort(frontof(ab, N), comp_sum);
 
-    rep(i, HIGHEST_BIT) {
-        LL mask = 1L << i;
-        bit_sum[i] = 0;
-        rep(j, N) { bit_sum[i] += mask & A[j]; }
-        bit_remained[i] = N * mask - bit_sum[i];
-
-        min_tail[i] =
-            (i == 0 ? 0L : min_tail[i - 1]) + min(bit_sum[i], bit_remained[i]);
+    preA[0] = ab[0].first;
+    preB[0] = ab[0].second;
+    repr(i, 1, N) {
+        preA[i] = preA[i - 1] + ab[i].first;
+        preB[i] = preB[i - 1] + ab[i].second;
     }
 
-    k = 0;
-    repi(i, HIGHEST_BIT) {
-        if (M < 0) {
-            k = -1;
-            break;
-        }
-        if (bit_remained[i] + (i == 0 ? 0L : min_tail[i - 1]) <= M) {
-            k += 1L << i;
-            M -= bit_remained[i];
-        } else {
-            M -= bit_sum[i];
-        }
-    }
+    res = 0;
+    dfs(0, H, H);
 
-    printf("Case #%d: %lld\n", _turn, k);
+    printf("Case #%d: %lld\n", _turn, res);
 }
 
 // ===== kickstart template =====
 int main() {
+    pow3[0] = 1;
+    repr(i, 1, N_MAX) pow3[i] = pow3[i - 1] * 3;
+
     int T = 1;
     scanf("%d", &T);
     rep(t, T) { solve(t + 1); }

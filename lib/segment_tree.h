@@ -59,8 +59,8 @@ struct SegmentTree {
         first += SIZE, last += SIZE;
         NUM res = VOID;
         while (first <= last) {
-            if (first % 2 == 1) res += tree[first++];
-            if (last % 2 == 0) res += tree[last--];
+            if (first % 2 == 1) res = func(res, tree[first++]);
+            if (last % 2 == 0) res = func(res, tree[last--]);
             first /= 2, last /= 2;
         }
         return res;

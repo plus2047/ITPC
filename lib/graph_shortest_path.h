@@ -53,7 +53,7 @@ struct ShortestPath {
 
     void dijkstra(index_t start) {
         // (directed positive-weighted graph shortest path)
-        // run dijstra's algorithm.
+        // run dijsktra's algorithm.
         // result is saved in weight & path_from vector.
         // there cannot be negative path in graph.
         _init(start);

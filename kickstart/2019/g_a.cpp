@@ -67,44 +67,35 @@ void timer_end(const char* note) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
-const int N_MAX = 1E3 + 8;
-const int HIGHEST_BIT = 50;
-
-vector<LL> A(N_MAX);
-vector<LL> bit_sum(HIGHEST_BIT + 1), bit_remained(HIGHEST_BIT + 1);
-vector<LL> min_tail(HIGHEST_BIT + 1);
-LL k = 0;
+const int N_MAX = 1E5 + 8;
+vector<int> reader(N_MAX);
 
 void solve(int _turn) {
-    LL N, M;
-    scanf("%lld%lld", &N, &M);
-    rep(i, N) scanf("%lld", &A[i]);
+    int N, M, Q;
+    scanf("%d%d%d", &N, &M, &Q);
+    vector<int> P(M);
+    rep(i, M) scanf("%d", &P[i]);
 
-    rep(i, HIGHEST_BIT) {
-        LL mask = 1L << i;
-        bit_sum[i] = 0;
-        rep(j, N) { bit_sum[i] += mask & A[j]; }
-        bit_remained[i] = N * mask - bit_sum[i];
-
-        min_tail[i] =
-            (i == 0 ? 0L : min_tail[i - 1]) + min(bit_sum[i], bit_remained[i]);
+    fill(frontof(reader, N + 1), 0);
+    LL total = 0;
+    rep(i, Q) {
+        int r;
+        scanf("%d", &r);
+        reader[r]++;
+        total += N / r;
     }
 
-    k = 0;
-    repi(i, HIGHEST_BIT) {
-        if (M < 0) {
-            k = -1;
-            break;
+    for(int p: P) {
+        int fact = 1;
+        for(; fact * fact < p; fact++) {
+            if(p % fact == 0) {
+                total -= reader[fact] + reader[p / fact];
+            }
         }
-        if (bit_remained[i] + (i == 0 ? 0L : min_tail[i - 1]) <= M) {
-            k += 1L << i;
-            M -= bit_remained[i];
-        } else {
-            M -= bit_sum[i];
-        }
+        if(fact * fact == p) total -= reader[fact];
     }
 
-    printf("Case #%d: %lld\n", _turn, k);
+    printf("Case #%d: %lld\n", _turn, total);
 }
 
 // ===== kickstart template =====

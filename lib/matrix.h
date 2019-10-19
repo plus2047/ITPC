@@ -7,14 +7,14 @@ namespace contest {
 template <typename NUM = int>
 struct Matrix {
     int dim1, dim2;
-    vector<NUM> data;
+    std::vector<NUM> data;
 
     Matrix(int m, int n) : dim1(m), dim2(n), data(m * n) {}
     inline NUM& operator()(int m, int n) { return data[m * dim2 + n]; }
 
     void resize(int m, int n) { dim1 = m, dim2 = n, data.resize(m * n); }
     void as_eye() {
-        as_zero();
+        std::fill(data.begin(), data.end(), 0);
         assert(dim1 == dim2);
         for (int i = 0; i < dim1; i++) (*this)(i, i) = 1;
     }

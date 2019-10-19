@@ -6,7 +6,7 @@
 
 namespace contest {
 // Minimal Spanning Tree (MST) algorithm: Kruskal algotithm
-// for un-directional ded graph.
+// for un-directional graph.
 // for a edge(u, v, w), it's not necessary to add (v, u, w) into input set.
 template <typename index_t, typename weight_t>
 struct MinSpaningTree {
