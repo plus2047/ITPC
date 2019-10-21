@@ -14,7 +14,7 @@ namespace contest {
 inline bool isPowerOfTwo(unsigned x) { return x != 0 && (x & (x - 1)) == 0; }
 inline bool isPowerOfTwo(int x) { return x != 0 && (x & -x) == x; }
 
-inline int lowestBit(int x) { return x & (-x); }
+inline int LSB(int x) { return x & (-x); }  // least significant bit
 
 }  // namespace contest
 
