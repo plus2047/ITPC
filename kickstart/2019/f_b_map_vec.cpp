@@ -41,8 +41,6 @@ typedef long long int LL;
     if (m < update) m = update;
 #define asmin(m, update) \
     if (m > update) m = update;
-#define vec2d(type, name, m, n, v) \
-    vector<vector<type>> name = vector<vector<type>>(m, vector<type>(n, v))
 
 template <int group = 20, typename ITER>
 void show(const char* note, ITER begin, ITER end) {
@@ -72,7 +70,40 @@ void timer_end(const char* note) {
 // ========== contest code ==========
 
 void solve(int _turn) {
-    printf("Case #%d: %lld\n", _turn, 0);
+    int N, S;
+    scanf("%d%d", &N, &S);
+    vector<vector<int>> p2s(N);
+    map<vector<int>, int> s2cnt;
+    rep(i, N) {
+        int cnt;
+        scanf("%d\n", &cnt);
+        rep(j, cnt) {
+            int k;
+            scanf("%d\n", &k);
+            p2s[i].push_back(k);
+        }
+        sort(allof(p2s[i]));
+        s2cnt[p2s[i]]++;
+    }
+    
+    LL total = 0;
+    rep(i, N) {
+        int cnt = len(p2s[i]);
+        int subset_cnt = 1 << cnt;
+        int unteachable = 0;
+        rep(mask, subset_cnt) {
+            vector<int> subset;
+            rep(j, cnt) {
+                if((1 << j) & mask) {
+                    subset.push_back(p2s[i][j]);
+                }
+            }
+            unteachable += s2cnt[subset];
+        }
+        total += N - unteachable;
+    }
+
+    printf("Case #%d: %lld\n", _turn, total);
 }
 
 // ===== kickstart template =====
