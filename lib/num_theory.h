@@ -7,19 +7,22 @@
 
 namespace contest {
 
-std::vector<int> get_primes(int less_than) {
-    if (less_than <= 2) return {};
-    std::vector<char> flag(less_than, true);  // vector<char> is faster
-    std::vector<int> mod = {2};
-    for (int num = 3; num < less_than; num += 2) {
-        if (!flag[num])
-            continue;
-        else {
-            mod.push_back(num);
-            for (int i = 2; i * num < less_than; i++) flag[i * num] = false;
+void get_prime_flags(std::vector<bool>& flags) {
+    // this function can get primes less than 1E9 in 4 seconds. 
+    // all flags should be init as true
+    // assert flags.size() >= 2
+    int lim = int(flags.size());
+    flags[0] = flags[1] = false;
+    for (int n = 4; n < lim; n += 2) {
+        flags[n] = false;
+    }
+    for (int n = 3; n * n <= lim; n += 2) {
+        if (flags[n]) {
+            for (int t = n * 3; t < lim; t += n << 1) {
+                flags[t] = false;
+            }
         }
     }
-    return mod;
 }
 
 template <typename NUM = int>

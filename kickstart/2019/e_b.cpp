@@ -72,7 +72,57 @@ void timer_end(const char* note) {
 // ========== contest code ==========
 
 void solve(int _turn) {
-    printf("Case #%d: %lld\n", _turn, 0LL);
+    int D, S;
+    scanf("%d%d", &D, &S);
+
+    typedef pair<LL, LL> Slot;
+    vector<Slot> slots(S);  // <gain1, gain2>
+    rep(i, S) { scanf("%lld%lld", &slots[i].first, &slots[i].second); }
+
+    typedef tuple<LL, LL, int> Query;
+    vector<Query> queries(D);  // <target1, target2, queryId>
+    rep(i, D) {
+        LL n1, n2;
+        scanf("%lld%lld", &n1, &n2);
+        queries[i] = {n1, n2, i};
+    }
+
+    sort(allof(slots), [](const Slot& a, const Slot& b) {
+        return a.first * b.second > b.first * a.second;
+    });
+
+    LL totalGain1 = 0, totalGain2 = 0;
+    for(const Slot& s: slots) {
+        totalGain2 += s.second;
+    }
+
+    sort(allof(queries));
+
+    string resStr(D, '?');
+    int slotIdx = 0;
+    for(const Query& q: queries) {
+        LL target1, target2;
+        int charIdx;
+        tie(target1, target2, charIdx) = q;
+
+        while(slotIdx < S and totalGain1 + slots[slotIdx].first <= target1) {
+            totalGain1 += slots[slotIdx].first;
+            totalGain2 -= slots[slotIdx].second;
+            slotIdx++;
+        }
+
+        char res = 'Y';
+        if(slotIdx == S) {
+            res = target1 <= totalGain1 and target2 <= totalGain2 ? 'Y' : 'N';
+        } else {
+            LL needed1 = target1 - totalGain1, s1, s2;
+            tie(s1, s2) = slots[slotIdx];
+            res = target2 * s1 <= totalGain2 * s1 - needed1 * s2 ? 'Y' : 'N';
+        }
+        resStr[charIdx] = res;
+    }
+
+    printf("Case #%d: %s\n", _turn, resStr.c_str());
 }
 
 // ===== kickstart template =====

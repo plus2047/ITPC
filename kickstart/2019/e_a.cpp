@@ -68,11 +68,32 @@ void timer_end(const char* note) {
 #endif  // __LOCAL__
 
 // ===== personal contest template =====
+struct MergeFindSet {
+    std::vector<int> p;
+    MergeFindSet(int n) : p(n) {
+        for (int i = 0; i < n; i++) p[i] = i;
+    }
+    int find(int x) { return p[x] == x ? x : p[x] = find(p[x]); }
+    void merge(int root, int child) { p[find(child)] = find(root); }
+};
 
 // ========== contest code ==========
 
 void solve(int _turn) {
-    printf("Case #%d: %lld\n", _turn, 0LL);
+    int N, M;
+    scanf("%d%d", &N, &M);
+    MergeFindSet mf(N + 1);
+
+    int count1 = 0;
+    rep(i, M) {
+        int a, b;
+        scanf("%d%d", &a, &b);
+        if(mf.find(a) != mf.find(b)) {
+            mf.merge(a, b);
+            count1++;
+        }
+    }
+    printf("Case #%d: %lld\n", _turn, count1 + (N - 1 - count1) * 2);
 }
 
 // ===== kickstart template =====
