@@ -2,12 +2,16 @@
 
 namespace contest {
 
-// GCC / clang built in function to count 1 in binary.
+// GCC / clang built in function to count 1 in binary. (fastest implement)
 // for all those function, return type: int
 // for unsigned int:
-#define popcount(x) __builtin_popcount(x)
+// int n =  __builtin_popcount(x)
 // for unsigned long long int:
-#define popcountll(x) __builtin_popcountll(x)
+// int n = __builtin_popcountll(x)
+
+// C++ STD
+// int n = bitset<32>(x).count();
+
 
 // warning: (x & (x - 1)) == 0 cannot be write as x & (x - 1) == 0
 // unsigned algorithm can be used to int

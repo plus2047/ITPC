@@ -49,18 +49,20 @@ int main(){
         printf("hash set insert: %d, using: %lfs. (inited)\n", (int) hash_set.size(), (t1 - t0) / double(CLOCKS_PER_SEC));
 
         t0 = clock();
+        int cnt = 0;
         for (int i = 0; i < count; i++) {
-            tree_set.count(random());
+            cnt += tree_set.count(random());
         }
         t1 = clock();
-        printf("tree set count: %d, using: %lfs.\n", (int) tree_set.size(), (t1 - t0) / double(CLOCKS_PER_SEC));
+        printf("tree set count: %d, using: %lfs.\n", cnt, (t1 - t0) / double(CLOCKS_PER_SEC));
 
         t0 = clock();
+        cnt = 0;
         for (int i = 0; i < count; i++) {
-            hash_set.count(random());
+            cnt += hash_set.count(random());
         }
         t1 = clock();
-        printf("hash set count: %d, using: %lfs.\n", (int) hash_set.size(), (t1 - t0) / double(CLOCKS_PER_SEC));
+        printf("hash set count: %d, using: %lfs.\n", cnt, (t1 - t0) / double(CLOCKS_PER_SEC));
 
         t0 = clock();
         for (int i = 0; i < count; i++) {
