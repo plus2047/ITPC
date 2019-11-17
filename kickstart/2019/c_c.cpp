@@ -16,6 +16,7 @@
 #include <stdexcept>
 
 #include <array>
+#include <bitset>
 #include <map>
 #include <queue>
 #include <set>
@@ -35,7 +36,13 @@ typedef long long int LL;
 #define frontof(c, k) (c).begin(), (c).begin() + (k)
 #define rep(i, N) for (int i = 0; i < int(N); i++)
 #define repr(i, begin, end) for (int i = int(begin); i < int(end); i++)
-#define repi(i, N) for (int i = int(N) - 1; i >= 0; i++)
+#define repi(i, N) for (int i = int(N) - 1; i >= 0; i--)
+#define asmax(m, update) \
+    if (m < update) m = update;
+#define asmin(m, update) \
+    if (m > update) m = update;
+#define vec2d(type, name, m, n, v) \
+    vector<vector<type>> name = vector<vector<type>>(m, vector<type>(n, v))
 
 template <int group = 20, typename ITER>
 void show(const char* note, ITER begin, ITER end) {
@@ -49,7 +56,6 @@ void show(const char* note, ITER begin, ITER end) {
 }
 
 #ifdef __LOCAL__
-#define (args...) (fprintf(stderr, args), printf(args))
 std::clock_t _t0 = 0;
 void timer_begin() { _t0 = clock(); }
 void timer_end(const char* note) {
@@ -64,32 +70,54 @@ void timer_end(const char* note) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
+const int N_MAX = 1024, A_MAX = 1024;
+int N, K, P[N_MAX], A[N_MAX];
+vec2d(int, pos, A_MAX, N_MAX, 0);
+vec2d(int, dp0, A_MAX, N_MAX, 0);
+vec2d(int, dp1, A_MAX, N_MAX, 0);
+
 void solve(int _turn) {
-    int N, P;
-    scanf("%d%d", &N, &P);
-    vector<int> nums(N);
-    rep(i, N){
-        scanf("%d", &nums[i]);
+    scanf("%d%d", &N, &K);
+    rep(i, N) scanf("%d", &P[i]);
+    rep(i, N) scanf("%d", &A[i]);
+
+    rep(i, A_MAX) pos[i].clear();
+    rep(i, N) pos[A[i]].push_back(P[i]);
+
+    int a_num = 0;
+    rep(i, A_MAX) {
+        if (pos[i].size()) {
+            sort(allof(pos[i]));
+            swap(pos[i], pos[a_num++]);
+        }
     }
-    sort(allof(nums));
-    int prefix = accumulate(frontof(nums, P - 1), 0);
-    int res = INT_MAX;
-    repr(i, P - 1, N){
-        prefix += nums[i];
-        int _res = nums[i] * P - prefix;
-        res = min(res, _res);
-        prefix -= nums[i - P + 1];
+
+    const int INF = INT_MAX / 2;
+    rep(i, a_num) {
+        if (i == 0) {
+            rep(n, len(pos[0])) {
+                dp0[i][n + 1] = pos[i][n] * 2;
+                dp1[i][n + 1] = pos[i][n];
+            }
+            repr(n, len(pos[0]), K + 1) { dp0[i][n + 1] = dp1[i][n + 1] = INF; }
+        } else {
+            rep(j, K + 1) {
+                dp0[i][j] = dp0[i - 1][j];
+                dp1[i][j] = dp1[i - 1][j];
+                for (int n = 0; n < len(pos[i]) and n < j; n++) {
+                    asmin(dp0[i][j], dp0[i - 1][j - n - 1] + pos[i][n] * 2);
+                    asmin(dp1[i][j], dp1[i - 1][j - n - 1] + pos[i][n] * 2);
+                    asmin(dp1[i][j], dp0[i - 1][j - n - 1] + pos[i][n]);
+                }
+            }
+        }
     }
-    printf("Case #%d: %d\n", _turn, res);
+
+    printf("Case #%d: %d\n", _turn, dp1[a_num - 1][K]);
 }
 
 // ===== kickstart template =====
 int main() {
-#ifdef __LOCAL__  // define in building command.
-    freopen("_kickstart.in", "r", stdin);
-    // freopen("_debug.in", "r", stdin);
-    freopen("_main_cpp.out", "w", stdout);
-#endif
     int T = 1;
     scanf("%d", &T);
     rep(t, T) { solve(t + 1); }

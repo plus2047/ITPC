@@ -16,6 +16,7 @@
 #include <stdexcept>
 
 #include <array>
+#include <bitset>
 #include <map>
 #include <queue>
 #include <set>
@@ -35,7 +36,13 @@ typedef long long int LL;
 #define frontof(c, k) (c).begin(), (c).begin() + (k)
 #define rep(i, N) for (int i = 0; i < int(N); i++)
 #define repr(i, begin, end) for (int i = int(begin); i < int(end); i++)
-#define repi(i, N) for (int i = int(N) - 1; i >= 0; i++)
+#define repi(i, N) for (int i = int(N) - 1; i >= 0; i--)
+#define asmax(m, update) \
+    if (m < update) m = update;
+#define asmin(m, update) \
+    if (m > update) m = update;
+#define vec2d(type, name, m, n, v) \
+    vector<vector<type>> name = vector<vector<type>>(m, vector<type>(n, v))
 
 template <int group = 20, typename ITER>
 void show(const char* note, ITER begin, ITER end) {
@@ -49,7 +56,6 @@ void show(const char* note, ITER begin, ITER end) {
 }
 
 #ifdef __LOCAL__
-#define (args...) (fprintf(stderr, args), printf(args))
 std::clock_t _t0 = 0;
 void timer_begin() { _t0 = clock(); }
 void timer_end(const char* note) {
@@ -64,32 +70,43 @@ void timer_end(const char* note) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
+const int MAX_N = 1E5 + 8, MAX_R = 5E4 + 8;
+int N, R, C, SR, SC;
+char D[MAX_N];
+
+typedef pair<int, int> Pos;
+
+set<Pos> arrived;
+map<Pos, Pos> jump[4];
+
 void solve(int _turn) {
-    int N, P;
-    scanf("%d%d", &N, &P);
-    vector<int> nums(N);
-    rep(i, N){
-        scanf("%d", &nums[i]);
+    scanf("%d%d%d%d%d", &N, &R, &C, &SR, &SC);
+    scanf("%s", D);
+
+    arrived.clear();
+    rep(i, 4) { jump[i].clear(); }
+
+    const int Delta[4][2] = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+    rep(i, N) {
+        int d = D[i] == 'N' ? 0 : (D[i] == 'S' ? 1 : (D[i] == 'W' ? 2 : 3));
+        arrived.insert({SR, SC});
+        int _SR = SR, _SC = SC;
+        while (arrived.count({SR, SC})) {
+            if (jump[d].count({SR, SC})) {
+                tie(SR, SC) = jump[d][{SR, SC}];
+            } else {
+                SC += Delta[d][0];
+                SR += Delta[d][1];
+            }
+        }
+        jump[d][{_SR, _SC}] = {SR + Delta[d][1], SC + Delta[d][0]};
     }
-    sort(allof(nums));
-    int prefix = accumulate(frontof(nums, P - 1), 0);
-    int res = INT_MAX;
-    repr(i, P - 1, N){
-        prefix += nums[i];
-        int _res = nums[i] * P - prefix;
-        res = min(res, _res);
-        prefix -= nums[i - P + 1];
-    }
-    printf("Case #%d: %d\n", _turn, res);
+
+    printf("Case #%d: %d %d\n", _turn, SR, SC);
 }
 
 // ===== kickstart template =====
 int main() {
-#ifdef __LOCAL__  // define in building command.
-    freopen("_kickstart.in", "r", stdin);
-    // freopen("_debug.in", "r", stdin);
-    freopen("_main_cpp.out", "w", stdout);
-#endif
     int T = 1;
     scanf("%d", &T);
     rep(t, T) { solve(t + 1); }

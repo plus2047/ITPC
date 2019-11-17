@@ -49,7 +49,6 @@ void show(const char* note, ITER begin, ITER end) {
 }
 
 #ifdef __LOCAL__
-#define printf(args...) (fprintf(stderr, args), printf(args))
 std::clock_t _t0 = 0;
 void timer_begin() { _t0 = clock(); }
 void timer_end(const char* note) {

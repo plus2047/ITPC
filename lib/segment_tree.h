@@ -23,40 +23,34 @@ struct SegmentTree {
     // imply as a full tree.
     // tree[0] is never used.
     // tree begin at tree[1]
-    const int SIZE;
+    int size;
     std::vector<NUM> tree;
 
-    SegmentTree(int size) : SIZE(size) {
-        assert(SIZE >= 0);
-        tree.resize(SIZE * 2);
-        std::fill(tree.begin(), tree.end(), VOID);
-    }
+    inline NUM get(int idx) { return tree[idx + size]; }
+
+    SegmentTree(int size) : size(size), tree(size * 2, VOID) {}
+    SegmentTree(std::vector<NUM>& data) { init(data); }
 
     // O(n) init from a vector:
     void init(std::vector<NUM>& data) {
-        assert(int(data.size()) <= SIZE);
-        std::fill(tree.begin(), tree.end(), VOID);
-        std::copy(data.begin(), data.end(), tree.begin() + SIZE);
-        for (int i = SIZE - 1; i > 0; i--) {
+        size = int(data.size());
+        std::copy(data.begin(), data.end(), tree.begin() + size);
+        for (int i = size - 1; i > 0; i--) {
             tree[i] = func(tree[i * 2], tree[i * 2 + 1]);
         }
     }
 
-    inline NUM get(int idx) { return tree[idx + SIZE]; }
-    
     void update(int idx, int val) {
-        assert(idx >= 0 and idx < SIZE);
-        idx += SIZE;
+        idx += size;
         tree[idx] = val;
         while (idx != 0) {
             idx /= 2;
             tree[idx] = func(tree[2 * idx], tree[2 * idx + 1]);
         }
     }
-    
+
     NUM query(int first, int last) {
-        assert(first <= last and first >= 0 and last < SIZE);
-        first += SIZE, last += SIZE;
+        first += size, last += size;
         NUM res = VOID;
         while (first <= last) {
             if (first % 2 == 1) res = func(res, tree[first++]);
