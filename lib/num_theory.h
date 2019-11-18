@@ -94,7 +94,7 @@ struct ModNCalculator {
     inline NUM inv(NUM num) {  // inv(n) * n % mod == 1
         // based on Fermat's little theorem.
         assert(num < MOD);
-        return power(num, PHI - 1);
+        return pow(num, PHI - 1);
     }
 
     inline NUM comb(NUM N, NUM k) {
