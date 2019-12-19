@@ -61,4 +61,14 @@ struct RandNum {
 
 RandNum<int> randInt = RandNum<int>(0, std::numeric_limits<int>::max());
 
+// float calculate tools.
+typedef double num;  // if necessary, use long double.
+
+const num DELTA = 1E-9;
+
+inline int sign(num x) { return (x > DELTA) - (x < -DELTA); }
+
+// return 1 if x > y; 0 if abs(x - y) < DELTA; -1 if x < y
+inline int compare(num x1, num x2) { return sign(x1 - x2); }
+
 }  // namespace contest
