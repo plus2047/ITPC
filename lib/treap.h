@@ -140,7 +140,7 @@ struct Treap {
     const int ObjectFrame = 1024;
     Node* obj_pool;
     int obj_pool_bias = 0;
-    vector<Node*> obj_frames;
+    std::vector<Node*> obj_frames;
 
     inline Node* _new_node() {
         if (obj_pool_bias >= ObjectFrame) {
