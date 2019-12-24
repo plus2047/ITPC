@@ -82,16 +82,19 @@ void go(double a, double step) {
     if (a > 0) a = 0;
     double na = a;
     double v = eval(a);
-    REP(i, 10) {
-        double del = (2.0 * rand() / RAND_MAX - 1.0) * step;
-        double ta = a + del;
-        double tv = eval(ta);
-        if (tv > v) {
-            v = tv;
-            na = ta;
+    while (abs(step) > 1E-9) {
+        REP(i, 10) {
+            double del = (2.0 * rand() / RAND_MAX - 1.0) * step;
+            double ta = a + del;
+            double tv = eval(ta);
+            if (tv > v) {
+                v = tv;
+                na = ta;
+            }
         }
+        a = na;
+        step *= 0.9;
     }
-    go(na, step * 0.9);
 }
 
 void solve() {
@@ -99,8 +102,7 @@ void solve() {
     REP(i, n) scanf("%lf%lf", &x[i], &y[i]);
     ub = -h * 4 / (p * p);
     ans = 0;
-    REP(j, 100) go(ub / j, 100);
-    REP(j, 100) go(ub / j, ub / -100);
+    REP(j, 64) go(ub / j, -ub * 4);
     printf("%.12f\n", ans);
 }
 
