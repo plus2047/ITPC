@@ -37,7 +37,7 @@ typedef long long int lld;
 #define range(i, left, right) for (int i = int(left); i <= int(right); ++i)
 #define irange(i, left, right) for (int i = int(right); i >= int(left); --i)
 
-// #undef __LOCAL__
+#undef __LOCAL__
 
 template <typename ITER>
 void show(const char* note, ITER begin, ITER end) {
@@ -60,10 +60,44 @@ void echo(const char* fmt, ...) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
+const int N_MAX = 128;
+int N, R[N_MAX], B[N_MAX];
+
+int find(vector<int>& ufs, int i) {
+    return ufs[i] == i ? i : ufs[i] = find(ufs, ufs[i]);
+}
+void update(vector<int>& ufs, int i, int j) {
+    ufs[find(ufs, i)] = find(ufs, j);
+}
 
 void solve(int _turn) {
     // CONTEST BEGIN!!!
-    printf("Case #%d: %lld\n", _turn, 0LL);
+    scanf("%d", &N);
+    rep(i, N) { scanf("%d", &R[i]); }
+    rep(i, N) { scanf("%d", &B[i]); }
+
+    // min spanning tree
+    typedef tuple<int, int, int> Edge;  // <length, nod1, node2>
+    vector<Edge> edges;
+    rep(i, N) range(j, i + 1, N - 1) {
+        edges.push_back({min(R[i] ^ B[j], R[j] ^ B[i]), i, j});
+    }
+    sort(allof(edges));
+
+    vector<int> ufs(N);
+    rep(i, N) { ufs[i] = i; }
+    lld total = 0;
+
+    for (auto& e : edges) {
+        int x, n1, n2;
+        tie(x, n1, n2) = e;
+        if (find(ufs, n1) != find(ufs, n2)) {
+            update(ufs, n1, n2);
+            total += lld(x);
+        }
+    }
+
+    printf("Case #%d: %lld\n", _turn, total);
 }
 
 // ===== kickstart template =====

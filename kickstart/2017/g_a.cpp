@@ -37,7 +37,7 @@ typedef long long int lld;
 #define range(i, left, right) for (int i = int(left); i <= int(right); ++i)
 #define irange(i, left, right) for (int i = int(right); i >= int(left); --i)
 
-// #undef __LOCAL__
+#undef __LOCAL__
 
 template <typename ITER>
 void show(const char* note, ITER begin, ITER end) {
@@ -58,12 +58,27 @@ void echo(const char* fmt, ...) {
 }
 
 // ===== personal contest template =====
+template <typename num_t>
+inline num_t quick_pow(num_t base, num_t mod, int n) {
+    num_t res = 1;
+    while (n) {
+        if (n % 2) res = res * base % mod;
+        base = base * base % mod;
+        n /= 2;
+    }
+    return res;
+}
 
 // ========== contest code ==========
 
 void solve(int _turn) {
     // CONTEST BEGIN!!!
-    printf("Case #%d: %lld\n", _turn, 0LL);
+    lld A, N, P;
+    scanf("%lld%lld%lld", &A, &N, &P);
+    range(i, 1, N) {
+        A = quick_pow(A, P, i);
+    }
+    printf("Case #%d: %lld\n", _turn, A);
 }
 
 // ===== kickstart template =====
