@@ -62,8 +62,29 @@ void echo(const char* fmt, ...) {
 // ========== contest code ==========
 
 void solve(int _turn) {
-    // CONTEST BEGIN!!!
-    printf("Case #%d: %lld\n", _turn, 0LL);
+    int E, N;
+    scanf("%d%d", &E, &N);
+    vector<int> nums(N);
+    rep(i, N) { scanf("%d", &nums[i]); }
+
+    sort(allof(nums));
+    int honor = 0, max_honor = 0;
+    
+    for(int left = 0, right = N - 1; left <= right;) {
+        while(E > nums[left] and left <= right) {
+            E -= nums[left++];
+            honor++;
+        }
+        max_honor = max(honor, max_honor);
+        if(left <= right and honor > 0) {
+            E += nums[right--];
+            honor--;
+        } else {
+            break;
+        }
+    }
+    
+    printf("Case #%d: %d\n", _turn, max_honor);
 }
 
 // ===== kickstart template =====

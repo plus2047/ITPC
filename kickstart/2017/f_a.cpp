@@ -58,12 +58,62 @@ void echo(const char* fmt, ...) {
 }
 
 // ===== personal contest template =====
+struct FenwickTree {
+    vector<int> tree;
+    int size;
+    FenwickTree(int size) : size(size), tree(size + 1) {}
+
+    void set(int idx, int delta) {
+        idx += 1;
+        while (idx <= size) {
+            tree[idx] += delta;
+            idx += idx & -idx;
+        }
+    }
+
+    int prefix(int idx) {
+        idx += 1;
+        int total = 0;
+        while (idx > 0) {
+            total += tree[idx];
+            idx -= idx & -idx;
+        }
+        return total;
+    }
+};
 
 // ========== contest code ==========
 
 void solve(int _turn) {
-    // CONTEST BEGIN!!!
-    printf("Case #%d: %lld\n", _turn, 0LL);
+    int N;
+    scanf("%d", &N);
+    vector<int> nums(N);
+    rep(i, N) { scanf("%d", &nums[i]); }
+    FenwickTree fenwick(N);
+    vector<int> inv_idx(N + 1);
+    rep(i, N) { inv_idx[nums[i]] = i; }
+
+    int left = 1, right = N;
+    while (left != right) {
+        bool succ = false;
+        for (int n : {left, right}) {
+            int idx = inv_idx[n];
+            int order = idx - fenwick.prefix(idx);
+            if (order == (right - left) / 2) {
+                succ = true;
+                fenwick.set(idx, 1);
+                if (n == left) {
+                    left++;
+                } else {
+                    right--;
+                }
+                break;
+            }
+        }
+        if (not succ) break;
+    }
+
+    printf("Case #%d: %s\n", _turn, left == right ? "YES" : "NO");
 }
 
 // ===== kickstart template =====

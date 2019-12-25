@@ -60,14 +60,28 @@ void echo(const char* fmt, ...) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
+const int CAKE_MAX = 100;
+const int N_MAX = 10000;
+vector<int> dp = vector<int>(N_MAX + 1, N_MAX);
+
+void init() {
+    dp[0] = 0;
+    for(int n = 1; n <= N_MAX; n++) {
+        for(int i = 1; i * i <= n; i++) {
+            dp[n] = min(dp[n], dp[n - i * i] + 1);
+        }
+    }
+}
 
 void solve(int _turn) {
-    // CONTEST BEGIN!!!
-    printf("Case #%d: %lld\n", _turn, 0LL);
+    int n;
+    scanf("%d", &n);
+    printf("Case #%d: %d\n", _turn, dp[n]);
 }
 
 // ===== kickstart template =====
 int main() {
+    init();
     int T = 1;
     scanf("%d", &T);
     rep(t, T) { solve(t + 1); }

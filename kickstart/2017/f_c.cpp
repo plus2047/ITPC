@@ -37,7 +37,7 @@ typedef long long int lld;
 #define range(i, left, right) for (int i = int(left); i <= int(right); ++i)
 #define irange(i, left, right) for (int i = int(right); i >= int(left); --i)
 
-#undef __LOCAL__
+// #undef __LOCAL__
 
 template <typename ITER>
 void show(const char* note, ITER begin, ITER end) {
@@ -60,10 +60,52 @@ void echo(const char* fmt, ...) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
+const int N_MAX = 128;
+int N, M, P;
+int graph[N_MAX][N_MAX];
+double average[N_MAX];
+const int INF = 1E6;
+
+void floyd() {
+    rep(k, N) rep(i, N) rep(j, N) {
+        graph[i][j] = min(graph[i][j], graph[i][k] + graph[k][j]);
+    }
+}
 
 void solve(int _turn) {
-    // CONTEST BEGIN!!!
-    printf("Case #%d: %lld\n", _turn, 0LL);
+    scanf("%d%d%d", &N, &M, &P);
+    rep(i, N) rep(j, N) { graph[i][j] = INF; }
+    rep(i, N) { graph[i][i] = 0; }
+    rep(i, M) {
+        int U, V, D;
+        scanf("%d%d%d", &U, &V, &D);
+        graph[U - 1][V - 1] = D;
+        graph[V - 1][U - 1] = D;
+    }
+    floyd();
+
+    rep(i, N) {
+        average[i] = 0;
+        rep(j, N) { average[i] += graph[i][j]; }
+        average[i] /= N - 1;
+    }
+
+    vector<double> pos(N, 0.), _pos(N, 0.);  // possibility
+    pos[0] = 1;
+    double total = 0;
+    for (int i = 0; i < 100 and P > 0; i++, P--) {
+        rep(i, N) { total += pos[i] * average[i]; }
+        fill(allof(_pos), 0.);
+        rep(i, N) rep(j, N) {
+            if (i != j) {
+                _pos[i] += pos[j] / (N - 1);
+            }
+        }
+        swap(pos, _pos);
+    }
+    total += 1.0 * P * accumulate(average, average + N, 0.) / N;
+
+    printf("Case #%d: %lf\n", _turn, total);
 }
 
 // ===== kickstart template =====
