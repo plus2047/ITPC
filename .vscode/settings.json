@@ -74,5 +74,6 @@
         "asmax",
         "asmin",
         "frontof"
-    ]
+    ],
+    "python.pythonPath": "/Users/plus/miniconda3/bin/python"
 }
