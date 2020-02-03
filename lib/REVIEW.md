@@ -1,4 +1,4 @@
-Last review at 191019
+Last review at 200203
 
 BASIC
 
@@ -11,15 +11,17 @@ BASIC
 STRUCT
 
 - [x] merge_find.h: **MergeFindSet.**
-- [x] segment_tree.h: segment_tree (complate binary tree, range max, min, sum). **fenwick tree (1d, 2d).**
-- [x] kmp.h: *kmp_init, kmp_find.*
+- [x] segment_tree.h:
+  - [x] segment_tree (complate binary tree, range max, min, sum).
+  - [x] **fenwick tree (1d, 2d).**
 - [x] tree.h: insert.
 - [x] trie.h: trie update & check.
-- [x] bit_int.h: bit_int.
+- [x] big_int.h: big int.
+- [x] kmp.h: *kmp init, kmp find.*
 
 GRAPH
 
 - [x] graph_spaning_tree.h: spaning tree.
 - [x] graph_strong_connect.h: strong connect.
-- [x] graph_shortest_path.h: dijkstra, bellman ford, flody.
-- [x] graph_max_flow.h: max flow.
+- [x] graph_shortest_path.h: **dijkstra**, flody, *bellman ford*.
+- [x] graph_max_flow.h: *max flow, min cost max flow*.
