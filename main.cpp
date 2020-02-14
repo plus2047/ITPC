@@ -30,12 +30,18 @@ using namespace std;
 // ===== personal contest env =====
 
 typedef long long int lld;
+
 #define len(container) int((container).size())
 #define allof(c) (c).begin(), (c).end()
 #define frontof(c, k) (c).begin(), (c).begin() + (k)
+
+#define iter(i, begin, end) \
+    for (int i = begin, d = begin < end ? 1 : -1; i != end; i += d)
+#define each(i, first, last) \
+    for (int i = first, d = first < last ? 1 : -1; i != last + d; i += d)
+
 #define rep(i, N) for (int i = 0; i < int(N); ++i)
-#define range(i, left, right) for (int i = int(left); i <= int(right); ++i)
-#define irange(i, left, right) for (int i = int(right); i >= int(left); --i)
+#define rev(i, N) for (int i = int(N) - 1; i >= 0; --i)
 
 // #undef __LOCAL__
 
