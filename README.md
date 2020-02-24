@@ -1,3 +1,5 @@
+# Programming Contest Toolbox
+
 Last review at 200203
 
 BASIC
@@ -25,3 +27,23 @@ GRAPH
 - [x] graph_strong_connect.h: strong connect.
 - [x] graph_shortest_path.h: **dijkstra**, flody, *bellman ford*.
 - [x] graph_max_flow.h: *max flow, min cost max flow*.
+
+```
+/codejam: code for google codejam.
+
+/itpc: code for cs97si, http://web.stanford.edu/class/cs97si
+
+/lib: core tools. very useful.
+
+/lib_extra: some tools that may be useful.
+
+/lib_py: python tools.
+
+/notes: some notes.
+
+/snips: some test code.
+```
+
+Use this if necessary:
+
+https://cs.stanford.edu/group/acm/SLPC/notebook.pdf

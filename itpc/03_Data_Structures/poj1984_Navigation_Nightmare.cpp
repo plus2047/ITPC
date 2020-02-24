@@ -1,5 +1,4 @@
 // poj1984_Navigation_Nightmare_WA.cpp
-// !!!WA
 // Anti-block: review this code at 180211
 #include <cstdio>
 #include <cstring>
