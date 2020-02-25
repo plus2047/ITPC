@@ -84,7 +84,7 @@ struct ShortestPath {
         }
     }
 
-    bool bellmen_ford(index_t start) {
+    bool bellman_ford(index_t start) {
         // run bellmen_ford algorithm.
         // there can be negative path in graph.
         // if negative-circle exist, return false.
