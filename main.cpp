@@ -49,7 +49,7 @@ typedef long long int lld;
     for (int i = first, d = first < last ? 1 : -1; i != last + d; i += d)
 
 #define rep(i, N) for (int i = 0; i < int(N); ++i)
-#define rev(i, N) for (int i = int(N) - 1; i >= 0; --i)
+#define inv(i, N) for (int i = int(N) - 1; i >= 0; --i)
 
 #if __cplusplus >= 201103L
 template <typename num>
@@ -97,11 +97,6 @@ void echo(const char* fmt, ...) {
 
 // ========== contest code ==========
 
-void solve(int _turn) { printf("%lld\n", 0LL); }
-
-// ===== kickstart template =====
 int main() {
-    int T = 1;
-    // scanf("%d", &T);
-    rep(t, T) { solve(t + 1); }
+    cout << "HelloWorld!!!" << endl;
 }

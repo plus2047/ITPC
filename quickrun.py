@@ -28,22 +28,26 @@ if len(fileExt) < 1:
 else:
     fileExt = fileExt[-1]
 
+
 def run(cmd):
     os.system("date")
     os.system("time %s < '%s' | tee '%s'" % (cmd, args.stdin, args.stdout))
 
+
 if fileExt == "cpp":
     flag = "-g" if args.debug else "-O3"
-    os.system("g++ -D__LOCAL__ --std=c++11 %s '%s' -o %s" % (flag, args.source, args.bin))
-    run(args.bin)
+    if os.system("g++ -D__LOCAL__ --std=c++11 %s '%s' -o %s" % (flag, args.source, args.bin)) == 0:
+        run(args.bin)
 
 elif fileExt == "py":
     run("python3 " + args.source)
 
 elif fileExt == "java":
     ret = os.system("cp %s %s/Solution.java" % (args.source, buildDir))
-    if ret == 0: os.system("javac %s/Solution.java" % buildDir)
-    if ret == 0: run("cd %s && java Solution" % buildDir)
+    if ret == 0:
+        ret = os.system("javac %s/Solution.java" % buildDir)
+    if ret == 0:
+        run("cd %s && java Solution" % buildDir)
 
 else:
     print("unsupported source type.")

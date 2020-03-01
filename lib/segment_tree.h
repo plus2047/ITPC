@@ -34,6 +34,7 @@ struct SegmentTree {
     // O(n) init from a vector:
     void init(std::vector<NUM>& data) {
         size = int(data.size());
+        tree.resize(size * 2);
         std::copy(data.begin(), data.end(), tree.begin() + size);
         for (int i = size - 1; i > 0; i--) {
             tree[i] = func(tree[i * 2], tree[i * 2 + 1]);
@@ -85,7 +86,7 @@ struct FenwickTree {
 
 template <typename NUM>
 struct FenwickTree2D {
-    std::vector<std::vector<NUM>> tree;
+    std::vector<std::vector<NUM> > tree;
     int SIZE0, SIZE1;
     FenwickTree2D(int size0, int size1)
         : SIZE0(size0 + 1),
