@@ -27,7 +27,7 @@ template <typename num_t>
 num_t quick_pow(num_t base, int n) {
     num_t res = 1;
     while (n) {
-        if (n % 2) res *= base;
+        if (n & 1) res *= base;
         base *= base;
         n /= 2;
     }
@@ -61,14 +61,14 @@ struct RandNum {
 
 RandNum<int> randInt = RandNum<int>(0, std::numeric_limits<int>::max());
 
-// float calculate tools.
-typedef double num;  // if necessary, use long double.
+// float calculate.
+// always using double. if necessary, using long double.
 
-const num DELTA = 1E-9;
+const double DELTA = 1E-9;
 
-inline int sign(num x) { return (x > DELTA) - (x < -DELTA); }
+inline int sign(double x) { return (x > DELTA) - (x < -DELTA); }
 
 // return 1 if x > y; 0 if abs(x - y) < DELTA; -1 if x < y
-inline int compare(num x1, num x2) { return sign(x1 - x2); }
+inline int compare(double x1, double x2) { return sign(x1 - x2); }
 
 }  // namespace contest

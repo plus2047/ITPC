@@ -1,9 +1,9 @@
 #pragma once
 #include <cmath>
-#include "basic_math.h"
 
 namespace contest {
 
+template <typename num>
 struct Vec2D {
     num x, y;
     Vec2D operator+(Vec2D& v) { return Vec2D{x + v.x, y + v.y}; }
@@ -15,6 +15,7 @@ struct Vec2D {
     num det(Vec2D& v) { return x * v.y - y * v.x; }
 };
 
+template <typename num>
 struct Vec3D {
     num x, y, z;
     Vec3D operator+(Vec3D& v) { return Vec3D{x + v.x, y + v.y, z + v.z}; }
@@ -28,6 +29,9 @@ struct Vec3D {
     }
 };
 
-inline num angle(const Vec2D p) { return atan2(p.y, p.x); }
+template <typename num>
+inline double angle(const Vec2D<num> p) {
+    return atan2(double(p.y), double(p.x));
+}
 
 }  // namespace contest
