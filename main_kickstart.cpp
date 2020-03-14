@@ -96,32 +96,13 @@ void echo(const char* fmt, ...) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
+void solve(int _turn) {
+    // KEEP CALM AND CARRY ON!
+    printf("Case #%d: %lld\n", _turn, 0LL);
+}
 
-// ===== kickstart template =====
 int main() {
     int T;
     scanf("%d", &T);
-    static char A[128], B[128];
-    unordered_set<string> seen;
-    rep(t, T) {
-        int L;
-        scanf("%d", &L);
-        scanf("%s%s", A, B);
-        seen.clear();
-        
-        rep(left, L) iter(right, left, L) {
-            string s(B + left, B + right + 1);
-            sort(allof(s));
-            seen.insert(s);
-        }
-
-        int cnt = 0;
-        rep(left, L) iter(right, left, L) {
-            string s(A + left, A + right + 1);
-            sort(allof(s));
-            cnt += seen.count(s);
-        }
-
-        printf("Case #%d: %d\n", t + 1, cnt);
-    }
+    rep(t, T) { solve(t); }
 }

@@ -94,9 +94,49 @@ void echo(const char* fmt, ...) {
 }
 
 // ===== personal contest template =====
+struct MergeFindSet {
+    std::vector<int> p;
+    MergeFindSet(int n) : p(n) {
+        for (int i = 0; i < n; i++) p[i] = i;
+    }
+    int find(int x) { return p[x] == x ? x : p[x] = find(p[x]); }
+    void merge(int root, int child) { p[find(child)] = find(root); }
+};
 
 // ========== contest code ==========
 
 int main() {
-    cout << "HelloWorld!!!" << endl;
+    int T;
+    scanf("%d", &T);
+    rep(t, T) {
+        int V, E;
+        scanf("%d%d", &V, &E);
+        vector<tuple<int, int, int> > edges;
+        rep(i, E) {
+            int a, b, x;
+            scanf("%d%d%d", &a, &b, &x);
+            edges.push_back({x, a - 1, b - 1});
+        }
+        sort(allof(edges));
+
+        vector<char> seen(V);
+        vector<int> neighbor(V);
+
+        int edge_count = 0;
+        for (auto& t : edges) {
+            int x, a, b;
+            tie(x, a, b) = t;
+            if (seen[a] and seen[b]) continue;
+            seen[a] = seen[b] = true;
+            neighbor[a]++, neighbor[b]++, edge_count++;
+        }
+
+        int group = V - edge_count;
+        if (edges.size() and get<0>(edges[0]) == 0) {
+            int x0, a0, b0;
+            tie(x0, a0, b0) = edges[0];
+            group += neighbor[a0] + neighbor[b0] - 2;
+        }
+        printf("Case %d: %lld\n", t + 1, 1LL << lld(group));
+    }
 }

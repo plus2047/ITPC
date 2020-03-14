@@ -21,14 +21,8 @@
 #include <unordered_set>
 #include <vector>
 
-#include "lib/geometry.h"
-
 using namespace std;
 
-const double PI = 3.1415926535897932354626;
-
 int main() {
-    contest::Vec2D<double> vec = {1., 1.};
-    cout << contest::angle(vec) / PI * 180. << endl;
     cout << "HelloWorld!!!" << endl;
 }
