@@ -6,7 +6,7 @@ template <typename FUNC>
 double triple_search(FUNC loss_func, double left, double right) {
     // triple search the MIN point of func.
     // the func must has only one min point in [left, right]
-    // and it must be monotonicity in each side of this min point.
+    // and it must be strictly monotonicity in each side of this min point.
     const double DELTA = 1E-9;
 
     while (right - left > DELTA) {
