@@ -3,17 +3,17 @@
 
 namespace contest {
 typedef int Val;
-struct TNode {
-    TNode *left = NULL, *right = NULL;
+struct BinNode {  // Binary Search Tree Node
+    BinNode *left = NULL, *right = NULL;
     Val val = 0;
-    TNode(Val _val) : val(_val) {}
+    BinNode(Val _val) : val(_val) {}
 };
 
-TNode* insert(TNode* root, Val val) {
+BinNode* insert(BinNode* root, Val val) {
     while (true) {
         if (root->val == val) return NULL;
-        TNode** p_next = &(root->val > val ? root->left : root->right);
-        if (*p_next == NULL) return *p_next = new TNode(val);
+        BinNode** p_next = &(root->val > val ? root->left : root->right);
+        if (*p_next == NULL) return *p_next = new BinNode(val);
         root = *p_next;
     }
 }

@@ -65,7 +65,9 @@
         "system_error": "cpp",
         "thread": "cpp",
         "memory_resource": "cpp",
-        "complex": "cpp"
+        "complex": "cpp",
+        "forward_list": "cpp",
+        "*.tcc": "cpp"
     },
     "cSpell.words": [
         "allof",
