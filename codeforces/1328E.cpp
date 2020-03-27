@@ -20,6 +20,7 @@
 #include <set>
 #include <stack>
 #include <string>
+#include <tuple>
 #include <vector>
 
 #if __cplusplus >= 201103L
@@ -96,13 +97,87 @@ void echo(const char* fmt, ...) {
 // ===== personal contest template =====
 
 // ========== contest code ==========
-void solve(int _turn) {
-    // KEEP CALM AND CARRY ON!
-    printf("Case #%d: %lld\n", _turn + 1, 0LL);
+int n, m;
+vector<int> parent, depth;
+vector<pair<int, int> > graph;
+vector<int> head;
+
+inline void push(int p, int c) {
+    graph.push_back({c, head[p]});
+    head[p] = len(graph) - 1;
+}
+
+int stamp;
+vector<int> t_in, t_out;
+
+void dfs(int node, int _parent, int _depth) {
+    stamp++;
+    t_in[node] = stamp;
+    parent[node] = _parent;
+    depth[node] = _depth;
+    for (int ci = head[node]; ci != -1; ci = graph[ci].second) {
+        int c = graph[ci].first;
+        if (c != _parent) {
+            dfs(c, node, _depth + 1);
+        }
+    }
+    t_out[node] = stamp;
+}
+
+vector<int> nodes;
+vector<char> path;
+inline void query() {
+    int k;
+    scanf("%d", &k);
+    nodes.resize(k);
+    rep(i, k) {
+        scanf("%d", &nodes[i]);
+        nodes[i]--;
+    }
+
+    int max_depth = -1, max_depth_node = -1;
+    rep(i, k) {
+        int node = nodes[i];
+        if (depth[node] > max_depth) {
+            max_depth = depth[node];
+            max_depth_node = node;
+        }
+    }
+
+    bool succ = true;
+    for (int node : nodes) {
+        int p = parent[node];
+        if (not(t_in[p] <= t_in[max_depth_node] and
+                t_out[p] >= t_out[max_depth_node])) {
+            succ = false;
+            break;
+        }
+    }
+
+    printf("%s\n", succ ? "YES" : "NO");
 }
 
 int main() {
-    int T;
-    scanf("%d", &T);
-    rep(t, T) { solve(t); }
+    scanf("%d%d", &n, &m);
+
+    graph.clear();
+    graph.reserve(n);
+    head = vector<int>(n, -1);
+    parent = vector<int>(n);
+    depth = vector<int>(n);
+    stamp = 0;
+    t_in.resize(n);
+    t_out.resize(n);
+
+    rep(i, n - 1) {
+        int x, y;
+        scanf("%d%d", &x, &y);
+        x--, y--;
+        push(x, y);
+        push(y, x);
+    }
+
+    dfs(0, 0, 0);
+
+    rep(i, m) { query(); }
 }

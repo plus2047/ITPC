@@ -94,11 +94,68 @@ void echo(const char* fmt, ...) {
 }
 
 // ===== personal contest template =====
+int count_group(vector<int>& nums) {
+    int cnt = nums.front() != nums.back();
+    rep(i, len(nums) - 1) {
+        if (nums[i] != nums[i + 1]) {
+            cnt++;
+        }
+    }
+    return cnt;
+}
+
+void color_group(vector<int>& res, vector<int>& nums, int curr) {
+    int n = len(nums);
+    rep(i, n) {
+        res[i] = curr;
+        if (i != n - 1 and nums[i] != nums[i + 1]) {
+            curr = curr != 1 ? 1 : 2;
+        }
+    }
+}
+
+void adjust(vector<int>& nums) {
+    if (nums.front() == nums.back()) {
+        rep(i, len(nums)) {
+            if (nums[i + 1] != nums[0]) {
+                nums[i] = -1;
+                break;
+            }
+        }
+    } else {
+        rep(i, len(nums)) {
+            if ((i == 0 or nums[i] != nums[i - 1]) and nums[i] == nums[i + 1]) {
+                nums[i] = -1;
+                break;
+            }
+        }
+    }
+}
 
 // ========== contest code ==========
 void solve(int _turn) {
     // KEEP CALM AND CARRY ON!
-    printf("Case #%d: %lld\n", _turn + 1, 0LL);
+    int n;
+    scanf("%d", &n);
+    vector<int> nums(n);
+    rep(i, n) { scanf("%d", &nums[i]); }
+
+    vector<int> res(n);
+    int n_group = count_group(nums);
+    if (n_group == 0) {
+        fill(allof(res), 1);
+    } else if (n_group == len(nums) and n_group % 2 == 1) {
+        color_group(res, nums, 3);
+    } else if (n_group % 2 == 1) {
+        adjust(nums);
+        color_group(res, nums, 2);
+    } else {
+        color_group(res, nums, 2);
+    }
+
+    printf("%d\n", *max_element(allof(res)));
+    rep(i, n) { printf("%d ", res[i]); }
+    printf("\n");
 }
 
 int main() {

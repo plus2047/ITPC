@@ -94,11 +94,33 @@ void echo(const char* fmt, ...) {
 }
 
 // ===== personal contest template =====
+const int N_MAX = 51024;
+char X[N_MAX], A[N_MAX], B[N_MAX];
 
 // ========== contest code ==========
 void solve(int _turn) {
     // KEEP CALM AND CARRY ON!
-    printf("Case #%d: %lld\n", _turn + 1, 0LL);
+    int n;
+    scanf("%d%s", &n, X);
+    A[n] = B[n] = 0;
+    bool eq = true;
+    rep(i, n) {
+        if (eq) {
+            if (X[i] == '0') {
+                A[i] = B[i] = '0';
+            } else if (X[i] == '2') {
+                A[i] = B[i] = '1';
+            } else {
+                eq = false;
+                A[i] = '1';
+                B[i] = '0';
+            }
+        } else {
+            B[i] = X[i];
+            A[i] = '0';
+        }
+    }
+    printf("%s\n%s\n", A, B);
 }
 
 int main() {

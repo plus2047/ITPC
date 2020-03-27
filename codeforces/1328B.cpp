@@ -98,7 +98,17 @@ void echo(const char* fmt, ...) {
 // ========== contest code ==========
 void solve(int _turn) {
     // KEEP CALM AND CARRY ON!
-    printf("Case #%d: %lld\n", _turn + 1, 0LL);
+    int n, k;
+    scanf("%d%d", &n, &k);
+    int i = 1;
+    while(i < k) {
+        k -= i;
+        i++;
+    }
+    string res(n, 'a');
+    res[n - 1 - i] = 'b';
+    res[n - k] = 'b';
+    printf("%s\n", res.c_str());
 }
 
 int main() {
