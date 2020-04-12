@@ -10,8 +10,7 @@ namespace contest {
 // for a edge(u, v, w), it's not necessary to add (v, u, w) into input set.
 template <typename index_t, typename weight_t>
 struct MinSpaningTree {
-    typedef std::tuple<index_t, index_t, weight_t> Edge;
-    static const std::size_t node1_ = 0, node2_ = 1, weight_ = 2;
+    typedef std::tuple<weight_t, index_t, index_t> Edge;
 
     std::vector<Edge> edges;
     std::vector<Edge> mst;
@@ -20,15 +19,14 @@ struct MinSpaningTree {
     MinSpaningTree(index_t n) : mf(n){};
 
     void add_edge(index_t node1, index_t node2, weight_t weight) {
-        edges.push_back({node1, node2, weight});
+        edges.push_back({weight, node1, node2});
     }
 
     void min_spaning_tree() {
         mst.clear();
         std::sort(edges.begin(), edges.end());
         for (auto& e : edges) {
-            auto r1 = mf.find(std::get<node1_>(e)),
-                 r2 = mf.find(std::get<node2_>(e));
+            auto r1 = mf.find(std::get<1>(e)), r2 = mf.find(std::get<2>(e));
             if (r1 != r2) {
                 mf.merge(r1, r2);
                 mst.push_back(e);

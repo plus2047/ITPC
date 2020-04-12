@@ -9,6 +9,7 @@ import argparse
 
 baseDir = os.path.dirname(os.path.abspath(__file__))
 buildDir = baseDir + "/.build"
+python_bin = "/Users/plus/miniconda3/bin/python "
 
 if not os.path.exists(buildDir):
     os.makedirs(buildDir)
@@ -40,7 +41,7 @@ if fileExt == "cpp":
         run(args.bin)
 
 elif fileExt == "py":
-    run("python3 " + args.source)
+    run(python_bin + args.source)
 
 elif fileExt == "java":
     ret = os.system("cp %s %s/Solution.java" % (args.source, buildDir))
