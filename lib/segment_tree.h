@@ -14,7 +14,7 @@ namespace contest {
 template <typename NUM>
 struct SegmentTree {
     // range tree can be used to get range max or min or sum.
-    // if necessary modify this function. default: sum
+    // modify this function if necessary. default: sum
     inline NUM func(NUM a, NUM b) { return a + b; }
     // VOID is a NUM s.t. func(VOID, x) == x
     // VOID == 0 for sum, NUM_MAX for min, NUM_MIN for max
