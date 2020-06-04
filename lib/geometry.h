@@ -34,4 +34,9 @@ inline double angle(const Vec2D<num> p) {
     return atan2(double(p.y), double(p.x));
 }
 
+// waiting to complate
+// template<typename num>
+// void polar_sort(vector<Vec2D<num>>& vec) {
+// }
+
 }  // namespace contest

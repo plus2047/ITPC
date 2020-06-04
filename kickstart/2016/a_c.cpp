@@ -40,8 +40,39 @@ typedef long long int lld;
 // ========== contest code ==========
 
 void solve(int _turn) {
-    lld res = 0;
-    printf("Case #%d: %lld\n", _turn + 1, res);
+    int M;
+    scanf("%d", &M);
+    vector<int> C(M + 1);
+    rep(i, M + 1) { scanf("%d", &C[i]); }
+    C[0] *= -1;
+
+    auto eq = [&](long double r) {
+        long double t = 1, res = 0;
+        inv(i, M + 1) {
+            res += C[i] * t;
+            t *= r;
+        }
+        return res;
+    };
+
+    long double delta = 1E-7, eq_delta = 1E-20;
+    long double left = delta, right = 2 - delta;
+    long double x1 = eq(left), x2 = eq(right), x3 = 0;
+    while (right - left > delta) {
+        long double mid = (left + right) / 2;
+        x3 = eq(mid);
+        if (abs(x3) < eq_delta) {
+            left = right = mid;
+            break;
+        } else if (x1 * x3 < 0) {
+            right = mid;
+            x2 = x3;
+        } else {
+            left = mid;
+            x1 = x3;
+        }
+    }
+    printf("Case #%d: %.7Lf\n", _turn + 1, (left + right) / 2 - 1);
 }
 
 int main() {

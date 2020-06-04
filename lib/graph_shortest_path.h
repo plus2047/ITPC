@@ -18,7 +18,7 @@ struct ShortestPath {
     typedef std::tuple<index_t, weight_t> Edge;
     static const std::size_t edge_to_ = 0, edge_weight_ = 1;
 
-    std::vector<std::vector<Edge>> graph;
+    std::vector<std::vector<Edge> > graph;
 
     std::vector<bool> arrived;
     std::vector<weight_t> path_weight;
@@ -60,7 +60,7 @@ struct ShortestPath {
 
         typedef std::tuple<weight_t, index_t> HNode;
         const std::size_t heap_node_weight_ = 0, heap_node_index_ = 1;
-        std::priority_queue<HNode, std::vector<HNode>, std::greater<HNode>> Q;
+        std::priority_queue<HNode, std::vector<HNode>, std::greater<HNode> > Q;
         Q.push({0, start});
 
         while (!Q.empty()) {
@@ -69,6 +69,8 @@ struct ShortestPath {
 
             if (arrived[node]) continue;
             arrived[node] = true;
+            // the algorithm can still work without this guard sentence
+            // but it will be much slower.
 
             for (auto& e : graph[node]) {
                 auto _to = std::get<edge_to_>(e);
@@ -129,7 +131,7 @@ struct ShortestPath {
 template <typename weight_t>
 struct Floyd {
     weight_t INF;
-    std::vector<std::vector<weight_t>> graph;  // dense matrix
+    std::vector<std::vector<weight_t> > graph;  // dense matrix
 
     Floyd(std::size_t N)
         : INF(std::numeric_limits<weight_t>::max()),
