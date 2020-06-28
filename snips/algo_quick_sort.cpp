@@ -1,33 +1,41 @@
 // for LeetCode
-#include <cstdio>
 #include <algorithm>
-#include <cstring>
 #include <climits>
-#include <vector>
-#include <sstream>
-#include <iostream>
-#include <set>
-#include <unordered_set>
-#include <random>
-#include <ctime>
+#include <cstdio>
 #include <cstdlib>
+#include <cstring>
+#include <ctime>
+#include <iostream>
+#include <random>
+#include <set>
+#include <sstream>
+#include <unordered_set>
+#include <vector>
 
 using namespace std;
 
-template<typename ITER>
+template <typename ITER>
 void quick_sort(ITER begin, ITER end) {
     // quick sort for range [begin, end)
-    if (end - begin <= 1) { return; }
+    if (end - begin <= 1) {
+        return;
+    }
 
     auto mid = *begin;
     auto left = begin, right = end;
 
     while (true) {
-        while (--right > left && *right >= mid) {}
-        if (left == right) { break; }
+        while (--right > left && *right >= mid) {
+        }
+        if (left == right) {
+            break;
+        }
         *left = *right;
-        while (++left < right && *left <= mid) {}
-        if (left == right) { break; }
+        while (++left < right && *left <= mid) {
+        }
+        if (left == right) {
+            break;
+        }
         *right = *left;
     }
     *left = mid;
@@ -36,16 +44,59 @@ void quick_sort(ITER begin, ITER end) {
     quick_sort(++left, end);
 }
 
-template<typename ITER>
+template <typename ITER>
+ITER kth_element(ITER begin, ITER end, int k) {
+    if (end - begin <= 1) return begin;
+
+    auto mid = *begin;
+    auto left = begin, right = end;
+
+    while (left < right) {
+        while (true) {
+            while (--right > left && *right >= mid) {
+            }
+            if (left == right) {
+                break;
+            }
+            *left = *right;
+            while (++left < right && *left <= mid) {
+            }
+            if (left == right) {
+                break;
+            }
+            *right = *left;
+        }
+        *left = mid;
+
+        int _k = left - begin;
+        if (_k == k) {
+            break;
+        } else if (_k < k) {
+            left = left + 1;
+            right = end;
+        } else {
+            left = begin;
+            right = left;
+        }
+    }
+
+    return left;
+}
+
+template <typename ITER>
 void quick_sort_slow_fast(ITER left, ITER right) {
     // quick sort for range [left, right]
-    if (left >= right) { return; }
+    if (left >= right) {
+        return;
+    }
 
     auto mid = *right;
     auto slow = left - 1;
 
-    for (auto fast = left; fast < right; fast ++) {
-        if (*fast <= mid) { swap(*++slow, *fast); }
+    for (auto fast = left; fast < right; fast++) {
+        if (*fast <= mid) {
+            swap(*++slow, *fast);
+        }
     }
     swap(*++slow, *right);
 
@@ -74,6 +125,7 @@ int main() {
         }
     }
     printf("successful.\n");
-    printf("quick_sort_slow_fast speed: %lf ms\n", 1000.0 * (t1 - t0) / CLOCKS_PER_SEC);
+    printf("quick_sort_slow_fast speed: %lf ms\n",
+           1000.0 * (t1 - t0) / CLOCKS_PER_SEC);
     printf("quick_sort speed: %lf ms\n", 1000.0 * (t2 - t1) / CLOCKS_PER_SEC);
 }
