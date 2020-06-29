@@ -51,36 +51,30 @@ ITER kth_element(ITER begin, ITER end, int k) {
     auto mid = *begin;
     auto left = begin, right = end;
 
-    while (left < right) {
-        while (true) {
-            while (--right > left && *right >= mid) {
-            }
-            if (left == right) {
-                break;
-            }
-            *left = *right;
-            while (++left < right && *left <= mid) {
-            }
-            if (left == right) {
-                break;
-            }
-            *right = *left;
+    while (true) {
+        while (--right > left && *right >= mid) {
         }
-        *left = mid;
-
-        int _k = left - begin;
-        if (_k == k) {
+        if (left == right) {
             break;
-        } else if (_k < k) {
-            left = left + 1;
-            right = end;
-        } else {
-            left = begin;
-            right = left;
         }
+        *left = *right;
+        while (++left < right && *left <= mid) {
+        }
+        if (left == right) {
+            break;
+        }
+        *right = *left;
     }
+    *left = mid;
 
-    return left;
+    int _k = left - begin;
+    if (_k == k) {
+        return left;
+    } else if (_k < k) {
+        return kth_element(left + 1, end, k - _k - 1);
+    } else {
+        return kth_element(begin, left, k);
+    }
 }
 
 template <typename ITER>
