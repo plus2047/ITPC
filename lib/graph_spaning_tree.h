@@ -5,20 +5,21 @@
 #include "merge_find.h"
 
 namespace contest {
+
 // Minimal Spanning Tree (MST) algorithm: Kruskal algotithm
 // for un-directional graph.
 // for a edge(u, v, w), it's not necessary to add (v, u, w) into input set.
-template <typename index_t, typename weight_t>
+
+template <typename weight_t>
 struct MinSpaningTree {
-    typedef std::tuple<weight_t, index_t, index_t> Edge;
+    typedef std::tuple<weight_t, int, int> Edge;
 
     std::vector<Edge> edges;
     std::vector<Edge> mst;
     MergeFindSet mf;
+    MinSpaningTree(int n) : mf(n){};
 
-    MinSpaningTree(index_t n) : mf(n){};
-
-    void add_edge(index_t node1, index_t node2, weight_t weight) {
+    void add_edge(int node1, int node2, weight_t weight) {
         edges.push_back({weight, node1, node2});
     }
 

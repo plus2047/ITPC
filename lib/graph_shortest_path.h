@@ -5,157 +5,81 @@
 #include <vector>
 
 namespace contest {
-template <typename index_t, typename weight_t>
-struct ShortestPath {
-    // implement graph using 2D-vector. (not dense matrix.)
-    // implement dijkstra & bellmen-ford algorithm in this struct because
-    // they are very similar & both of them can run on 2D-vector.
-
-    // to check if a node is reachable, check if path_weight[i] == INF
-    // donot use arrived vector
-    // because bellmen_ford algorithm could clear it after run.
-
-    typedef std::tuple<index_t, weight_t> Edge;
-    static const std::size_t edge_to_ = 0, edge_weight_ = 1;
-
-    std::vector<std::vector<Edge> > graph;
-
-    std::vector<bool> arrived;
-    std::vector<weight_t> path_weight;
-    std::vector<index_t> path_from;
-    std::vector<index_t> count;
-    weight_t INF;
-
-    ShortestPath(std::size_t n) {
-        graph.resize(n);
-        INF = std::numeric_limits<weight_t>::max();
-    }
-
-    inline void add_edge(index_t from, index_t to, weight_t d) {
-        graph[from].push_back({to, d});
-    }
-
-    inline void _init(index_t start) {
-        path_weight.resize(graph.size());
-        std::fill(path_weight.begin(), path_weight.end(), INF);
-        path_weight[start] = 0;
-
-        arrived.resize(graph.size());
-        std::fill(arrived.begin(), arrived.end(), false);
-
-        path_from.resize(graph.size());
-        // warning: path_from[start] is init to 0.
-
-        // count just used in bellmen_ford algorithm.
-        count.resize(graph.size());
-        std::fill(count.begin(), count.end(), 0);
-    }
-
-    void dijkstra(index_t start) {
-        // (directed positive-weighted graph shortest path)
-        // run dijsktra's algorithm.
-        // result is saved in weight & path_from vector.
-        // there cannot be negative path in graph.
-        _init(start);
-
-        typedef std::tuple<weight_t, index_t> HNode;
-        const std::size_t heap_node_weight_ = 0, heap_node_index_ = 1;
-        std::priority_queue<HNode, std::vector<HNode>, std::greater<HNode> > Q;
-        Q.push({0, start});
-
-        while (!Q.empty()) {
-            auto node = std::get<heap_node_index_>(Q.top());
-            Q.pop();
-
-            if (arrived[node]) continue;
-            arrived[node] = true;
-            // the algorithm can still work without this guard sentence
-            // but it will be much slower.
-
-            for (auto& e : graph[node]) {
-                auto _to = std::get<edge_to_>(e);
-                auto _weight = std::get<edge_weight_>(e);
-                // path_weight[node] must not be INF
-                // so path_weight[node] + _weight is safe.
-                if (path_weight[_to] > path_weight[node] + _weight) {
-                    path_weight[_to] = path_weight[node] + _weight;
-                    path_from[_to] = node;
-                    Q.push({path_weight[_to], _to});
-                }
-            }
-        }
-    }
-
-    bool bellman_ford(index_t start) {
-        // run bellmen_ford algorithm.
-        // there can be negative path in graph.
-        // if negative-circle exist, return false.
-        // else result is saved in weight & path_from vector.
-        _init(start);
-
-        std::queue<index_t> Q;
-        Q.push(start);
-
-        // use `arrived` vector to mark if a node is in queue.
-        // (it's differenet from the using in dijkstra algorithm.)
-        // a node can be add to queue at most N (number of nodes) times.
-        arrived[start] = true;
-
-        while (!Q.empty()) {
-            auto node = Q.front();
-            Q.pop();
-            arrived[node] = false;
-
-            for (auto& e : graph[node]) {
-                auto _to = std::get<edge_to_>(e);
-                auto _weight = std::get<edge_weight_>(e);
-                if (path_weight[node] != INF &&
-                    path_weight[_to] > path_weight[node] + _weight) {
-                    path_weight[_to] = path_weight[node] + _weight;
-                    path_from[_to] = node;
-                    if (!arrived[_to]) {
-                        Q.push(_to);
-                        arrived[_to] = true;
-                        if (++count[_to] > graph.size()) {
-                            return false;
-                        }
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-};
 
 template <typename weight_t>
-struct Floyd {
-    weight_t INF;
-    std::vector<std::vector<weight_t> > graph;  // dense matrix
+void dijstra(std::vector<std::vector<pair<int, weight_t> > >& G,
+             std::vector<weight_t>& dist, vector<int>& trace, int start) {
+    typedef std::tuple<weight_t, int, int> S;  // <dist, from, current>
+    std::priority_queue<S, vector<S>, greater<S> > Q;
+    Q.push({(weight_t)(0), -1, start});
 
-    Floyd(std::size_t N)
-        : INF(std::numeric_limits<weight_t>::max()),
-          graph(N, std::vector<weight_t>(N, INF)) {
-        // after init, set edge weight manually.
-        for (int i = 0; i < N; i++) {
-            graph[i][i] = 0;
+    while (Q.size()) {
+        weight_t d;
+        int from, curr;
+        tie(d, from, curr) = Q.top();
+        Q.pop();
+
+        if (dist[curr] <= d) continue;
+        dist[curr] = d;
+        trace[curr] = from;
+
+        for (auto& p : G[curr]) {
+            Q.push({p.first + d, curr, p.second});
         }
-    };
+    }
+}
 
-    void floyd() {
-        // in-place algorithm!
-        // it will generate result on graph matrix.
-        std::size_t N = graph.size();
-        for (int k = 0; k < N; k++) {
-            for (int i = 0; i < N; i++) {
-                for (int j = 0; j < N; j++) {
-                    if (graph[i][k] < INF && graph[k][j] < INF) {
-                        graph[i][j] =
-                            std::min(graph[i][j], graph[i][k] + graph[k][j]);
-                    }
-                }
+template <typename weight_t>
+bool bellman_ford(std::vector<std::vector<pair<int, weight_t> > >& G,
+                  std::vector<weight_t>& dist, vector<int>& trace, int start) {
+    int n = G.size();
+    std::queue<std::tuple<weight_t, int, int> > Q;  // <dist, from, current>
+    Q.push({(weight_t)(0), -1, start});
+    vector<int> count(n);
+
+    while (Q.size()) {
+        weight_t d;
+        int from, curr;
+        tie(d, from, curr) = Q.front();
+        Q.pop();
+
+        if (dist[curr] <= d) continue;
+        dist[curr] = d;
+        trace[curr] = from;
+        count[curr]++;
+        if (count[curr] > n) return false;
+
+        for (auto& p : G[curr]) {
+            Q.push({p.first + d, curr, p.second});
+        }
+    }
+
+    return true;
+}
+
+// donot set INF into INT_MAX, which cause overflow.
+template <typename weight_t>
+void flody(std::vector<std::vector<weight_t> >& D) {
+    int n = int(D.size());
+    for (int k = 0; k < n; k++) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                D[i][j] = std::min(D[i][j], D[i][k] + D[k][j]);
             }
         }
     }
-};
+}
+
+// !!!UNCHECKED!!!
+// template <int SIZE>
+// void bit_flody(std::vector<std::bitset<SIZE> >& arrive) {
+//     for (int k = 0; k < n; k++) {
+//         for (int i = 0; i < n; i++) {
+//             if (arrive[i][k]) {
+//                 arrive[i] |= arrive[k];
+//             }
+//         }
+//     }
+// }
+
 }  // namespace contest
