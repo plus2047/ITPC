@@ -2,26 +2,23 @@
 
 namespace contest {
 
+inline bool is_power_of_two(unsigned x) { return x != 0 && (x & (x - 1)) == 0; }
+inline bool is_power_of_two(int x) { return x != 0 && (x & -x) == x; }
+inline int least_significant_bit(int x) { return x & (-x); }
+
+}  // namespace contest
+
+// BE CAREFUL of the evaluation order when using bit operators !!!
+// ===============================================================
+
 // GCC / clang built in function to count 1 in binary. (fastest implement)
 // for all those function, return type: int
 // for unsigned int:
 // int n =  __builtin_popcount(x)
 // for unsigned long long int:
 // int n = __builtin_popcountll(x)
-
 // C++ STD
 // int n = bitset<32>(x).count();
-
-
-// warning: (x & (x - 1)) == 0 cannot be write as x & (x - 1) == 0
-// unsigned algorithm can be used to int
-inline bool isPowerOfTwo(unsigned x) { return x != 0 && (x & (x - 1)) == 0; }
-inline bool isPowerOfTwo(int x) { return x != 0 && (x & -x) == x; }
-
-inline int LSB(int x) { return x & (-x); }  // least significant bit
-
-}  // namespace contest
-
 
 // note: bit operator
 //

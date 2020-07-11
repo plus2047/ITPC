@@ -2,13 +2,12 @@
 
 namespace contest {
 
+// triple search the MIN point of func.
+// the func must has only one min point in [left, right]
+// and it must be strictly monotonicity in each side of this min point.
 template <typename FUNC>
 double triple_search(FUNC loss_func, double left, double right) {
-    // triple search the MIN point of func.
-    // the func must has only one min point in [left, right]
-    // and it must be strictly monotonicity in each side of this min point.
     const double DELTA = 1E-9;
-
     while (right - left > DELTA) {
         double t = (right - left) / 3;
         double m1 = left + t, m2 = right - t;
@@ -22,9 +21,9 @@ double triple_search(FUNC loss_func, double left, double right) {
     return (left + right) / 2;
 }
 
+// search the min point of func.
 template <typename FUNC>
 double anneal(FUNC loss_func, double left, double right) {
-    // using annealing algorithm to find the min point of func.
     // set those values carefully. when it's possible, set them big enough.
     const int EPOCH_NUM = 8, RAND_SEARCH_NUM = 16;
     // and set this small enough.

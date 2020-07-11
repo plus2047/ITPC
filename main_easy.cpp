@@ -22,7 +22,16 @@
 #include <vector>
 
 using namespace std;
+template <typename num_t>
+
+num_t greatest_common_divisor(num_t a, num_t b) {
+    while (b) {
+        tie(a, b) = make_pair(b, a % b);
+    }
+    return a;
+}
 
 int main() {
     cout << "HelloWorld!!!" << endl;
+    cout << greatest_common_divisor(10, 5) << endl;
 }
