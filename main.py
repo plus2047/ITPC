@@ -1,7 +1,7 @@
 import sys
 
 
-def read_num_list():
+def read_nums():
     return tuple(int(i) for i in sys.stdin.readline().split())
 
 
@@ -14,7 +14,7 @@ def solve(_turn):
 
 
 def main():
-    T = read_num_list()[0]
+    T, = read_nums()
     for i in range(T):
         solve(i + 1)
 
