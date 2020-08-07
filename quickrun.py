@@ -37,7 +37,7 @@ def run(cmd):
 
 if fileExt == "cpp":
     flag = "-g" if args.debug else "-O3"
-    if os.system("g++ -D__LOCAL__ --std=c++11 %s '%s' -o %s" % (flag, args.source, args.bin)) == 0:
+    if os.system("g++ -D__LOCAL__ --std=c++14 %s '%s' -o %s" % (flag, args.source, args.bin)) == 0:
         run(args.bin)
 
 elif fileExt == "py":
