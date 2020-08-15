@@ -41,19 +41,20 @@ std::vector<NUM> prime_fact(NUM num) {
 }
 
 template <typename NUM>
-inline NUM pow_mod(NUM base, NUM n, NUM MOD) {  // base ** n % MOD
-    NUM res = 1, cur = base;
+inline NUM pow_mod(NUM base, NUM n, NUM mod) {  // base ** n % mod
+    NUM res = 1;
     while (n) {
-        if (n % 2) res = (res * cur) % MOD;
-        cur = (cur * cur) % MOD;
+        if (n % 2) res = (res * base) % mod;
+        base = (base * base) % mod;
         n /= 2;
     }
-    return res;
+    return res % mod;  // handle n == 0
 }
 
 // inv(n) * n % mod == 1
 // based on Fermat's little theorem.
-// if PHI = MOD is prime ? MOD - 1 : totient(MOD)
+// PHI = (MOD is prime ? MOD - 1 : totient(MOD))
+// ONLY works when gcd(n, mod) == 1
 // assert(num < MOD);
 template <typename NUM>
 inline NUM inv_mod(NUM num, NUM PHI, NUM MOD) {
