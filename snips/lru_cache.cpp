@@ -1,8 +1,10 @@
 #include <list>
 #include <map>
+#include <iostream>
+using namespace std;
 
 template <typename Key, typename Val>
-class LruCache {
+struct LruCache {
     typedef std::list<std::pair<Key, Val> > Queue;
     std::size_t capacity;
     std::map<Key, typename Queue::iterator> tab;
@@ -36,16 +38,27 @@ class LruCache {
     }
 };
 
-int main() {
-    LruCache<int, int> cache(5);
-    for (int i = 0; i < 10; i++) {
-        cache.set(i, i);
-        cache.get(i % 2);
+struct ST {
+    int val;
+    ST(int val): val(val) {
+        printf("cons %d\n", val);
     }
+    ~ST() {
+        printf("dec %d\n", val);
+    }
+};
+
+int main() {
+    LruCache<int, ST> cache(5);
+    for (int i = 0; i < 10; i++) {
+        cache.set(i, ST(i));
+        cout << cache.tab.size() << ' ' << cache.queue.size() << endl;
+    }
+    cout << "finished input" << endl;
 
     for (int i = 0; i < 10; i++) {
         if (cache.has(i)) {
-            printf("%d\n", cache.get(i));
+            printf("%d\n", cache.get(i).val);
         }
     }
 }
