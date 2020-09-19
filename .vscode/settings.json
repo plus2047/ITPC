@@ -77,5 +77,8 @@
         "asmin",
         "frontof"
     ],
-    "python.pythonPath": "/Users/plus/miniconda3/bin/python"
+    "python.pythonPath": "/Users/plus/miniconda3/bin/python",
+    "files.watcherExclude": {
+        "**/target": true
+    }
 }
