@@ -5,6 +5,14 @@ namespace contest {
 inline bool is_power_of_two(unsigned x) { return x != 0 && (x & (x - 1)) == 0; }
 inline bool is_power_of_two(int x) { return x != 0 && (x & -x) == x; }
 inline int least_significant_bit(int x) { return x & (-x); }
+inline int most_significant_bit(int x) { 
+    x |= x >> 1;
+    x |= x >> 2;
+    x |= x >> 4;
+    x |= x >> 8;
+    x |= x >> 16;
+    return (x + 1) >> 1;
+}
 
 }  // namespace contest
 
