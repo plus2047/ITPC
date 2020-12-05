@@ -2,42 +2,60 @@
 #include <vector>
 
 namespace contest {
-template <typename index_t>
-void dfs_mark(std::vector<std::vector<index_t> >& graph, index_t start,
-              index_t valid_mark, index_t new_mark,
-              std::vector<index_t>& marks) {
-    if (marks[start] != valid_mark) return;
-    marks[start] = new_mark;
-    for (auto to : graph[start]) {
-        dfs_mark(graph, to, valid_mark, new_mark, marks);
+using namespace std;
+
+struct Kosaraju {
+    vector<vector<int> > ori_g, inv_g;
+    vector<int> post, marks;
+    vector<bool> seen;
+    int N;
+
+    Kosaraju() {}
+
+    vector<int>& solve(const vector<vector<int> >& graph) {
+        N = int(graph.size());
+        ori_g = graph;
+        inv_g = vector<vector<int> >(N);
+        post = vector<int>();
+        marks = vector<int>(N);
+        seen = vector<bool>(N, false);
+
+        for (int i = 0; i < N; i++) {
+            for (int j : graph[i]) {
+                inv_g[j].push_back(i);
+            }
+        }
+
+        for (int i = 0; i < N; i++) {
+            get_post(i);
+        }
+
+        int curr = 0;
+        fill(seen.begin(), seen.end(), false);
+        reverse(post.begin(), post.end());
+        for (int node : post) {
+            if (not seen[node]) {
+                dfs_mark(node, curr);
+                curr++;
+            }
+        }
+
+        return marks;
+    }
+
+    void get_post(int node) {
+        if (seen[node]) return;
+        seen[node] = true;
+        for (int child : ori_g[node]) get_post(child);
+        post.push_back(node);
+    }
+
+    void dfs_mark(int node, int mark) {
+        if (seen[node]) return;
+        seen[node] = true;
+        for (int child : inv_g[node]) dfs_mark(child, mark);
+        marks[node] = mark;
     }
 };
-
-template <typename index_t>
-std::vector<index_t> kosaraju(std::vector<std::vector<index_t> >& graph) {
-    int N = graph.size();
-
-    std::vector<index_t> marks(N);
-    for (int i = 0; i < N; i++) {
-        dfs_mark(graph, i, 0, N + i, marks);
-    }
-
-    std::vector<std::vector<index_t> > inv_g(N);
-    for (int i = 0; i < N; i++) {
-        for (auto j : graph[i]) {
-            inv_g[j].push_back(i);
-        }
-    }
-
-    index_t mark_count = 0;
-    for (int i = 0; i < N; i++) {
-        if (marks[i] >= N) {
-            dfs_mark(inv_g, i, marks[i], mark_count, marks);
-            mark_count++;
-        }
-    }
-
-    return marks;
-}
 
 }  // namespace contest
