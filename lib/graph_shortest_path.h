@@ -24,7 +24,7 @@ void dijstra(std::vector<std::vector<pair<int, weight_t> > >& G,
         trace[curr] = from;
 
         for (auto& p : G[curr]) {
-            Q.push({p.first + d, curr, p.second});
+            Q.push({p.second + d, curr, p.first});
         }
     }
 }

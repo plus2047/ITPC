@@ -15,7 +15,7 @@ void test_graph_impl() {
     // the graph is very very sparse and node number is very very large.
     using namespace std;
 
-    int N = 4000, M = N * 100;
+    int N = 100000, M = N * 100;
     vector<vector<int>> g1(N);
     vector<pair<int, int>> edge_sample(M);
     for (int edge_id = 0; edge_id < M; edge_id++) {
