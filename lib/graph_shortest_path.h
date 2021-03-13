@@ -7,8 +7,13 @@
 namespace contest {
 
 template <typename weight_t>
-void dijstra(std::vector<std::vector<pair<int, weight_t> > >& G,
-             std::vector<weight_t>& dist, vector<int>& trace, int start) {
+void dijstra(
+    std::vector<std::vector<pair<int, weight_t> > >& G,
+    std::vector<weight_t>& dist,  // distance to start node, ALL elements must
+                                  // be initialed as infinity
+    vector<int>& trace,           // next node to root
+    int start                     // start node
+) {
     typedef std::tuple<weight_t, int, int> S;  // <dist, from, current>
     std::priority_queue<S, vector<S>, greater<S> > Q;
     Q.push({(weight_t)(0), -1, start});
