@@ -37,15 +37,31 @@ typedef long long int lld;
 #define rep(i, N) for (int i = 0; i < int(N); ++i)
 #define inv(i, N) for (int i = int(N) - 1; i >= 0; --i)
 
+// #undef __LOCAL__
+
+template <typename ITER>
+void print(const char* note, ITER begin, ITER end) {
+#ifdef __LOCAL__
+    std::cout << note;
+    for (; begin != end; begin++) std::cout << *begin << ' ';
+    cout << endl;
+#endif  // __LOCAL__
+}
+
+void print(const char* fmt, ...) {
+#ifdef __LOCAL__
+    va_list args;
+    va_start(args, fmt);
+    vprintf(fmt, args);
+    va_end(args);
+#endif  // __LOCAL__
+}
+
 // ========== contest code ==========
-// codeforces 1495B
-// https://codeforces.com/problemset/problem/1495/B
 
 void solve(int _turn) {
-    lld n;
-    vector<lld> P(n);
-    rep(i, n) scanf("%lld", &P[i]);
-    vector<lld> left(n), right(n);
+    lld res = 0;
+    printf("Case #%d: %lld\n", _turn + 1, res);
 }
 
 int main() {
