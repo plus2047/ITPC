@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstdio>
 #include <string>
+#include <vector>
 
 namespace contest {
 
@@ -36,4 +37,36 @@ int kmp_find(const STR& pattern, const STR& target,
     }
     return -1;
 }
+
+
+// Longest palindromic substring, Manacher algorithm
+// https://zh.wikipedia.org/wiki/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2
+std::vector<int> manachar(const std::string& s) {
+    const char nil = '#', head = '^', tail = '$';
+    std::string t(s.size() * 2 + 1, nil);
+    int m = s.size(), n = t.size();
+    t[0] = head, t[n - 1] = tail;
+    for(int i = 0; i < m; i++) {
+        t[i * 2 + 2] = s[i];
+    }
+    std::vector<int> arm(n, 0);
+    int right = 0, center = 0;
+    for(int i = 1; i < n - 1; i++) {
+        if(i < right) {
+            arm[i] = std::min(right - i, arm[center * 2 - i]);
+        }
+        while(t[i + arm[i] + 1] == t[i - arm[i] - 1]) {
+            arm[i]++;
+        }
+        if(i + arm[i] > right) {
+            right = i + arm[i], center = i;
+        }
+    }
+    std::vector<int> res(m, 0);
+    for(int i = 0; i < m; i++) {
+        res[i] = arm[i * 2 + 2] / 2;
+    }
+    return res;
+}
+
 }  // namespace contest

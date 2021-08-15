@@ -75,7 +75,7 @@ void flody(std::vector<std::vector<weight_t> >& D) {
     }
 }
 
-// !!!UNCHECKED!!!
+// TODO !!!UNCHECKED!!!
 // template <int SIZE>
 // void bit_flody(std::vector<std::bitset<SIZE> >& arrive) {
 //     for (int k = 0; k < n; k++) {

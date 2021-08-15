@@ -26,3 +26,16 @@ def kmpFind(pattern, target, nextArr):
             return i - j + 1
     return -1
 
+
+def manacher(s):
+    t = "^#" + "#".join(s) + "#$"
+    arm = [0] * len(t)
+    right = center = 0
+    for i in range(1, len(t) - 1):
+        if i < right:
+            arm[i] = min(arm[center * 2 - i], right - i)
+        while t[i - arm[i] - 1] == t[i + arm[i] + 1]:
+            arm[i] += 1
+        if i + arm[i] > right:
+            right, center = i + arm[i], i
+    return arm[2:-2:2]
