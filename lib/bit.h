@@ -13,6 +13,15 @@ inline int most_significant_bit(int x) {
     x |= x >> 16;
     return (x + 1) >> 1;
 }
+inline long long most_significant_bit(long long x) {
+    x |= x >> 1;
+    x |= x >> 2;
+    x |= x >> 4;
+    x |= x >> 8;
+    x |= x >> 16;
+    x |= x >> 32;
+    return (x + 1) >> 1;
+}
 
 }  // namespace contest
 
