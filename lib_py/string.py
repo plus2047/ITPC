@@ -19,7 +19,7 @@ def kmpFind(pattern, target, nextArr):
     i, j = 0, 0
     while i < len(target):
         while j and pattern[j] != target[i]:
-            j = next[j - 1]
+            j = nextArr[j - 1]
         if pattern[j] == target[i]:
             j += 1
         if j == len(pattern):
