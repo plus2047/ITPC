@@ -37,4 +37,13 @@ inline NUM comb_mod(std::vector<NUM>& fact, std::vector<NUM>& ifact, NUM N,
     return res;
 }
 
+template <typename NUM>
+inline void init_fact_mod(std::vector<NUM>& fact, std::vector<NUM>& ifact, NUM N) {
+    fact[0] = fact[1] = ifact[0] = ifact[1] = 1;
+    for(NUM i = 2; i < N; i++) {
+        fact[i] = (fact[i - 1] * i) % MOD;
+        ifact[i] = inv_mod(fact[i], MOD - 1, MOD);
+    }
+}
+
 }  // namespace contest
