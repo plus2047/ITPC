@@ -69,8 +69,11 @@ struct SegmentTree {
     int size;
     std::vector<NUM> tree;  // 1-indexed full tree
     inline NUM get(int idx) { return tree[idx + size]; }
-    SegmentTree(int size) : size(size), tree(size * 2, VOID) {}
     SegmentTree(std::vector<NUM>& data) { init(data); }
+
+    SegmentTree(int size) : size(size), tree(size * 2, VOID) {}
+    // LeetCode didn't support below!!! use the this one instead:
+    // SegmentTree(int size) { this->size = size, this->tree.resize(size * 2); }
 
     void init(std::vector<NUM>& data) {
         size = int(data.size());
