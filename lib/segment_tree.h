@@ -61,14 +61,13 @@ struct FenwickTree2D {
 
 template <typename NUM>
 struct SegmentTree {
-    // a + b or max(a, b) or min(a, b)
+    // a + b or max or min or ^ or any opt support associative property
     inline NUM func(NUM a, NUM b) { return a + b; }
-    // VOID == 0 for sum, NUM_MAX for min, NUM_MIN for max
+    // VOID == 0 for sum, NUM_MAX for min, NUM_MIN for max, etc
     const static NUM VOID = 0;
 
     int size;
     std::vector<NUM> tree;  // 1-indexed full tree
-    inline NUM get(int idx) { return tree[idx + size]; }
     SegmentTree(std::vector<NUM>& data) { init(data); }
 
     SegmentTree(int size) : size(size), tree(size * 2, VOID) {}
@@ -84,10 +83,12 @@ struct SegmentTree {
         }
     }
 
-    void update(int idx, NUM val) {
+    // set & get index mast be in [0, size)
+    inline NUM get(int idx) { return tree[idx + size]; }
+    void set(int idx, NUM val) {
         idx += size;
         tree[idx] = val;
-        while (idx != 0) {
+        while (idx > 1) {
             idx /= 2;
             tree[idx] = func(tree[2 * idx], tree[2 * idx + 1]);
         }
