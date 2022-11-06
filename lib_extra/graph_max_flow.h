@@ -108,7 +108,7 @@ struct MinCostMaxFlow {
         graph[to].push_back(m - 1);
     }
 
-    bool _bellman_ford(INDEX start, INDEX stop, INDEX& flow, INDEX& cost) {
+    bool _bellman_ford(INDEX start, INDEX stop, NUM& flow, NUM& cost) {
         static const NUM INF = std::numeric_limits<NUM>::max();
         std::fill(in_queue.begin(), in_queue.end(), false);
         std::fill(path_weight.begin(), path_weight.end(), INF);
