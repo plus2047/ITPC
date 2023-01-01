@@ -24,8 +24,7 @@ void prime_flags(std::vector<bool>& flags) {
 
 // worst complexity: O(num ^ 0.5)
 template <typename NUM = int>
-std::vector<NUM> prime_fact(NUM num) {
-    std::vector<NUM> res;
+void prime_fact(NUM num, std::vector<NUM>& res) {
     while (num % 2 == 0) {
         num /= 2;
         res.push_back(2);
@@ -37,7 +36,6 @@ std::vector<NUM> prime_fact(NUM num) {
         }
     }
     if (num > 1) res.push_back(num);
-    return res;
 }
 
 }  // namespace contest
