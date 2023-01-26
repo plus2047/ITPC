@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <cmath>
 
 namespace contest {
 
@@ -40,10 +41,21 @@ inline NUM comb_mod(std::vector<NUM>& fact, std::vector<NUM>& ifact, NUM N,
 template <typename NUM>
 inline void init_fact_mod(std::vector<NUM>& fact, std::vector<NUM>& ifact, NUM N) {
     fact[0] = fact[1] = ifact[0] = ifact[1] = 1;
-    for(NUM i = 2; i < N; i++) {
+    for (NUM i = 2; i < N; i++) {
         fact[i] = (fact[i - 1] * i) % MOD;
         ifact[i] = inv_mod(fact[i], MOD - 1, MOD);
     }
+}
+
+inline void init_fact_log(std::vector<double>& fact, int N) {
+    fact[0] = fact[1] = 0;
+    for (int i = 2; i < N; i++) {
+        fact[i] = fact[i - 1] + log2(double(i));
+    }
+}
+
+inline double comb_log(std::vector<double>& fact, int n, int k) {
+    return fact[n] - fact[k] - fact[n - k];
 }
 
 }  // namespace contest
