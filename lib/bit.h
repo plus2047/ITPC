@@ -3,8 +3,13 @@
 namespace contest {
 
 inline bool is_power_of_two(unsigned x) { return x != 0 && (x & (x - 1)) == 0; }
+
+// those two magic function work based on the 2's complement
+// it's part of C++ standard since C++ 20
+// before this, most modern CPU also use 2's complement, so it almost always works
 inline bool is_power_of_two(int x) { return x != 0 && (x & -x) == x; }
 inline int least_significant_bit(int x) { return x & (-x); }
+
 inline int most_significant_bit(int x) {
     x |= x >> 1;
     x |= x >> 2;
