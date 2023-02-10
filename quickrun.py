@@ -9,7 +9,7 @@ import argparse
 
 baseDir = os.path.dirname(os.path.abspath(__file__))
 buildDir = baseDir + "/.build"
-python_bin = "/Users/plus/miniconda3/bin/python "
+python_bin = "/Users/jiahao.xu/miniconda3/bin/python "
 
 if not os.path.exists(buildDir):
     os.makedirs(buildDir)
