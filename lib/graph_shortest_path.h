@@ -7,9 +7,9 @@
 namespace contest {
 
 template <typename weight_t>
-void dijstra(std::vector<std::vector<pair<int, weight_t> > >& G,
+void dijstra(std::vector<std::vector<std::pair<int, weight_t> > >& G,
              std::vector<weight_t>& dist,  // all elements must be initialed as infinity
-             vector<int>& trace,           // next node to root
+             std::vector<int>& trace,      // next node to root
              int start                     // start
 ) {
     typedef std::tuple<weight_t, int, int> S;  // <dist, from, current>
@@ -33,10 +33,10 @@ void dijstra(std::vector<std::vector<pair<int, weight_t> > >& G,
 }
 
 template <typename weight_t>
-void dijstra_second(std::vector<std::vector<pair<int, weight_t> > >& G,
-              std::vector<weight_t>& dist1,  // shortest path, all init as INF!
-              std::vector<weight_t>& dist2,  // second shortest path, all init as INF!
-              int start                      // start node
+void dijstra_second(std::vector<std::vector<std::pair<int, weight_t> > >& G,
+                    std::vector<weight_t>& dist1,  // shortest path, all init as INF!
+                    std::vector<weight_t>& dist2,  // second shortest path, all init as INF!
+                    int start                      // start node
 ) {
     typedef std::tuple<weight_t, int, int> S;
     std::priority_queue<S, vector<S>, greater<S> > Q;
@@ -70,9 +70,9 @@ void dijstra_second(std::vector<std::vector<pair<int, weight_t> > >& G,
 }
 
 template <typename weight_t>
-bool bellman_ford(std::vector<std::vector<pair<int, weight_t> > >& G,
+bool bellman_ford(std::vector<std::vector<std::pair<int, weight_t> > >& G,
                   std::vector<weight_t>& dist,  // all elements must be initialed as infinity
-                  vector<int>& trace,           // next node to root
+                  std::vector<int>& trace,      // next node to root
                   int start                     // start
 ) {
     int n = G.size();
