@@ -64,14 +64,13 @@ struct SegmentTree {
     // a + b or max or min or ^ or any opt support associative property
     inline NUM func(NUM a, NUM b) { return a + b; }
     // VOID == 0 for sum, NUM_MAX for min, NUM_MIN for max, etc
-    const static NUM VOID = 0;
+    constexpr static NUM VOID = 0;
 
     int size;
     std::vector<NUM> tree;  // 1-indexed full tree
     SegmentTree(std::vector<NUM>& data) { init(data); }
 
     SegmentTree(int size) : size(size), tree(size * 2, VOID) {}
-    // LeetCode didn't support below!!! use the this one instead:
     // SegmentTree(int size) { this->size = size, this->tree.resize(size * 2); }
 
     void init(std::vector<NUM>& data) {
