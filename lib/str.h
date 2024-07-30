@@ -38,6 +38,16 @@ int kmp_find(const STR& pattern, const STR& target,
     return -1;
 }
 
+template <typename STR>
+void kmp_find_all(const STR& pattern, const STR& target,
+                  const std::vector<int>& next,
+                  std::vector<int>& matches) {
+    for (int i = 0, j = 0; i < int(target.size()); i++) {
+        while (j and pattern[j] != target[i]) j = next[j - 1];
+        if (pattern[j] == target[i]) ++j;
+        if (j == int(pattern.size())) matches.push_back(i);
+    }
+}
 
 // Longest palindromic substring, Manacher algorithm
 // https://zh.wikipedia.org/wiki/%E6%9C%80%E9%95%BF%E5%9B%9E%E6%96%87%E5%AD%90%E4%B8%B2
