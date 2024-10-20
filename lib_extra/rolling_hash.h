@@ -5,92 +5,101 @@
 // https://www.geeksforgeeks.org/string-hashing-using-polynomial-rolling-hash-function/
 
 namespace contest {
+struct Rolling60 {
+    const static long long p0 = 19, p1 = 23, mod = 1e9 + 7;
+    std::vector<int> h0, h1, inv0, inv1;
 
-struct Rolling {
-    const static int hash_size = 2;
-    typedef array<int, hash_size> Hash;
-
-    // mod * mod < INT64_MAX
-    const static int mod = 1e9 + 7;
-    constexpr static Hash primes = {19, 23};
-    constexpr static Hash zeros = {0, 0};
-    constexpr static Hash ones = {1, 1};
-    inline static std::vector<Hash> inv = {};
-
-    int size = 0;
-    std::vector<Hash> hash;
-
-    Rolling(const std::string& s): size(s.size()), hash(s.size()) {
-        if(size > 0) {
-            init(s);
+    Rolling60(const std::string& s):
+        h0(s.size()), h1(s.size()), inv0(s.size()), inv1(s.size()) {
+        int n = s.size();
+        long long h[2] = {0, 0}, p_pow[2] = {1, 1};
+        for (int i = 0; i < n; i++) {
+            h0[i] = h[0] = (h[0] + s[i] * p_pow[0]) % mod;
+            h1[i] = h[1] = (h[1] + s[i] * p_pow[1]) % mod;
+            p_pow[0] = p_pow[0] * p0 % mod;
+            p_pow[1] = p_pow[1] * p1 % mod;
+        }
+        inv0[n - 1] = pow(p0, mod - n), inv1[n - 1] = pow(p1, mod - n);
+        for(int i = n - 2; i >= 0; i--) {
+            inv0[i] = inv0[i + 1] * p0 % mod;
+            inv1[i] = inv1[i + 1] * p1 % mod;
         }
     }
 
-    void init(const std::string& s) {
-        size = s.size();
-        hash.resize(size);
-        Hash h = zeros, p_pow = ones;
-        for (int i = 0; i < size; i++) {
-            for(int j = 0; j < hash_size; j++) {
-                h[j] = (h[j] + 1LL * s[i] * p_pow[j]) % mod;
-                p_pow[j] = (1LL * p_pow[j] * primes[j]) % mod;
-            }
-            hash[i] = h;
-        }
-
-        if(int(inv.size()) < size) {
-            int prev_size = inv.size();
-            inv.resize(size);
-
-            for(int j = 0; j < hash_size; j++) {
-                inv[size - 1][j] = power(primes[j], mod - size, mod);
-            }
-
-            for (int i = size - 2; i >= prev_size; i--) {
-                for(int j = 0; j < hash_size; j++) {
-                    inv[i][j] = (1LL * inv[i + 1][j] * primes[j]) % mod;
-                }
-            }
-        }
+    long long substr(int l, int r) {
+        if(l == 0) return ((long long)h0[r] << 32) + h1[r];
+        long long x = (long long)(h0[r] - h0[l - 1] + mod) * inv0[l] % mod;
+        long long y = (long long)(h1[r] - h1[l - 1] + mod) * inv1[l] % mod;
+        return (x << 32) + y;
     }
 
-    Hash substr(const int l, const int r) {
-        if (l == 0) {
-            return hash[r];
-        }
-        Hash h;
-        for(int i = 0; i < hash_size; i++) {
-            h[i] = hash[r][i] - hash[l - 1][i];
-            h[i] += h[i] < 0 ? mod : 0;
-            h[i] = (1LL * h[i] * this->inv[l][i]) % mod;
-        }
-        return h;
-    }
-
-    static long long power(long long x, long long y, long long p) {
+    static long long pow(long long x, long long y) {
         long long result = 1;
-        for (; y; y >>= 1, x = x * x % p) {
-            if (y & 1) {
-                result = result * x % p;
-            }
+        for (; y; y >>= 1, x = x * x % mod) {
+            if (y & 1) result = result * x % mod;
         }
         return result;
     }
+};
 
-    static long long inverse(long long x, long long p) {
-        return power(x, p - 2, p);
+struct Rolling120 {
+    const static long long p0 = 19, p1 = 23, p2 = 29, p3 = 31, mod = 1e9 + 7;
+    std::vector<int> h0, h1, h2, h3, inv0, inv1, inv2, inv3;
+
+    Rolling120(const std::string& s):
+        h0(s.size()), h1(s.size()), h2(s.size()), h3(s.size()),
+        inv0(s.size()), inv1(s.size()), inv2(s.size()), inv3(s.size()) {
+        int n = s.size();
+        long long h[4] = {0, 0, 0, 0}, p_pow[4] = {1, 1, 1, 1};
+        for (int i = 0; i < n; i++) {
+            h0[i] = h[0] = (h[0] + s[i] * p_pow[0]) % mod;
+            h1[i] = h[1] = (h[1] + s[i] * p_pow[1]) % mod;
+            h2[i] = h[2] = (h[2] + s[i] * p_pow[2]) % mod;
+            h3[i] = h[3] = (h[3] + s[i] * p_pow[3]) % mod;
+            p_pow[0] = p_pow[0] * p0 % mod;
+            p_pow[1] = p_pow[1] * p1 % mod;
+            p_pow[2] = p_pow[2] * p2 % mod;
+            p_pow[3] = p_pow[3] * p3 % mod;
+        }
+        inv0[n - 1] = pow(p0, mod - n);
+        inv1[n - 1] = pow(p1, mod - n);
+        inv2[n - 1] = pow(p2, mod - n);
+        inv3[n - 1] = pow(p3, mod - n);
+        for(int i = n - 2; i >= 0; i--) {
+            inv0[i] = inv0[i + 1] * p0 % mod;
+            inv1[i] = inv1[i + 1] * p1 % mod;
+            inv2[i] = inv2[i + 1] * p2 % mod;
+            inv3[i] = inv3[i + 1] * p3 % mod;
+        }
+    }
+
+    pair<long long, long long> substr(int l, int r) {
+        if(l == 0) return {
+            ((long long)h0[r] << 32) + h1[r], 
+            ((long long)h2[r] << 32) + h3[r]
+        };
+        long long x = (long long)(h0[r] - h0[l - 1] + mod) * inv0[l] % mod;
+        long long y = (long long)(h1[r] - h1[l - 1] + mod) * inv1[l] % mod;
+        long long a = (long long)(h2[r] - h2[l - 1] + mod) * inv2[l] % mod;
+        long long b = (long long)(h3[r] - h3[l - 1] + mod) * inv3[l] % mod;
+        return {(x << 32) + y, (a << 32) + b};
+    }
+
+    static long long pow(long long x, long long y) {
+        long long result = 1;
+        for (; y; y >>= 1, x = x * x % mod) {
+            if (y & 1) result = result * x % mod;
+        }
+        return result;
     }
 };
 
 template<>
-struct std::hash<Rolling::Hash>
+struct std::hash<pair<long long, long long>>
 {
-    std::size_t operator()(const Rolling::Hash& h) const noexcept
-    {
-        std::size_t h1 = std::hash<int>{}(h[0]);
-        std::size_t h2 = std::hash<int>{}(h[1]);
-        // ...
-        return h1 ^ (h2 << 1); // or use boost::hash_combine
+    std::size_t operator()(const pair<long long, long long>& h) const noexcept {
+        return h.first ^ (h.second << 1); // or use boost::hash_combine
     }
 };
+
 }  // namespace contest
