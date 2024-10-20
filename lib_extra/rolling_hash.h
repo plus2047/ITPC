@@ -5,10 +5,19 @@
 // https://www.geeksforgeeks.org/string-hashing-using-polynomial-rolling-hash-function/
 
 namespace contest {
+
+// Rolling Hash is used to get hash for any substring with O(1) speed
+// Rolling60 combines two 30-bit hash functions
+// for each one of them,
+// hash(s) = sum(s[i] * pow(p, i) for i in range(len(s))) % mod
+// where p and mod are primes
 struct Rolling60 {
     const static long long p0 = 19, p1 = 23, mod = 1e9 + 7;
     std::vector<int> h0, h1, inv0, inv1;
 
+    // h0[i] = sum(s[x] * pow(p0, x) for x in range(i))
+    // inv0[i] * pow(p0, i) % mod == 1
+    // using Fermat's little theorem to get inv0, etc.
     Rolling60(const std::string& s):
         h0(s.size()), h1(s.size()), inv0(s.size()), inv1(s.size()) {
         int n = s.size();
@@ -26,6 +35,8 @@ struct Rolling60 {
         }
     }
 
+    // hash0(l, r) = sum(s[x] * pow(p0, x - left) for x in [left, right]) % mod
+    // = sum(s[x] * pow(p0, x)) * inv0[left] % mod
     long long substr(int l, int r) {
         if(l == 0) return ((long long)h0[r] << 32) + h1[r];
         long long x = (long long)(h0[r] - h0[l - 1] + mod) * inv0[l] % mod;
