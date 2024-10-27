@@ -4,65 +4,46 @@
 
 namespace contest {
 
-template <typename NUM = int>
-struct Matrix {
-    int dim1, dim2;
-    std::vector<NUM> data;
+typedef vector<vector<long long>> Mat;
+const long long MOD = 1E9 + 7;
 
-    Matrix(int m, int n) : dim1(m), dim2(n), data(m * n) {}
-    inline NUM& operator()(int m, int n) { return data[m * dim2 + n]; }
-
-    void resize(int m, int n) { dim1 = m, dim2 = n, data.resize(m * n); }
-    void as_eye() {
-        std::fill(data.begin(), data.end(), 0);
-        assert(dim1 == dim2);
-        for (int i = 0; i < dim1; i++) (*this)(i, i) = 1;
+void dot(Mat& x, Mat& y, Mat& res) {
+    int a = x.size(), b = y.size(), c = y[0].size();
+    for(int i = 0; i < a; i++) {
+        for(int j = 0; j < c; j++) {
+            res[i][j] = 0;
+            for(int k = 0; k < b; k++) {
+                res[i][j] = (res[i][j] + x[i][k] * y[k][j]) % MOD;
+            }
+        }
     }
-};
-
-template <typename NUM>
-void swap(Matrix<NUM>& a, Matrix<NUM>& b) {  // complexity: O(1)
-    std::swap(a.dim1, b.dim1);
-    std::swap(a.dim2, b.dim2);
-    std::swap(a.data, b.data);
 }
 
-template <typename NUM = int>
-struct MatrixCalculator {
-    typedef Matrix<NUM> Mat;
-
-    static void dot(Mat& A, Mat& B, Mat& result) {
-        assert(A.dim2 == B.dim1);
-        result.resize(A.dim1, B.dim2);
-        for (int i = 0; i < A.dim1; i++) {
-            for (int j = 0; j < B.dim2; j++) {
-                NUM& res = result(i, j);
-                res = 0;
-                for (int k = 0; k < A.dim2; k++) {
-                    res += A(i, k) * B(k, j);
-                }
-            }
+void add(Mat& x, Mat& y, Mat& res) {
+    int a = x.size(), b = x[0].size();
+    for(int i = 0; i < a; i++) {
+        for(int j = 0; j < b; j++) {
+            res[i][j] = (x[i][j] + y[i][j]) % MOD;
         }
     }
+}
 
-    Mat _res = Mat(0, 0), _base = Mat(0, 0);
-    void pow(const Mat& A, int n, Mat& result) {
-        assert(A.dim1 == A.dim2);
-        result.resize(A.dim1, A.dim2);
-        result.as_eye();
-        _res.resize(A.dim1, A.dim2);
-        _res.as_eye();
-        _base = A;
-
-        while (n) {
-            if (n % 2) {
-                dot(result, _base, _res);
-                swap(result, _res);
-            }
-            dot(_base, _base, _res);
-            swap(_base, _res);
-            n /= 2;
-        }
+void pow(Mat& x, int n, Mat& res) {
+    Mat base = x, _base = x, _res = res;
+    int s = x.size();
+    for(int i = 0; i < s; i++) {
+        fill(res[i].begin(), res[i].end(), 0);
+        res[i][i] = 1;
     }
-};
+    while(n) {
+        if(n & 1) {
+            dot(res, base, _res);
+            swap(res, _res);
+        }
+        dot(base, base, _base);
+        swap(base, _base);
+        n >>= 1;
+    }
+}
+
 }  // namespace contest
