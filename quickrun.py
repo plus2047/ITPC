@@ -9,7 +9,7 @@ import argparse
 
 baseDir = os.path.dirname(os.path.abspath(__file__))
 buildDir = baseDir + "/.build"
-python_bin = "/Users/jiahao.xu/miniconda3/bin/python "
+python_bin = "python3 "
 
 if not os.path.exists(buildDir):
     os.makedirs(buildDir)
@@ -32,7 +32,7 @@ else:
 
 def run(cmd):
     os.system("date")
-    os.system("time %s < '%s' | tee '%s'" % (cmd, args.stdin, args.stdout))
+    os.system("bash -c \"time (%s < '%s' | tee '%s')\"" % (cmd, args.stdin, args.stdout))
 
 
 if fileExt == "cpp":
